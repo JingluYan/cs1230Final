@@ -141,44 +141,6 @@ bool SupportCanvas2D::saveImage() {
     return false;
 }
 
-void SupportCanvas2D::mousePressEvent(QMouseEvent *event) {
-    if (event->button() == Qt::LeftButton) {
-        mouseDown(event->x(), event->y());
-        m_draggingLeft = true;
-        update();
-    } else if (event->button() == Qt::RightButton) {
-        m_marqueeStart = m_marqueeStop = event->pos();
-        m_draggingRight = true;
-        update();
-    }
-}
-
-void SupportCanvas2D::mouseMoveEvent(QMouseEvent *event) {
-    // m_draggingLeft and m_draggingRight are not mutually exclusive.
-    if (m_draggingLeft) {
-        mouseDragged(event->x(), event->y());
-        update();
-    }
-    if (m_draggingRight) {
-        m_marqueeStop = event->pos();
-        update();
-    }
-}
-
-void SupportCanvas2D::mouseReleaseEvent(QMouseEvent *event) {
-    // Move the mouse again in case this event is at a different position then the last event.
-    mouseMoveEvent(event);
-
-    if (m_draggingLeft && event->button() == Qt::LeftButton) {
-        mouseUp(event->x(), event->y());
-        m_draggingLeft = false;
-        update();
-    } else if (m_draggingRight && event->button() == Qt::RightButton) {
-        m_draggingRight = false;
-        update();
-    }
-}
-
 void SupportCanvas2D::settingsChanged() {
     // TODO: This will be called when the application settings have been changed.
 }

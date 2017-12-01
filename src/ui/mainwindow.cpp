@@ -48,7 +48,6 @@ MainWindow::MainWindow(QWidget *parent) :
     actions.push_back(ui->dock->toggleViewAction()); \
     actions.back()->setShortcut(QKeySequence(key));
 
-    SETUP_ACTION(brushDock,     "CTRL+1");
     SETUP_ACTION(filterDock,    "CTRL+2");
     SETUP_ACTION(shapesDock,    "CTRL+3");
     SETUP_ACTION(camtransDock,  "CTRL+4");
@@ -57,11 +56,10 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->menuToolbars->addActions(actions);
 #undef SETUP_ACTION
 
-    tabifyDockWidget(ui->brushDock, ui->filterDock);
-    tabifyDockWidget(ui->brushDock, ui->shapesDock);
-    tabifyDockWidget(ui->brushDock, ui->camtransDock);
-    tabifyDockWidget(ui->brushDock, ui->rayDock);
-    ui->brushDock->raise();
+    tabifyDockWidget(ui->filterDock, ui->shapesDock);
+    tabifyDockWidget(ui->filterDock, ui->camtransDock);
+    tabifyDockWidget(ui->filterDock, ui->rayDock);
+    ui->filterDock->raise();
 
     dataBind();
 
@@ -74,12 +72,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Make certain radio buttons switch to the 2D canvas when clicked.
     QList<QRadioButton*> a;
-    a += ui->brushTypeLinear;
-    a += ui->brushTypeQuadratic;
-    a += ui->brushTypeSmudge;
-    a += ui->brushTypeConstant;
-    a += ui->brushTypeSpecial1;
-    a += ui->brushTypeSpecial2;
     a += ui->filterTypeBlur;
     a += ui->filterTypeEdgeDetect;
     a += ui->filterTypeGrayscale;
@@ -120,41 +112,15 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::dataBind() {
-    // Brush dock
 #define BIND(b) { \
     DataBinding *_b = (b); \
     m_bindings.push_back(_b); \
     assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
 }
-    QButtonGroup *brushButtonGroup = new QButtonGroup;
     QButtonGroup *shapesButtonGroup = new QButtonGroup;
     QButtonGroup *filterButtonGroup = new QButtonGroup;
-    m_buttonGroups.push_back(brushButtonGroup);
     m_buttonGroups.push_back(shapesButtonGroup);
     m_buttonGroups.push_back(filterButtonGroup);
-
-    BIND(ChoiceBinding::bindRadioButtons(
-            brushButtonGroup,
-            NUM_BRUSH_TYPES,
-            settings.brushType,
-            ui->brushTypeConstant,
-            ui->brushTypeLinear,
-            ui->brushTypeQuadratic,
-            ui->brushTypeSmudge,
-            ui->brushTypeSpecial1,
-            ui->brushTypeSpecial2))
-
-    BIND(IntBinding::bindSliderAndTextbox(
-        ui->brushRadiusSlider, ui->brushRadiusTextbox, settings.brushRadius, 0, 96))
-    BIND(UCharBinding::bindSliderAndTextbox(
-        ui->brushColorSliderRed, ui->brushColorTextboxRed, settings.brushColor.r, 0, 255))
-    BIND(UCharBinding::bindSliderAndTextbox(
-        ui->brushColorSliderGreen, ui->brushColorTextboxGreen, settings.brushColor.g, 0, 255))
-    BIND(UCharBinding::bindSliderAndTextbox(
-        ui->brushColorSliderBlue, ui->brushColorTextboxBlue, settings.brushColor.b, 0, 255))
-    BIND(UCharBinding::bindSliderAndTextbox(
-        ui->brushColorSliderAlpha, ui->brushColorTextboxAlpha, settings.brushColor.a, 0, 255))
-    BIND(BoolBinding::bindCheckbox(ui->brushAlphaBlendingCheckbox, settings.fixAlphaBlending))
 
     // Filter dock
     BIND(ChoiceBinding::bindRadioButtons(
@@ -415,7 +381,6 @@ void MainWindow::renderImage() {
 
 void MainWindow::setAllEnabled(bool enabled) {
     QList<QWidget *> widgets;
-    widgets += ui->brushDock;
     widgets += ui->filterDock;
     widgets += ui->shapesDock;
     widgets += ui->camtransDock;

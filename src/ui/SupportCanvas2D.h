@@ -49,13 +49,6 @@ public slots:
 protected:
     // Overridden from QWidget
     virtual void paintEvent(QPaintEvent *, QImage *image=NULL);
-    virtual void mousePressEvent(QMouseEvent *event);
-    virtual void mouseMoveEvent(QMouseEvent *event);
-    virtual void mouseReleaseEvent(QMouseEvent *event);
-
-    virtual void mouseDown(int x, int y) = 0;
-    virtual void mouseDragged(int x, int y) = 0;
-    virtual void mouseUp(int x, int y) = 0;
 
     // This will be called when the size of the canvas has been changed
     virtual void notifySizeChanged(int w, int h) = 0;

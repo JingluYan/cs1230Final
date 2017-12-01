@@ -27,14 +27,6 @@ void Settings::loadSettingsOrDefaults() {
     // Set the default values below
     QSettings s("CS123", "CS123");
 
-    // Brush
-    brushType = s.value("brushType", BRUSH_LINEAR).toInt();
-    brushRadius = s.value("brushRadius", 50).toInt();
-    brushColor.r = s.value("brushRed", 127).toInt();
-    brushColor.g = s.value("brushGreen", 255).toInt();
-    brushColor.b = s.value("brushBlue", 0).toInt();
-    brushColor.a = s.value("brushAlpha", 20).toInt();
-
     // Filter
     filterType = s.value("filterType", FILTER_INVERT).toInt();
     edgeDetectSensitivity = s.value("edgeDetectSensitivity", 0.5f).toDouble();
@@ -85,14 +77,6 @@ void Settings::loadSettingsOrDefaults() {
 
 void Settings::saveSettings() {
     QSettings s("CS123", "CS123");
-
-    // Brush
-    s.setValue("brushType", brushType);
-    s.setValue("brushRadius", brushRadius);
-    s.setValue("brushRed", brushColor.r);
-    s.setValue("brushGreen", brushColor.g);
-    s.setValue("brushBlue", brushColor.b);
-    s.setValue("brushAlpha", brushColor.a);
 
     // Filter
     s.setValue("filterType", filterType);

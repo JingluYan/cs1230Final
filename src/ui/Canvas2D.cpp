@@ -17,14 +17,7 @@
 #include "Canvas2D.h"
 #include "Settings.h"
 #include "RayScene.h"
-
-
 #include <QPainter>
-#include "brush/Brush.h"
-#include "brush/ConstantBrush.h"
-#include "brush/LinearBrush.h"
-#include "brush/QuadraticBrush.h"
-#include "brush/SmudgeBrush.h"
 
 Canvas2D::Canvas2D() :
     // @TODO: Initialize any pointers in this class here.
@@ -47,35 +40,6 @@ void Canvas2D::paintEvent(QPaintEvent *e) {
     SupportCanvas2D::paintEvent(e);
 
 }
-
-// ********************************************************************************************
-// ** BRUSH
-// ********************************************************************************************
-
-
-void Canvas2D::mouseDown(int x, int y) {
-    // @TODO: [BRUSH] Mouse interaction for brush. You will probably want to create a separate
-    //        class for each of your brushes. Remember that you can use the static Settings
-    //        object to get the currently selected brush and its parameters.
-
-    // You're going to need to leave the alpha value on the canvas itself at 255, but you will
-    // need to use the actual alpha value to compute the new color of the pixel
-
-//    bool fixAlphaBlending = settings.fixAlphaBlending; // for extra/half credit
-
-}
-
-void Canvas2D::mouseDragged(int x, int y) {
-    // TODO: [BRUSH] Mouse interaction for Brush.
-
-}
-
-void Canvas2D::mouseUp(int x, int y) {
-    // TODO: [BRUSH] Mouse interaction for Brush.
-
-}
-
-
 
 // ********************************************************************************************
 // ** FILTER

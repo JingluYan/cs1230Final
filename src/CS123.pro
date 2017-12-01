@@ -22,11 +22,6 @@ win32 {
 }
 
 SOURCES += \
-    brush/Brush.cpp \
-    brush/ConstantBrush.cpp \
-    brush/LinearBrush.cpp \
-    brush/QuadraticBrush.cpp \
-    brush/SmudgeBrush.cpp \
     camera/OrbitingCamera.cpp \
     camera/CamtransCamera.cpp \
     camera/QuaternionCamera.cpp \
@@ -64,11 +59,6 @@ SOURCES += \
 
 
 HEADERS += \
-    brush/Brush.h \
-    brush/ConstantBrush.h \
-    brush/LinearBrush.h \
-    brush/QuadraticBrush.h \
-    brush/SmudgeBrush.h \
     camera/Camera.h \
     camera/OrbitingCamera.h \
     camera/CamtransCamera.h \

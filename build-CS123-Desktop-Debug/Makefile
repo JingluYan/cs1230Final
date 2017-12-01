@@ -15,7 +15,7 @@ CXX           = g++
 DEFINES       = -D_USE_MATH_DEFINES -DTIXML_USE_STL -DGLM_SWIZZLE -DGLM_FORCE_RADIANS -DQT_QML_DEBUG -DQT_DECLARATIVE_DEBUG -DQT_OPENGL_LIB -DQT_WIDGETS_LIB -DQT_XML_LIB -DQT_GUI_LIB -DQT_CORE_LIB
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT -fPIE $(DEFINES)
 CXXFLAGS      = -pipe -std=c++14 -g -g -W -Waddress -Warray-bounds -Wc++0x-compat -Wchar-subscripts -Wformat -Wmain -Wmissing-braces -Wparentheses -Wreorder -Wreturn-type -Wsequence-point -Wsign-compare -Wstrict-overflow=1 -Wswitch -Wtrigraphs -Wuninitialized -Wunused-label -Wunused-variable -Wvolatile-register-var -Wno-extra -D_REENTRANT -fPIE $(DEFINES)
-INCPATH       = -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/mkspecs/linux-g++ -I../src -I../src/glm -I../src/brush -I../src/camera -I../src/lib -I../src/scenegraph -I../src/ui -I../src/glew-1.10.0/include -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore -I. -I. -I.
+INCPATH       = -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/mkspecs/linux-g++ -I../src -I../src/glm -Ibrush -I../src/camera -I../src/lib -I../src/scenegraph -I../src/ui -I../src/glew-1.10.0/include -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtXml -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui -I../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore -I. -I. -I.
 LINK          = g++
 LFLAGS        = -Wl,-rpath,/contrib/projects/qt5.2.0/5.2.0/gcc_64 -Wl,-rpath,/contrib/projects/qt5.2.0/5.2.0/gcc_64/lib
 LIBS          = $(SUBLIBS) -lGLU -L/contrib/projects/qt5.2.0/5.2.0/gcc_64/lib -lQt5OpenGL -lQt5Widgets -lQt5Xml -lQt5Gui -lQt5Core -lGL -lpthread 
@@ -45,12 +45,7 @@ OBJECTS_DIR   = ./
 
 ####### Files
 
-SOURCES       = ../src/brush/Brush.cpp \
-		../src/brush/ConstantBrush.cpp \
-		../src/brush/LinearBrush.cpp \
-		../src/brush/QuadraticBrush.cpp \
-		../src/brush/SmudgeBrush.cpp \
-		../src/camera/OrbitingCamera.cpp \
+SOURCES       = ../src/camera/OrbitingCamera.cpp \
 		../src/camera/CamtransCamera.cpp \
 		../src/camera/QuaternionCamera.cpp \
 		../src/scenegraph/Scene.cpp \
@@ -89,12 +84,7 @@ SOURCES       = ../src/brush/Brush.cpp \
 		moc_SupportCanvas3D.cpp \
 		moc_mainwindow.cpp \
 		moc_Databinding.cpp
-OBJECTS       = Brush.o \
-		ConstantBrush.o \
-		LinearBrush.o \
-		QuadraticBrush.o \
-		SmudgeBrush.o \
-		OrbitingCamera.o \
+OBJECTS       = OrbitingCamera.o \
 		CamtransCamera.o \
 		QuaternionCamera.o \
 		Scene.o \
@@ -510,7 +500,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/CS1231.0.0 || mkdir -p .tmp/CS1231.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/resources.qrc .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/brush/Brush.h ../src/brush/ConstantBrush.h ../src/brush/LinearBrush.h ../src/brush/QuadraticBrush.h ../src/brush/SmudgeBrush.h ../src/camera/Camera.h ../src/camera/OrbitingCamera.h ../src/camera/CamtransCamera.h ../src/camera/QuaternionCamera.h ../src/scenegraph/Scene.h ../src/scenegraph/OpenGLScene.h ../src/scenegraph/ShapesScene.h ../src/scenegraph/SceneviewScene.h ../src/scenegraph/RayScene.h ../src/ui/Canvas2D.h ../src/ui/SupportCanvas2D.h ../src/ui/SupportCanvas3D.h ../src/ui/Settings.h ../src/ui/mainwindow.h ../src/ui/Databinding.h ui_mainwindow.h ../src/gl/shaders/Shader.h ../src/gl/GLDebug.h ../src/gl/shaders/ShaderAttribLocations.h ../src/gl/datatype/VBOAttribMarker.h ../src/gl/datatype/VBO.h ../src/gl/datatype/IBO.h ../src/gl/datatype/VAO.h ../src/gl/datatype/FBO.h ../src/gl/textures/Texture.h ../src/gl/textures/Texture2D.h ../src/gl/textures/TextureParameters.h ../src/gl/textures/TextureParametersBuilder.h ../src/gl/textures/RenderBuffer.h ../src/gl/textures/DepthBuffer.h ../src/gl/shaders/CS123Shader.h ../src/gl/util/FullScreenQuad.h ../src/lib/BGRA.h ../src/lib/CS123XmlSceneParser.h ../src/lib/CS123SceneData.h ../src/lib/CS123ISceneParser.h ../src/lib/ResourceLoader.h ../src/glew-1.10.0/include/GL/glew.h .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/brush/Brush.cpp ../src/brush/ConstantBrush.cpp ../src/brush/LinearBrush.cpp ../src/brush/QuadraticBrush.cpp ../src/brush/SmudgeBrush.cpp ../src/camera/OrbitingCamera.cpp ../src/camera/CamtransCamera.cpp ../src/camera/QuaternionCamera.cpp ../src/scenegraph/Scene.cpp ../src/scenegraph/OpenGLScene.cpp ../src/scenegraph/ShapesScene.cpp ../src/scenegraph/SceneviewScene.cpp ../src/scenegraph/RayScene.cpp ../src/ui/Canvas2D.cpp ../src/ui/SupportCanvas2D.cpp ../src/ui/SupportCanvas3D.cpp ../src/ui/Settings.cpp ../src/ui/mainwindow.cpp ../src/ui/Databinding.cpp ../src/lib/BGRA.cpp ../src/lib/CS123XmlSceneParser.cpp ../src/lib/ResourceLoader.cpp ../src/gl/shaders/Shader.cpp ../src/gl/GLDebug.cpp ../src/gl/datatype/VBOAttribMarker.cpp ../src/gl/datatype/VBO.cpp ../src/gl/datatype/IBO.cpp ../src/gl/datatype/VAO.cpp ../src/gl/datatype/FBO.cpp ../src/gl/textures/Texture.cpp ../src/gl/textures/Texture2D.cpp ../src/gl/textures/TextureParameters.cpp ../src/gl/textures/TextureParametersBuilder.cpp ../src/gl/textures/RenderBuffer.cpp ../src/gl/textures/DepthBuffer.cpp ../src/gl/shaders/CS123Shader.cpp ../src/gl/util/FullScreenQuad.cpp ../src/main.cpp ../src/glew-1.10.0/src/glew.c .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/ui/mainwindow.ui .tmp/CS1231.0.0/ && (cd `dirname .tmp/CS1231.0.0` && $(TAR) CS1231.0.0.tar CS1231.0.0 && $(COMPRESS) CS1231.0.0.tar) && $(MOVE) `dirname .tmp/CS1231.0.0`/CS1231.0.0.tar.gz . && $(DEL_FILE) -r .tmp/CS1231.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/resources.qrc .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/camera/Camera.h ../src/camera/OrbitingCamera.h ../src/camera/CamtransCamera.h ../src/camera/QuaternionCamera.h ../src/scenegraph/Scene.h ../src/scenegraph/OpenGLScene.h ../src/scenegraph/ShapesScene.h ../src/scenegraph/SceneviewScene.h ../src/scenegraph/RayScene.h ../src/ui/Canvas2D.h ../src/ui/SupportCanvas2D.h ../src/ui/SupportCanvas3D.h ../src/ui/Settings.h ../src/ui/mainwindow.h ../src/ui/Databinding.h ui_mainwindow.h ../src/gl/shaders/Shader.h ../src/gl/GLDebug.h ../src/gl/shaders/ShaderAttribLocations.h ../src/gl/datatype/VBOAttribMarker.h ../src/gl/datatype/VBO.h ../src/gl/datatype/IBO.h ../src/gl/datatype/VAO.h ../src/gl/datatype/FBO.h ../src/gl/textures/Texture.h ../src/gl/textures/Texture2D.h ../src/gl/textures/TextureParameters.h ../src/gl/textures/TextureParametersBuilder.h ../src/gl/textures/RenderBuffer.h ../src/gl/textures/DepthBuffer.h ../src/gl/shaders/CS123Shader.h ../src/gl/util/FullScreenQuad.h ../src/lib/BGRA.h ../src/lib/CS123XmlSceneParser.h ../src/lib/CS123SceneData.h ../src/lib/CS123ISceneParser.h ../src/lib/ResourceLoader.h ../src/glew-1.10.0/include/GL/glew.h .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/camera/OrbitingCamera.cpp ../src/camera/CamtransCamera.cpp ../src/camera/QuaternionCamera.cpp ../src/scenegraph/Scene.cpp ../src/scenegraph/OpenGLScene.cpp ../src/scenegraph/ShapesScene.cpp ../src/scenegraph/SceneviewScene.cpp ../src/scenegraph/RayScene.cpp ../src/ui/Canvas2D.cpp ../src/ui/SupportCanvas2D.cpp ../src/ui/SupportCanvas3D.cpp ../src/ui/Settings.cpp ../src/ui/mainwindow.cpp ../src/ui/Databinding.cpp ../src/lib/BGRA.cpp ../src/lib/CS123XmlSceneParser.cpp ../src/lib/ResourceLoader.cpp ../src/gl/shaders/Shader.cpp ../src/gl/GLDebug.cpp ../src/gl/datatype/VBOAttribMarker.cpp ../src/gl/datatype/VBO.cpp ../src/gl/datatype/IBO.cpp ../src/gl/datatype/VAO.cpp ../src/gl/datatype/FBO.cpp ../src/gl/textures/Texture.cpp ../src/gl/textures/Texture2D.cpp ../src/gl/textures/TextureParameters.cpp ../src/gl/textures/TextureParametersBuilder.cpp ../src/gl/textures/RenderBuffer.cpp ../src/gl/textures/DepthBuffer.cpp ../src/gl/shaders/CS123Shader.cpp ../src/gl/util/FullScreenQuad.cpp ../src/main.cpp ../src/glew-1.10.0/src/glew.c .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/ui/mainwindow.ui .tmp/CS1231.0.0/ && (cd `dirname .tmp/CS1231.0.0` && $(TAR) CS1231.0.0.tar CS1231.0.0 && $(COMPRESS) CS1231.0.0.tar) && $(MOVE) `dirname .tmp/CS1231.0.0`/CS1231.0.0.tar.gz . && $(DEL_FILE) -r .tmp/CS1231.0.0
 
 
 clean:compiler_clean 
@@ -535,18 +525,18 @@ compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: ../src/resources.qrc \
-		../src/shaders/normals/normalsArrow.vert \
-		../src/shaders/wireframe/wireframe.vert \
+		../src/shaders/normals/normals.vert \
+		../src/shaders/fullscreenquad/fullscreenquad.vert \
+		../src/shaders/shader.vert \
+		../src/shaders/normals/normalsArrow.frag \
+		../src/shaders/wireframe/wireframe.frag \
 		../src/shaders/normals/normals.frag \
 		../src/shaders/normals/normalsArrow.gsh \
 		../src/shaders/fullscreenquad/fullscreenquad.frag \
 		../src/shaders/normals/normals.gsh \
 		../src/shaders/shader.frag \
-		../src/shaders/normals/normalsArrow.frag \
-		../src/shaders/normals/normals.vert \
-		../src/shaders/wireframe/wireframe.frag \
-		../src/shaders/fullscreenquad/fullscreenquad.vert \
-		../src/shaders/shader.vert
+		../src/shaders/normals/normalsArrow.vert \
+		../src/shaders/wireframe/wireframe.vert
 	/contrib/projects/qt5.2.0/5.2.0/gcc_64/bin/rcc -name resources ../src/resources.qrc -o qrc_resources.cpp
 
 compiler_moc_header_make_all: moc_Canvas2D.cpp moc_SupportCanvas2D.cpp moc_SupportCanvas3D.cpp moc_mainwindow.cpp moc_Databinding.cpp
@@ -1355,251 +1345,6 @@ compiler_lex_clean:
 compiler_clean: compiler_rcc_clean compiler_moc_header_clean compiler_uic_clean 
 
 ####### Compile
-
-Brush.o: ../src/brush/Brush.cpp ../src/brush/Brush.h \
-		../src/lib/BGRA.h \
-		../src/ui/Canvas2D.h \
-		../src/ui/SupportCanvas2D.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QWidget \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qwidget.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobal.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qconfig.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfeatures.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsystemdetection.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qprocessordetection.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcompilerdetection.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobalstatic.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasicatomic.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qgenericatomic.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_msvc.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_integrity.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qoldbasicatomic.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_vxworks.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_power.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_alpha.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv7.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv6.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv5.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bfin.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_ia64.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_mips.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_s390.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sh4a.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sparc.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_x86.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_cxx11.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_gcc.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_unix.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmutex.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlogging.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qflags.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypeinfo.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypetraits.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsysinfo.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qnamespace.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs_win.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstring.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qchar.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbytearray.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrefcount.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydata.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringbuilder.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlist.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qalgorithms.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiterator.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreevent.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedpointer.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetatype.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvarlengtharray.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcontainerfwd.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qisenum.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject_impl.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmargins.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrect.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsize.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpoint.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpaintdevice.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpalette.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qcolor.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qrgb.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlist.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdatastream.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiodevice.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpair.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregexp.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringmatcher.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qbrush.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvector.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qmatrix.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpolygon.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qregion.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qline.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtransform.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpainterpath.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qimage.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpixmap.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedpointer.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qshareddata.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qhash.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfont.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfontmetrics.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfontinfo.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qsizepolicy.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qcursor.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qkeysequence.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qevent.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvariant.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmap.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdebug.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextstream.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlocale.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qset.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcontiguouscache.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qurl.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qurlquery.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfile.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfiledevice.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qvector2d.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtouchdevice.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Brush.o ../src/brush/Brush.cpp
-
-ConstantBrush.o: ../src/brush/ConstantBrush.cpp ../src/brush/ConstantBrush.h \
-		../src/brush/Brush.h \
-		../src/lib/BGRA.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o ConstantBrush.o ../src/brush/ConstantBrush.cpp
-
-LinearBrush.o: ../src/brush/LinearBrush.cpp ../src/brush/LinearBrush.h \
-		../src/brush/Brush.h \
-		../src/lib/BGRA.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o LinearBrush.o ../src/brush/LinearBrush.cpp
-
-QuadraticBrush.o: ../src/brush/QuadraticBrush.cpp ../src/brush/QuadraticBrush.h \
-		../src/brush/Brush.h \
-		../src/lib/BGRA.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o QuadraticBrush.o ../src/brush/QuadraticBrush.cpp
-
-SmudgeBrush.o: ../src/brush/SmudgeBrush.cpp ../src/brush/SmudgeBrush.h \
-		../src/brush/QuadraticBrush.h \
-		../src/brush/Brush.h \
-		../src/lib/BGRA.h \
-		../src/ui/Canvas2D.h \
-		../src/ui/SupportCanvas2D.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QWidget \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qwidget.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobal.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qconfig.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfeatures.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsystemdetection.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qprocessordetection.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcompilerdetection.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qglobalstatic.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasicatomic.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bootstrap.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qgenericatomic.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_msvc.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_integrity.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qoldbasicatomic.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_vxworks.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_power.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_alpha.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv7.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv6.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_armv5.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_bfin.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_ia64.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_mips.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_s390.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sh4a.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_sparc.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_x86.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_cxx11.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_gcc.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qatomic_unix.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmutex.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlogging.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qflags.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypeinfo.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtypetraits.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsysinfo.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qnamespace.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobjectdefs_impl.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qwindowdefs_win.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstring.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qchar.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbytearray.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrefcount.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qarraydata.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringbuilder.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlist.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qalgorithms.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiterator.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreevent.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedpointer.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetatype.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvarlengtharray.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcontainerfwd.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qisenum.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qobject_impl.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmargins.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qrect.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsize.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpoint.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpaintdevice.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpalette.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qcolor.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qrgb.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlist.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdatastream.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qiodevice.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qpair.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregexp.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringmatcher.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qbrush.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvector.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qmatrix.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpolygon.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qregion.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qline.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtransform.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpainterpath.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qimage.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpixmap.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedpointer.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qshareddata.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsharedpointer_impl.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qhash.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfont.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfontmetrics.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qfontinfo.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qsizepolicy.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qcursor.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qkeysequence.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qevent.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qvariant.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmap.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qdebug.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextstream.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlocale.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qset.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcontiguouscache.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qurl.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qurlquery.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfile.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qfiledevice.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qvector2d.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtouchdevice.h
-	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SmudgeBrush.o ../src/brush/SmudgeBrush.cpp
 
 OrbitingCamera.o: ../src/camera/OrbitingCamera.cpp ../src/glm/gtc/matrix_transform.hpp \
 		../src/glm/mat4x4.hpp \
@@ -2967,12 +2712,7 @@ Canvas2D.o: ../src/ui/Canvas2D.cpp ../src/ui/Canvas2D.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/QPainter \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpainter.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtextoption.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpen.h \
-		../src/brush/Brush.h \
-		../src/brush/ConstantBrush.h \
-		../src/brush/LinearBrush.h \
-		../src/brush/QuadraticBrush.h \
-		../src/brush/SmudgeBrush.h
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpen.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o Canvas2D.o ../src/ui/Canvas2D.cpp
 
 SupportCanvas2D.o: ../src/ui/SupportCanvas2D.cpp ../src/ui/SupportCanvas2D.h \
@@ -3640,29 +3380,76 @@ mainwindow.o: ../src/ui/mainwindow.cpp ../src/ui/mainwindow.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qicon.h \
 		ui_mainwindow.h \
-		../src/ui/Databinding.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QObject \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QVariant \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QSlider \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qslider.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QAction \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qaction.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QApplication \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qapplication.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreapplication.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeventloop.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qguiapplication.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qinputmethod.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QCheckBox \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qcheckbox.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QDial \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdial.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractslider.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QDockWidget \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdockwidget.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QFrame \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qframe.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QGridLayout \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qlayout.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QGroupBox \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qgroupbox.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QHBoxLayout \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QHeaderView \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qheaderview.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractitemview.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qstyleoption.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qvalidator.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregularexpression.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qslider.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qstyle.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qtabbar.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qrubberband.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QLabel \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qlabel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QLineEdit \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qlineedit.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qframe.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtextcursor.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtextformat.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpen.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtextoption.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QCheckBox \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qcheckbox.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QMenu \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qmenu.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QMenuBar \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qmenubar.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QPushButton \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qpushbutton.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QRadioButton \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qradiobutton.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QDockWidget \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdockwidget.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QScrollArea \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qscrollarea.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QSlider \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QTabWidget \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QDial \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdial.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QWidget \
+		../src/ui/Canvas2D.h \
+		../src/ui/SupportCanvas2D.h \
+		../src/ui/Databinding.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QObject \
 		../src/ui/SupportCanvas3D.h \
 		../src/glew-1.10.0/include/GL/glew.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/QGLWidget \
@@ -3790,10 +3577,8 @@ mainwindow.o: ../src/ui/mainwindow.cpp ../src/ui/mainwindow.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporarydir.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QScopedPointer \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporaryfile.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractproxymodel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qidentityproxymodel.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qitemselectionmodel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsortfilterproxymodel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlistmodel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonarray.h \
@@ -3801,10 +3586,8 @@ mainwindow.o: ../src/ui/mainwindow.cpp ../src/ui/mainwindow.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsondocument.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonobject.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstracteventdispatcher.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeventloop.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasictimer.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreapplication.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmath.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetaobject.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimedata.h \
@@ -3858,7 +3641,6 @@ mainwindow.o: ../src/ui/mainwindow.cpp ../src/ui/mainwindow.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlinkedlist.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmessageauthenticationcode.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qqueue.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregularexpression.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedvaluerollback.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstack.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextboundaryfinder.h \

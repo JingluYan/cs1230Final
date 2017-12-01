@@ -58,38 +58,6 @@ public:
     QWidget *tab3D;
     QGridLayout *gridLayout_12;
     QWidget *canvas3D;
-    QDockWidget *brushDock;
-    QWidget *brushDockContents;
-    QVBoxLayout *verticalLayout_3;
-    QGroupBox *brushType;
-    QVBoxLayout *verticalLayout;
-    QRadioButton *brushTypeConstant;
-    QRadioButton *brushTypeLinear;
-    QRadioButton *brushTypeQuadratic;
-    QRadioButton *brushTypeSmudge;
-    QRadioButton *brushTypeSpecial1;
-    QRadioButton *brushTypeSpecial2;
-    QGroupBox *brushColor;
-    QGridLayout *gridLayout_3;
-    QLineEdit *brushColorTextboxBlue;
-    QSlider *brushColorSliderAlpha;
-    QLabel *brushColorLabelGreen;
-    QSlider *brushColorSliderGreen;
-    QLabel *brushColorLabelBlue;
-    QSlider *brushColorSliderBlue;
-    QLabel *brushColorLabelRed;
-    QLineEdit *brushColorTextboxRed;
-    QLabel *brushColorLabelAlpha;
-    QLineEdit *brushColorTextboxAlpha;
-    QLineEdit *brushColorTextboxGreen;
-    QSlider *brushColorSliderRed;
-    QWidget *brushRadius;
-    QGridLayout *gridLayout_6;
-    QLineEdit *brushRadiusTextbox;
-    QSlider *brushRadiusSlider;
-    QLabel *brushRadiusLabel;
-    QCheckBox *brushAlphaBlendingCheckbox;
-    QWidget *emptySpaceBrush;
     QDockWidget *shapesDock;
     QWidget *shapesDockContents;
     QVBoxLayout *verticalLayout_7;
@@ -313,201 +281,6 @@ public:
         gridLayout_10->addWidget(tabWidget, 0, 0, 1, 1);
 
         MainWindow->setCentralWidget(centralWidget);
-        brushDock = new QDockWidget(MainWindow);
-        brushDock->setObjectName(QStringLiteral("brushDock"));
-        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
-        sizePolicy.setHorizontalStretch(0);
-        sizePolicy.setVerticalStretch(0);
-        sizePolicy.setHeightForWidth(brushDock->sizePolicy().hasHeightForWidth());
-        brushDock->setSizePolicy(sizePolicy);
-        brushDock->setFloating(false);
-        brushDock->setAllowedAreas(Qt::AllDockWidgetAreas);
-        brushDockContents = new QWidget();
-        brushDockContents->setObjectName(QStringLiteral("brushDockContents"));
-        sizePolicy.setHeightForWidth(brushDockContents->sizePolicy().hasHeightForWidth());
-        brushDockContents->setSizePolicy(sizePolicy);
-        verticalLayout_3 = new QVBoxLayout(brushDockContents);
-        verticalLayout_3->setSpacing(6);
-        verticalLayout_3->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_3->setObjectName(QStringLiteral("verticalLayout_3"));
-        brushType = new QGroupBox(brushDockContents);
-        brushType->setObjectName(QStringLiteral("brushType"));
-        verticalLayout = new QVBoxLayout(brushType);
-        verticalLayout->setSpacing(6);
-        verticalLayout->setContentsMargins(11, 11, 11, 11);
-        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        verticalLayout->setContentsMargins(-1, 5, -1, 5);
-        brushTypeConstant = new QRadioButton(brushType);
-        brushTypeConstant->setObjectName(QStringLiteral("brushTypeConstant"));
-        brushTypeConstant->setChecked(true);
-
-        verticalLayout->addWidget(brushTypeConstant);
-
-        brushTypeLinear = new QRadioButton(brushType);
-        brushTypeLinear->setObjectName(QStringLiteral("brushTypeLinear"));
-
-        verticalLayout->addWidget(brushTypeLinear);
-
-        brushTypeQuadratic = new QRadioButton(brushType);
-        brushTypeQuadratic->setObjectName(QStringLiteral("brushTypeQuadratic"));
-
-        verticalLayout->addWidget(brushTypeQuadratic);
-
-        brushTypeSmudge = new QRadioButton(brushType);
-        brushTypeSmudge->setObjectName(QStringLiteral("brushTypeSmudge"));
-
-        verticalLayout->addWidget(brushTypeSmudge);
-
-        brushTypeSpecial1 = new QRadioButton(brushType);
-        brushTypeSpecial1->setObjectName(QStringLiteral("brushTypeSpecial1"));
-
-        verticalLayout->addWidget(brushTypeSpecial1);
-
-        brushTypeSpecial2 = new QRadioButton(brushType);
-        brushTypeSpecial2->setObjectName(QStringLiteral("brushTypeSpecial2"));
-
-        verticalLayout->addWidget(brushTypeSpecial2);
-
-
-        verticalLayout_3->addWidget(brushType);
-
-        brushColor = new QGroupBox(brushDockContents);
-        brushColor->setObjectName(QStringLiteral("brushColor"));
-        gridLayout_3 = new QGridLayout(brushColor);
-        gridLayout_3->setSpacing(6);
-        gridLayout_3->setContentsMargins(11, 11, 11, 11);
-        gridLayout_3->setObjectName(QStringLiteral("gridLayout_3"));
-        gridLayout_3->setVerticalSpacing(5);
-        gridLayout_3->setContentsMargins(-1, 5, -1, 5);
-        brushColorTextboxBlue = new QLineEdit(brushColor);
-        brushColorTextboxBlue->setObjectName(QStringLiteral("brushColorTextboxBlue"));
-        brushColorTextboxBlue->setMinimumSize(QSize(50, 0));
-        brushColorTextboxBlue->setMaximumSize(QSize(50, 16777215));
-
-        gridLayout_3->addWidget(brushColorTextboxBlue, 2, 3, 1, 1);
-
-        brushColorSliderAlpha = new QSlider(brushColor);
-        brushColorSliderAlpha->setObjectName(QStringLiteral("brushColorSliderAlpha"));
-        brushColorSliderAlpha->setOrientation(Qt::Horizontal);
-
-        gridLayout_3->addWidget(brushColorSliderAlpha, 3, 2, 1, 1);
-
-        brushColorLabelGreen = new QLabel(brushColor);
-        brushColorLabelGreen->setObjectName(QStringLiteral("brushColorLabelGreen"));
-
-        gridLayout_3->addWidget(brushColorLabelGreen, 1, 0, 1, 1);
-
-        brushColorSliderGreen = new QSlider(brushColor);
-        brushColorSliderGreen->setObjectName(QStringLiteral("brushColorSliderGreen"));
-        brushColorSliderGreen->setMinimumSize(QSize(100, 0));
-        brushColorSliderGreen->setOrientation(Qt::Horizontal);
-
-        gridLayout_3->addWidget(brushColorSliderGreen, 1, 2, 1, 1);
-
-        brushColorLabelBlue = new QLabel(brushColor);
-        brushColorLabelBlue->setObjectName(QStringLiteral("brushColorLabelBlue"));
-
-        gridLayout_3->addWidget(brushColorLabelBlue, 2, 0, 1, 1);
-
-        brushColorSliderBlue = new QSlider(brushColor);
-        brushColorSliderBlue->setObjectName(QStringLiteral("brushColorSliderBlue"));
-        brushColorSliderBlue->setMinimumSize(QSize(100, 0));
-        brushColorSliderBlue->setOrientation(Qt::Horizontal);
-
-        gridLayout_3->addWidget(brushColorSliderBlue, 2, 2, 1, 1);
-
-        brushColorLabelRed = new QLabel(brushColor);
-        brushColorLabelRed->setObjectName(QStringLiteral("brushColorLabelRed"));
-
-        gridLayout_3->addWidget(brushColorLabelRed, 0, 0, 1, 1);
-
-        brushColorTextboxRed = new QLineEdit(brushColor);
-        brushColorTextboxRed->setObjectName(QStringLiteral("brushColorTextboxRed"));
-        brushColorTextboxRed->setMinimumSize(QSize(50, 0));
-        brushColorTextboxRed->setMaximumSize(QSize(50, 16777215));
-
-        gridLayout_3->addWidget(brushColorTextboxRed, 0, 3, 1, 1);
-
-        brushColorLabelAlpha = new QLabel(brushColor);
-        brushColorLabelAlpha->setObjectName(QStringLiteral("brushColorLabelAlpha"));
-
-        gridLayout_3->addWidget(brushColorLabelAlpha, 3, 0, 1, 1);
-
-        brushColorTextboxAlpha = new QLineEdit(brushColor);
-        brushColorTextboxAlpha->setObjectName(QStringLiteral("brushColorTextboxAlpha"));
-        brushColorTextboxAlpha->setMinimumSize(QSize(50, 0));
-        brushColorTextboxAlpha->setMaximumSize(QSize(50, 16777215));
-
-        gridLayout_3->addWidget(brushColorTextboxAlpha, 3, 3, 1, 1);
-
-        brushColorTextboxGreen = new QLineEdit(brushColor);
-        brushColorTextboxGreen->setObjectName(QStringLiteral("brushColorTextboxGreen"));
-        brushColorTextboxGreen->setMinimumSize(QSize(50, 0));
-        brushColorTextboxGreen->setMaximumSize(QSize(50, 16777215));
-
-        gridLayout_3->addWidget(brushColorTextboxGreen, 1, 3, 1, 1);
-
-        brushColorSliderRed = new QSlider(brushColor);
-        brushColorSliderRed->setObjectName(QStringLiteral("brushColorSliderRed"));
-        brushColorSliderRed->setMinimumSize(QSize(100, 0));
-        brushColorSliderRed->setOrientation(Qt::Horizontal);
-
-        gridLayout_3->addWidget(brushColorSliderRed, 0, 2, 1, 1);
-
-
-        verticalLayout_3->addWidget(brushColor);
-
-        brushRadius = new QWidget(brushDockContents);
-        brushRadius->setObjectName(QStringLiteral("brushRadius"));
-        gridLayout_6 = new QGridLayout(brushRadius);
-        gridLayout_6->setSpacing(6);
-        gridLayout_6->setContentsMargins(11, 11, 11, 11);
-        gridLayout_6->setObjectName(QStringLiteral("gridLayout_6"));
-        gridLayout_6->setContentsMargins(0, 0, 0, 0);
-        brushRadiusTextbox = new QLineEdit(brushRadius);
-        brushRadiusTextbox->setObjectName(QStringLiteral("brushRadiusTextbox"));
-        QSizePolicy sizePolicy1(QSizePolicy::Expanding, QSizePolicy::Fixed);
-        sizePolicy1.setHorizontalStretch(0);
-        sizePolicy1.setVerticalStretch(0);
-        sizePolicy1.setHeightForWidth(brushRadiusTextbox->sizePolicy().hasHeightForWidth());
-        brushRadiusTextbox->setSizePolicy(sizePolicy1);
-        brushRadiusTextbox->setMinimumSize(QSize(40, 0));
-        brushRadiusTextbox->setMaximumSize(QSize(40, 16777215));
-
-        gridLayout_6->addWidget(brushRadiusTextbox, 0, 3, 1, 1);
-
-        brushRadiusSlider = new QSlider(brushRadius);
-        brushRadiusSlider->setObjectName(QStringLiteral("brushRadiusSlider"));
-        brushRadiusSlider->setMinimumSize(QSize(100, 0));
-        brushRadiusSlider->setOrientation(Qt::Horizontal);
-
-        gridLayout_6->addWidget(brushRadiusSlider, 0, 2, 1, 1);
-
-        brushRadiusLabel = new QLabel(brushRadius);
-        brushRadiusLabel->setObjectName(QStringLiteral("brushRadiusLabel"));
-
-        gridLayout_6->addWidget(brushRadiusLabel, 0, 0, 1, 1);
-
-
-        verticalLayout_3->addWidget(brushRadius);
-
-        brushAlphaBlendingCheckbox = new QCheckBox(brushDockContents);
-        brushAlphaBlendingCheckbox->setObjectName(QStringLiteral("brushAlphaBlendingCheckbox"));
-
-        verticalLayout_3->addWidget(brushAlphaBlendingCheckbox);
-
-        emptySpaceBrush = new QWidget(brushDockContents);
-        emptySpaceBrush->setObjectName(QStringLiteral("emptySpaceBrush"));
-        QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Expanding);
-        sizePolicy2.setHorizontalStretch(0);
-        sizePolicy2.setVerticalStretch(0);
-        sizePolicy2.setHeightForWidth(emptySpaceBrush->sizePolicy().hasHeightForWidth());
-        emptySpaceBrush->setSizePolicy(sizePolicy2);
-
-        verticalLayout_3->addWidget(emptySpaceBrush);
-
-        brushDock->setWidget(brushDockContents);
-        MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), brushDock);
         shapesDock = new QDockWidget(MainWindow);
         shapesDock->setObjectName(QStringLiteral("shapesDock"));
         shapesDockContents = new QWidget();
@@ -652,8 +425,11 @@ public:
 
         shapesDockEmptySpace = new QWidget(shapesDockContents);
         shapesDockEmptySpace->setObjectName(QStringLiteral("shapesDockEmptySpace"));
-        sizePolicy2.setHeightForWidth(shapesDockEmptySpace->sizePolicy().hasHeightForWidth());
-        shapesDockEmptySpace->setSizePolicy(sizePolicy2);
+        QSizePolicy sizePolicy(QSizePolicy::Preferred, QSizePolicy::Expanding);
+        sizePolicy.setHorizontalStretch(0);
+        sizePolicy.setVerticalStretch(0);
+        sizePolicy.setHeightForWidth(shapesDockEmptySpace->sizePolicy().hasHeightForWidth());
+        shapesDockEmptySpace->setSizePolicy(sizePolicy);
 
         verticalLayout_7->addWidget(shapesDockEmptySpace);
 
@@ -915,8 +691,8 @@ public:
 
         filterDockEmptySpace = new QWidget(filterDockContents);
         filterDockEmptySpace->setObjectName(QStringLiteral("filterDockEmptySpace"));
-        sizePolicy2.setHeightForWidth(filterDockEmptySpace->sizePolicy().hasHeightForWidth());
-        filterDockEmptySpace->setSizePolicy(sizePolicy2);
+        sizePolicy.setHeightForWidth(filterDockEmptySpace->sizePolicy().hasHeightForWidth());
+        filterDockEmptySpace->setSizePolicy(sizePolicy);
 
         verticalLayout_5->addWidget(filterDockEmptySpace);
 
@@ -964,8 +740,11 @@ public:
 
         raySuperSamples = new QWidget(rayFeatures);
         raySuperSamples->setObjectName(QStringLiteral("raySuperSamples"));
-        sizePolicy.setHeightForWidth(raySuperSamples->sizePolicy().hasHeightForWidth());
-        raySuperSamples->setSizePolicy(sizePolicy);
+        QSizePolicy sizePolicy1(QSizePolicy::Preferred, QSizePolicy::Preferred);
+        sizePolicy1.setHorizontalStretch(0);
+        sizePolicy1.setVerticalStretch(0);
+        sizePolicy1.setHeightForWidth(raySuperSamples->sizePolicy().hasHeightForWidth());
+        raySuperSamples->setSizePolicy(sizePolicy1);
         gridLayout_7 = new QGridLayout(raySuperSamples);
         gridLayout_7->setSpacing(6);
         gridLayout_7->setContentsMargins(11, 11, 11, 11);
@@ -974,16 +753,19 @@ public:
         gridLayout_7->setContentsMargins(-1, 0, -1, 0);
         raySuperSamplesLabel = new QLabel(raySuperSamples);
         raySuperSamplesLabel->setObjectName(QStringLiteral("raySuperSamplesLabel"));
-        sizePolicy.setHeightForWidth(raySuperSamplesLabel->sizePolicy().hasHeightForWidth());
-        raySuperSamplesLabel->setSizePolicy(sizePolicy);
+        sizePolicy1.setHeightForWidth(raySuperSamplesLabel->sizePolicy().hasHeightForWidth());
+        raySuperSamplesLabel->setSizePolicy(sizePolicy1);
 
         gridLayout_7->addWidget(raySuperSamplesLabel, 1, 1, 1, 1);
 
         raySuperSamplesTextbox = new QLineEdit(raySuperSamples);
         raySuperSamplesTextbox->setObjectName(QStringLiteral("raySuperSamplesTextbox"));
         raySuperSamplesTextbox->setEnabled(false);
-        sizePolicy1.setHeightForWidth(raySuperSamplesTextbox->sizePolicy().hasHeightForWidth());
-        raySuperSamplesTextbox->setSizePolicy(sizePolicy1);
+        QSizePolicy sizePolicy2(QSizePolicy::Expanding, QSizePolicy::Fixed);
+        sizePolicy2.setHorizontalStretch(0);
+        sizePolicy2.setVerticalStretch(0);
+        sizePolicy2.setHeightForWidth(raySuperSamplesTextbox->sizePolicy().hasHeightForWidth());
+        raySuperSamplesTextbox->setSizePolicy(sizePolicy2);
         raySuperSamplesTextbox->setMinimumSize(QSize(40, 0));
         raySuperSamplesTextbox->setMaximumSize(QSize(40, 16777215));
 
@@ -1062,8 +844,8 @@ public:
 
         rayDockEmptySpace = new QWidget(rayDockContents);
         rayDockEmptySpace->setObjectName(QStringLiteral("rayDockEmptySpace"));
-        sizePolicy2.setHeightForWidth(rayDockEmptySpace->sizePolicy().hasHeightForWidth());
-        rayDockEmptySpace->setSizePolicy(sizePolicy2);
+        sizePolicy.setHeightForWidth(rayDockEmptySpace->sizePolicy().hasHeightForWidth());
+        rayDockEmptySpace->setSizePolicy(sizePolicy);
 
         verticalLayout_4->addWidget(rayDockEmptySpace);
 
@@ -1357,8 +1139,8 @@ public:
 
         cameraDockEmptySpace = new QWidget(camtransDockContents);
         cameraDockEmptySpace->setObjectName(QStringLiteral("cameraDockEmptySpace"));
-        sizePolicy2.setHeightForWidth(cameraDockEmptySpace->sizePolicy().hasHeightForWidth());
-        cameraDockEmptySpace->setSizePolicy(sizePolicy2);
+        sizePolicy.setHeightForWidth(cameraDockEmptySpace->sizePolicy().hasHeightForWidth());
+        cameraDockEmptySpace->setSizePolicy(sizePolicy);
 
         verticalLayout_10->addWidget(cameraDockEmptySpace);
 
@@ -1466,22 +1248,6 @@ public:
         actionUseOrbitingCamera->setShortcut(QApplication::translate("MainWindow", "Ctrl+B", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab2D), QApplication::translate("MainWindow", "2D", 0));
         tabWidget->setTabText(tabWidget->indexOf(tab3D), QApplication::translate("MainWindow", "3D", 0));
-        brushDock->setWindowTitle(QApplication::translate("MainWindow", "Brush", 0));
-        brushType->setTitle(QApplication::translate("MainWindow", "Brush Type", 0));
-        brushTypeConstant->setText(QApplication::translate("MainWindow", "Constant", 0));
-        brushTypeLinear->setText(QApplication::translate("MainWindow", "Linear", 0));
-        brushTypeQuadratic->setText(QApplication::translate("MainWindow", "Quadratic", 0));
-        brushTypeSmudge->setText(QApplication::translate("MainWindow", "Smudge", 0));
-        brushTypeSpecial1->setText(QApplication::translate("MainWindow", "Special 1", 0));
-        brushTypeSpecial2->setText(QApplication::translate("MainWindow", "Special 2", 0));
-        brushColor->setTitle(QApplication::translate("MainWindow", "Brush Color", 0));
-        brushColorLabelGreen->setText(QApplication::translate("MainWindow", "G", 0));
-        brushColorLabelBlue->setText(QApplication::translate("MainWindow", "B", 0));
-        brushColorLabelRed->setText(QApplication::translate("MainWindow", "R", 0));
-        brushColorLabelAlpha->setText(QApplication::translate("MainWindow", "A", 0));
-        brushRadiusTextbox->setText(QString());
-        brushRadiusLabel->setText(QApplication::translate("MainWindow", "Radius", 0));
-        brushAlphaBlendingCheckbox->setText(QApplication::translate("MainWindow", "No alpha blending", 0));
         shapesDock->setWindowTitle(QApplication::translate("MainWindow", "Shapes/Sceneview", 0));
         showSceneviewInstead->setText(QApplication::translate("MainWindow", "Show sceneview instead", 0));
         shapeType->setTitle(QApplication::translate("MainWindow", "Shape Type", 0));

@@ -41,9 +41,6 @@ public slots:
 
 protected:
     virtual void paintEvent(QPaintEvent *);  // Overridden from SupportCanvas2D.
-    virtual void mouseDown(int x, int y);    // Called when left mouse button is pressed on canvas
-    virtual void mouseDragged(int x, int y); // Called when left mouse button is dragged on canvas
-    virtual void mouseUp(int x, int y);      // Called when left mouse button is released
 
     // Called when the size of the canvas has been changed
     virtual void notifySizeChanged(int w, int h);
