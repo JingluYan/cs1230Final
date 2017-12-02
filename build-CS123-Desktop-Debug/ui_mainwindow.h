@@ -16,7 +16,6 @@
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QDial>
 #include <QtWidgets/QDockWidget>
-#include <QtWidgets/QFrame>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QHBoxLayout>
@@ -86,50 +85,6 @@ public:
     QCheckBox *drawWireframeCheckbox;
     QCheckBox *drawNormalsCheckbox;
     QWidget *shapesDockEmptySpace;
-    QDockWidget *filterDock;
-    QWidget *filterDockContents;
-    QVBoxLayout *verticalLayout_5;
-    QGroupBox *filterType;
-    QVBoxLayout *verticalLayout_6;
-    QRadioButton *filterTypeInvert;
-    QRadioButton *filterTypeGrayscale;
-    QFrame *line_5;
-    QRadioButton *filterTypeEdgeDetect;
-    QWidget *edgeDetectThreshold;
-    QGridLayout *gridLayout_13;
-    QLabel *edgeDetectSensitivityLabel;
-    QSlider *edgeDetectSensitivitySlider;
-    QLineEdit *edgeDetectSensitivityTextbox;
-    QFrame *line;
-    QRadioButton *filterTypeBlur;
-    QWidget *blurRadius;
-    QGridLayout *gridLayout_8;
-    QLineEdit *blurRadiusTextbox;
-    QSlider *blurRadiusSlider;
-    QLabel *blurRadiusLabel;
-    QFrame *line_2;
-    QRadioButton *filterTypeScale;
-    QWidget *scale;
-    QGridLayout *gridLayout_9;
-    QLabel *scaleLabelX;
-    QSlider *scaleSliderX;
-    QLineEdit *scaleTextboxX;
-    QLabel *scaleLabelY;
-    QSlider *scaleSliderY;
-    QLineEdit *scaleTextboxY;
-    QFrame *line_3;
-    QRadioButton *filterTypeRotate;
-    QWidget *rotateAngle;
-    QGridLayout *gridLayout_17;
-    QLabel *rotateAngleLabel;
-    QSlider *rotateSlider;
-    QLineEdit *rotateAngleEdit;
-    QFrame *line_4;
-    QRadioButton *filterTypeSpecial1;
-    QRadioButton *filterTypeSpecial2;
-    QRadioButton *filterTypeSpecial3;
-    QPushButton *filterButton;
-    QWidget *filterDockEmptySpace;
     QDockWidget *rayDock;
     QWidget *rayDockContents;
     QVBoxLayout *verticalLayout_4;
@@ -435,269 +390,6 @@ public:
 
         shapesDock->setWidget(shapesDockContents);
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), shapesDock);
-        filterDock = new QDockWidget(MainWindow);
-        filterDock->setObjectName(QStringLiteral("filterDock"));
-        filterDockContents = new QWidget();
-        filterDockContents->setObjectName(QStringLiteral("filterDockContents"));
-        verticalLayout_5 = new QVBoxLayout(filterDockContents);
-        verticalLayout_5->setSpacing(6);
-        verticalLayout_5->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_5->setObjectName(QStringLiteral("verticalLayout_5"));
-        filterType = new QGroupBox(filterDockContents);
-        filterType->setObjectName(QStringLiteral("filterType"));
-        verticalLayout_6 = new QVBoxLayout(filterType);
-        verticalLayout_6->setSpacing(6);
-        verticalLayout_6->setContentsMargins(11, 11, 11, 11);
-        verticalLayout_6->setObjectName(QStringLiteral("verticalLayout_6"));
-        verticalLayout_6->setContentsMargins(-1, 5, -1, 5);
-        filterTypeInvert = new QRadioButton(filterType);
-        filterTypeInvert->setObjectName(QStringLiteral("filterTypeInvert"));
-        filterTypeInvert->setChecked(true);
-
-        verticalLayout_6->addWidget(filterTypeInvert);
-
-        filterTypeGrayscale = new QRadioButton(filterType);
-        filterTypeGrayscale->setObjectName(QStringLiteral("filterTypeGrayscale"));
-
-        verticalLayout_6->addWidget(filterTypeGrayscale);
-
-        line_5 = new QFrame(filterType);
-        line_5->setObjectName(QStringLiteral("line_5"));
-        line_5->setFrameShape(QFrame::HLine);
-        line_5->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout_6->addWidget(line_5);
-
-        filterTypeEdgeDetect = new QRadioButton(filterType);
-        filterTypeEdgeDetect->setObjectName(QStringLiteral("filterTypeEdgeDetect"));
-
-        verticalLayout_6->addWidget(filterTypeEdgeDetect);
-
-        edgeDetectThreshold = new QWidget(filterType);
-        edgeDetectThreshold->setObjectName(QStringLiteral("edgeDetectThreshold"));
-        edgeDetectThreshold->setEnabled(false);
-        gridLayout_13 = new QGridLayout(edgeDetectThreshold);
-        gridLayout_13->setSpacing(6);
-        gridLayout_13->setContentsMargins(11, 11, 11, 11);
-        gridLayout_13->setObjectName(QStringLiteral("gridLayout_13"));
-        gridLayout_13->setContentsMargins(0, 0, 0, 0);
-        edgeDetectSensitivityLabel = new QLabel(edgeDetectThreshold);
-        edgeDetectSensitivityLabel->setObjectName(QStringLiteral("edgeDetectSensitivityLabel"));
-
-        gridLayout_13->addWidget(edgeDetectSensitivityLabel, 0, 0, 1, 1);
-
-        edgeDetectSensitivitySlider = new QSlider(edgeDetectThreshold);
-        edgeDetectSensitivitySlider->setObjectName(QStringLiteral("edgeDetectSensitivitySlider"));
-        edgeDetectSensitivitySlider->setOrientation(Qt::Horizontal);
-
-        gridLayout_13->addWidget(edgeDetectSensitivitySlider, 0, 1, 1, 1);
-
-        edgeDetectSensitivityTextbox = new QLineEdit(edgeDetectThreshold);
-        edgeDetectSensitivityTextbox->setObjectName(QStringLiteral("edgeDetectSensitivityTextbox"));
-        edgeDetectSensitivityTextbox->setMinimumSize(QSize(40, 0));
-        edgeDetectSensitivityTextbox->setMaximumSize(QSize(40, 16777215));
-
-        gridLayout_13->addWidget(edgeDetectSensitivityTextbox, 0, 2, 1, 1);
-
-
-        verticalLayout_6->addWidget(edgeDetectThreshold);
-
-        line = new QFrame(filterType);
-        line->setObjectName(QStringLiteral("line"));
-        line->setFrameShape(QFrame::HLine);
-        line->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout_6->addWidget(line);
-
-        filterTypeBlur = new QRadioButton(filterType);
-        filterTypeBlur->setObjectName(QStringLiteral("filterTypeBlur"));
-
-        verticalLayout_6->addWidget(filterTypeBlur);
-
-        blurRadius = new QWidget(filterType);
-        blurRadius->setObjectName(QStringLiteral("blurRadius"));
-        gridLayout_8 = new QGridLayout(blurRadius);
-        gridLayout_8->setSpacing(6);
-        gridLayout_8->setContentsMargins(11, 11, 11, 11);
-        gridLayout_8->setObjectName(QStringLiteral("gridLayout_8"));
-        gridLayout_8->setContentsMargins(0, 0, 0, 0);
-        blurRadiusTextbox = new QLineEdit(blurRadius);
-        blurRadiusTextbox->setObjectName(QStringLiteral("blurRadiusTextbox"));
-        blurRadiusTextbox->setEnabled(false);
-        blurRadiusTextbox->setMinimumSize(QSize(40, 0));
-        blurRadiusTextbox->setMaximumSize(QSize(40, 16777215));
-
-        gridLayout_8->addWidget(blurRadiusTextbox, 0, 2, 1, 1);
-
-        blurRadiusSlider = new QSlider(blurRadius);
-        blurRadiusSlider->setObjectName(QStringLiteral("blurRadiusSlider"));
-        blurRadiusSlider->setEnabled(false);
-        blurRadiusSlider->setMinimumSize(QSize(100, 0));
-        blurRadiusSlider->setOrientation(Qt::Horizontal);
-
-        gridLayout_8->addWidget(blurRadiusSlider, 0, 1, 1, 1);
-
-        blurRadiusLabel = new QLabel(blurRadius);
-        blurRadiusLabel->setObjectName(QStringLiteral("blurRadiusLabel"));
-        blurRadiusLabel->setEnabled(false);
-
-        gridLayout_8->addWidget(blurRadiusLabel, 0, 0, 1, 1);
-
-
-        verticalLayout_6->addWidget(blurRadius);
-
-        line_2 = new QFrame(filterType);
-        line_2->setObjectName(QStringLiteral("line_2"));
-        line_2->setFrameShape(QFrame::HLine);
-        line_2->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout_6->addWidget(line_2);
-
-        filterTypeScale = new QRadioButton(filterType);
-        filterTypeScale->setObjectName(QStringLiteral("filterTypeScale"));
-        filterTypeScale->setEnabled(true);
-        filterTypeScale->setChecked(false);
-
-        verticalLayout_6->addWidget(filterTypeScale);
-
-        scale = new QWidget(filterType);
-        scale->setObjectName(QStringLiteral("scale"));
-        gridLayout_9 = new QGridLayout(scale);
-        gridLayout_9->setSpacing(6);
-        gridLayout_9->setContentsMargins(11, 11, 11, 11);
-        gridLayout_9->setObjectName(QStringLiteral("gridLayout_9"));
-        gridLayout_9->setVerticalSpacing(5);
-        gridLayout_9->setContentsMargins(0, 0, 0, 0);
-        scaleLabelX = new QLabel(scale);
-        scaleLabelX->setObjectName(QStringLiteral("scaleLabelX"));
-        scaleLabelX->setEnabled(false);
-
-        gridLayout_9->addWidget(scaleLabelX, 0, 0, 1, 1);
-
-        scaleSliderX = new QSlider(scale);
-        scaleSliderX->setObjectName(QStringLiteral("scaleSliderX"));
-        scaleSliderX->setEnabled(false);
-        scaleSliderX->setMinimumSize(QSize(100, 0));
-        scaleSliderX->setOrientation(Qt::Horizontal);
-
-        gridLayout_9->addWidget(scaleSliderX, 0, 1, 1, 1);
-
-        scaleTextboxX = new QLineEdit(scale);
-        scaleTextboxX->setObjectName(QStringLiteral("scaleTextboxX"));
-        scaleTextboxX->setEnabled(false);
-        scaleTextboxX->setMinimumSize(QSize(40, 0));
-        scaleTextboxX->setMaximumSize(QSize(40, 16777215));
-
-        gridLayout_9->addWidget(scaleTextboxX, 0, 2, 1, 1);
-
-        scaleLabelY = new QLabel(scale);
-        scaleLabelY->setObjectName(QStringLiteral("scaleLabelY"));
-        scaleLabelY->setEnabled(false);
-
-        gridLayout_9->addWidget(scaleLabelY, 1, 0, 1, 1);
-
-        scaleSliderY = new QSlider(scale);
-        scaleSliderY->setObjectName(QStringLiteral("scaleSliderY"));
-        scaleSliderY->setEnabled(false);
-        scaleSliderY->setMinimumSize(QSize(100, 0));
-        scaleSliderY->setOrientation(Qt::Horizontal);
-
-        gridLayout_9->addWidget(scaleSliderY, 1, 1, 1, 1);
-
-        scaleTextboxY = new QLineEdit(scale);
-        scaleTextboxY->setObjectName(QStringLiteral("scaleTextboxY"));
-        scaleTextboxY->setEnabled(false);
-        scaleTextboxY->setMinimumSize(QSize(40, 0));
-        scaleTextboxY->setMaximumSize(QSize(40, 16777215));
-
-        gridLayout_9->addWidget(scaleTextboxY, 1, 2, 1, 1);
-
-
-        verticalLayout_6->addWidget(scale);
-
-        line_3 = new QFrame(filterType);
-        line_3->setObjectName(QStringLiteral("line_3"));
-        line_3->setFrameShape(QFrame::HLine);
-        line_3->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout_6->addWidget(line_3);
-
-        filterTypeRotate = new QRadioButton(filterType);
-        filterTypeRotate->setObjectName(QStringLiteral("filterTypeRotate"));
-
-        verticalLayout_6->addWidget(filterTypeRotate);
-
-        rotateAngle = new QWidget(filterType);
-        rotateAngle->setObjectName(QStringLiteral("rotateAngle"));
-        gridLayout_17 = new QGridLayout(rotateAngle);
-        gridLayout_17->setSpacing(6);
-        gridLayout_17->setContentsMargins(11, 11, 11, 11);
-        gridLayout_17->setObjectName(QStringLiteral("gridLayout_17"));
-        gridLayout_17->setContentsMargins(0, 0, 0, 0);
-        rotateAngleLabel = new QLabel(rotateAngle);
-        rotateAngleLabel->setObjectName(QStringLiteral("rotateAngleLabel"));
-        rotateAngleLabel->setEnabled(false);
-
-        gridLayout_17->addWidget(rotateAngleLabel, 0, 0, 1, 1);
-
-        rotateSlider = new QSlider(rotateAngle);
-        rotateSlider->setObjectName(QStringLiteral("rotateSlider"));
-        rotateSlider->setEnabled(false);
-        rotateSlider->setMinimum(-360);
-        rotateSlider->setMaximum(360);
-        rotateSlider->setOrientation(Qt::Horizontal);
-
-        gridLayout_17->addWidget(rotateSlider, 0, 1, 1, 1);
-
-        rotateAngleEdit = new QLineEdit(rotateAngle);
-        rotateAngleEdit->setObjectName(QStringLiteral("rotateAngleEdit"));
-        rotateAngleEdit->setEnabled(false);
-        rotateAngleEdit->setMaximumSize(QSize(40, 16777215));
-
-        gridLayout_17->addWidget(rotateAngleEdit, 0, 2, 1, 1);
-
-
-        verticalLayout_6->addWidget(rotateAngle);
-
-        line_4 = new QFrame(filterType);
-        line_4->setObjectName(QStringLiteral("line_4"));
-        line_4->setFrameShape(QFrame::HLine);
-        line_4->setFrameShadow(QFrame::Sunken);
-
-        verticalLayout_6->addWidget(line_4);
-
-        filterTypeSpecial1 = new QRadioButton(filterType);
-        filterTypeSpecial1->setObjectName(QStringLiteral("filterTypeSpecial1"));
-
-        verticalLayout_6->addWidget(filterTypeSpecial1);
-
-        filterTypeSpecial2 = new QRadioButton(filterType);
-        filterTypeSpecial2->setObjectName(QStringLiteral("filterTypeSpecial2"));
-
-        verticalLayout_6->addWidget(filterTypeSpecial2);
-
-        filterTypeSpecial3 = new QRadioButton(filterType);
-        filterTypeSpecial3->setObjectName(QStringLiteral("filterTypeSpecial3"));
-
-        verticalLayout_6->addWidget(filterTypeSpecial3);
-
-
-        verticalLayout_5->addWidget(filterType);
-
-        filterButton = new QPushButton(filterDockContents);
-        filterButton->setObjectName(QStringLiteral("filterButton"));
-
-        verticalLayout_5->addWidget(filterButton);
-
-        filterDockEmptySpace = new QWidget(filterDockContents);
-        filterDockEmptySpace->setObjectName(QStringLiteral("filterDockEmptySpace"));
-        sizePolicy.setHeightForWidth(filterDockEmptySpace->sizePolicy().hasHeightForWidth());
-        filterDockEmptySpace->setSizePolicy(sizePolicy);
-
-        verticalLayout_5->addWidget(filterDockEmptySpace);
-
-        filterDock->setWidget(filterDockContents);
-        MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), filterDock);
         rayDock = new QDockWidget(MainWindow);
         rayDock->setObjectName(QStringLiteral("rayDock"));
         rayDockContents = new QWidget();
@@ -1148,7 +840,7 @@ public:
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), camtransDock);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 18));
+        menuBar->setGeometry(QRect(0, 0, 600, 20));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuToolbars = new QMenu(menuBar);
@@ -1169,13 +861,6 @@ public:
 
         retranslateUi(MainWindow);
         QObject::connect(actionQuit, SIGNAL(triggered()), MainWindow, SLOT(close()));
-        QObject::connect(filterTypeEdgeDetect, SIGNAL(toggled(bool)), edgeDetectThreshold, SLOT(setEnabled(bool)));
-        QObject::connect(filterTypeBlur, SIGNAL(toggled(bool)), blurRadiusSlider, SLOT(setEnabled(bool)));
-        QObject::connect(filterTypeBlur, SIGNAL(toggled(bool)), blurRadiusTextbox, SLOT(setEnabled(bool)));
-        QObject::connect(filterTypeScale, SIGNAL(toggled(bool)), scaleTextboxX, SLOT(setEnabled(bool)));
-        QObject::connect(filterTypeScale, SIGNAL(toggled(bool)), scaleTextboxY, SLOT(setEnabled(bool)));
-        QObject::connect(filterTypeScale, SIGNAL(toggled(bool)), scaleSliderX, SLOT(setEnabled(bool)));
-        QObject::connect(filterTypeScale, SIGNAL(toggled(bool)), scaleSliderY, SLOT(setEnabled(bool)));
         QObject::connect(raySuperSamping, SIGNAL(toggled(bool)), raySuperSamplesTextbox, SLOT(setEnabled(bool)));
         QObject::connect(rayAllButton, SIGNAL(clicked()), MainWindow, SLOT(checkAllRayFeatures()));
         QObject::connect(rayNoneButton, SIGNAL(clicked()), MainWindow, SLOT(uncheckAllRayFeatures()));
@@ -1200,20 +885,13 @@ public:
         QObject::connect(actionOpen, SIGNAL(triggered()), MainWindow, SLOT(fileOpen()));
         QObject::connect(rayRenderButton, SIGNAL(clicked()), MainWindow, SLOT(renderImage()));
         QObject::connect(actionNew, SIGNAL(triggered()), MainWindow, SLOT(fileNew()));
-        QObject::connect(filterTypeBlur, SIGNAL(toggled(bool)), blurRadiusLabel, SLOT(setEnabled(bool)));
-        QObject::connect(filterTypeRotate, SIGNAL(toggled(bool)), rotateAngleLabel, SLOT(setEnabled(bool)));
-        QObject::connect(filterTypeRotate, SIGNAL(toggled(bool)), rotateSlider, SLOT(setEnabled(bool)));
-        QObject::connect(filterTypeRotate, SIGNAL(toggled(bool)), rotateAngleEdit, SLOT(setEnabled(bool)));
         QObject::connect(resetUpVector, SIGNAL(clicked()), MainWindow, SLOT(resetUpVector()));
         QObject::connect(cameraOrbitCheckbox, SIGNAL(toggled(bool)), cameraResetAxis, SLOT(setDisabled(bool)));
         QObject::connect(showSceneviewInstead, SIGNAL(toggled(bool)), shapeType, SLOT(setDisabled(bool)));
         QObject::connect(rayStopRenderingButton, SIGNAL(clicked()), canvas2D, SLOT(cancelRender()));
-        QObject::connect(filterButton, SIGNAL(clicked()), MainWindow, SLOT(filterImage()));
         QObject::connect(actionCopy3Dto2D, SIGNAL(triggered()), MainWindow, SLOT(fileCopy3Dto2D()));
         QObject::connect(zAxisButton, SIGNAL(clicked()), MainWindow, SLOT(setCameraAxisZ()));
         QObject::connect(actionClear, SIGNAL(triggered()), MainWindow, SLOT(clearImage()));
-        QObject::connect(filterTypeScale, SIGNAL(toggled(bool)), scaleLabelX, SLOT(setEnabled(bool)));
-        QObject::connect(filterTypeScale, SIGNAL(toggled(bool)), scaleLabelY, SLOT(setEnabled(bool)));
         QObject::connect(actionRevert, SIGNAL(triggered()), MainWindow, SLOT(revertImage()));
         QObject::connect(resetSliders, SIGNAL(clicked()), MainWindow, SLOT(resetSliders()));
         QObject::connect(actionUseOrbitingCamera, SIGNAL(toggled(bool)), cameraOrbitCheckbox, SLOT(setChecked(bool)));
@@ -1265,23 +943,6 @@ public:
         useLightingCheckbox->setText(QApplication::translate("MainWindow", "Use lighting", 0));
         drawWireframeCheckbox->setText(QApplication::translate("MainWindow", "Draw wireframe", 0));
         drawNormalsCheckbox->setText(QApplication::translate("MainWindow", "Draw normals", 0));
-        filterDock->setWindowTitle(QApplication::translate("MainWindow", "Filter", 0));
-        filterType->setTitle(QApplication::translate("MainWindow", "Filter Type", 0));
-        filterTypeInvert->setText(QApplication::translate("MainWindow", "Invert", 0));
-        filterTypeGrayscale->setText(QApplication::translate("MainWindow", "Grayscale", 0));
-        filterTypeEdgeDetect->setText(QApplication::translate("MainWindow", "Edge Detect", 0));
-        edgeDetectSensitivityLabel->setText(QApplication::translate("MainWindow", "Sensitivity", 0));
-        filterTypeBlur->setText(QApplication::translate("MainWindow", "Blur", 0));
-        blurRadiusLabel->setText(QApplication::translate("MainWindow", "Radius", 0));
-        filterTypeScale->setText(QApplication::translate("MainWindow", "Scale", 0));
-        scaleLabelX->setText(QApplication::translate("MainWindow", "X", 0));
-        scaleLabelY->setText(QApplication::translate("MainWindow", "Y", 0));
-        filterTypeRotate->setText(QApplication::translate("MainWindow", "Rotate", 0));
-        rotateAngleLabel->setText(QApplication::translate("MainWindow", "Angle", 0));
-        filterTypeSpecial1->setText(QApplication::translate("MainWindow", "Special 1", 0));
-        filterTypeSpecial2->setText(QApplication::translate("MainWindow", "Special 2", 0));
-        filterTypeSpecial3->setText(QApplication::translate("MainWindow", "Special 3", 0));
-        filterButton->setText(QApplication::translate("MainWindow", "Filter!", 0));
         rayDock->setWindowTitle(QApplication::translate("MainWindow", "Ray", 0));
         rayAllButton->setText(QApplication::translate("MainWindow", "All", 0));
         rayNoneButton->setText(QApplication::translate("MainWindow", "None", 0));

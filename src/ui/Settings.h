@@ -11,20 +11,6 @@
 #include <QObject>
 #include "BGRA.h"
 
-// Enumeration values for the Filters that the user can select in the GUI.
-enum FilterType {
-    FILTER_INVERT,
-    FILTER_GRAYSCALE,
-    FILTER_EDGE_DETECT,
-    FILTER_BLUR,
-    FILTER_SCALE,
-    FILTER_ROTATE,
-    FILTER_SPECIAL_1,
-    FILTER_SPECIAL_2,
-    FILTER_SPECIAL_3,
-    NUM_FILTER_TYPES
-};
-
 // Enumeration values for the Shapes that the user can select in the GUI.
 enum ShapeType {
     SHAPE_CUBE,
@@ -72,14 +58,6 @@ struct Settings {
 
     // Saves the current settings to disk.
     void saveSettings();
-
-    // Filter
-    int filterType;               // The selected filter @see FilterType
-    float edgeDetectSensitivity;  // Edge detection sensitivity, from 0 to 1.
-    int blurRadius;               // Selected blur radius
-    float scaleX;                 // Horizontal scale factor
-    float scaleY;                 // Vertical scale factor
-    int rotateAngle;              // Rotation angle in degrees
 
     // Shapes
     bool useSceneviewScene;

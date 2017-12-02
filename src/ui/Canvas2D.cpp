@@ -45,18 +45,6 @@ void Canvas2D::paintEvent(QPaintEvent *e) {
 // ** FILTER
 // ********************************************************************************************
 
-void Canvas2D::filterImage() {
-    // TODO: [FILTER] Filter the image. Some example code to get the filter type is provided below.
-
-    switch(settings.filterType) {
-        case FILTER_BLUR:
-            // ...
-            break;
-            // fill in the rest
-    }
-
-}
-
 void Canvas2D::setScene(RayScene *scene) {
     m_rayScene.reset(scene);
 }

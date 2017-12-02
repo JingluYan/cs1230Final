@@ -36,9 +36,6 @@ public slots:
     // UI will call this from the button on the "Ray" dock
     void cancelRender();
 
-    // UI will call this from the button on the "Filter" dock
-    void filterImage();
-
 protected:
     virtual void paintEvent(QPaintEvent *);  // Overridden from SupportCanvas2D.
 

@@ -27,14 +27,6 @@ void Settings::loadSettingsOrDefaults() {
     // Set the default values below
     QSettings s("CS123", "CS123");
 
-    // Filter
-    filterType = s.value("filterType", FILTER_INVERT).toInt();
-    edgeDetectSensitivity = s.value("edgeDetectSensitivity", 0.5f).toDouble();
-    blurRadius = s.value("blurRadius", 10).toInt();
-    scaleX = s.value("scaleX", 2).toDouble();
-    scaleY = s.value("scaleY", 2).toDouble();
-    rotateAngle = s.value("rotateAngle", 0).toInt();
-
     // Shapes
     shapeType = s.value("shapeType", SHAPE_SPHERE).toInt();
     shapeParameter1 = s.value("shapeParameter1", 15).toInt();
@@ -77,14 +69,6 @@ void Settings::loadSettingsOrDefaults() {
 
 void Settings::saveSettings() {
     QSettings s("CS123", "CS123");
-
-    // Filter
-    s.setValue("filterType", filterType);
-    s.setValue("edgeDetectSensitivity", edgeDetectSensitivity);
-    s.setValue("blurRadius", blurRadius);
-    s.setValue("scaleX", scaleX);
-    s.setValue("scaleY", scaleY);
-    s.setValue("rotateAngle", rotateAngle);
 
     // Shapes
     s.setValue("shapeType", shapeType);
