@@ -56,6 +56,12 @@ SOURCES += \
     gl/util/FullScreenQuad.cpp \
     main.cpp \
     glew-1.10.0/src/glew.c \
+    scenegraph/shapes/cone.cpp \
+    scenegraph/shapes/cube.cpp \
+    scenegraph/shapes/cylinder.cpp \
+    scenegraph/shapes/flatbottomcurveshape.cpp \
+    scenegraph/shapes/openglshape.cpp \
+    scenegraph/shapes/sphere.cpp
 
 
 HEADERS += \
@@ -97,6 +103,12 @@ HEADERS += \
     lib/CS123ISceneParser.h \
     lib/ResourceLoader.h \
     glew-1.10.0/include/GL/glew.h \
+    scenegraph/shapes/cone.h \
+    scenegraph/shapes/cube.h \
+    scenegraph/shapes/cylinder.h \
+    scenegraph/shapes/flatbottomcurveshape.h \
+    scenegraph/shapes/openglshape.h \
+    scenegraph/shapes/sphere.h
 
 
 FORMS += ui/mainwindow.ui

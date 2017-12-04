@@ -4,7 +4,10 @@
 #include "OpenGLScene.h"
 
 #include <memory>
-
+#include "scenegraph/shapes/cone.h"
+#include "scenegraph/shapes/cube.h"
+#include "scenegraph/shapes/cylinder.h"
+#include "scenegraph/shapes/sphere.h"
 
 namespace CS123 { namespace GL {
 
@@ -40,8 +43,6 @@ public:
     // pointer.  This will be used during the "modeler" lab, so don't worry about it for now.
     void setSelection(int x, int y);
 
-private:
-
 
 private:
 
@@ -59,7 +60,10 @@ private:
     std::unique_ptr<CS123::GL::Shader> m_wireframeShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsArrowShader;
-
+    std::unique_ptr<Cube> m_cube;               ///cube
+    std::unique_ptr<Cylinder> m_cylinder;       ///cylinder
+    std::unique_ptr<Cone> m_cone;               ///cone
+    std::unique_ptr<Sphere> m_sphere;           ///sphere
 };
 
 #endif // SCENEVIEWSCENE_H

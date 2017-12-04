@@ -25,6 +25,10 @@ ShapesScene::ShapesScene(int width, int height) :
     loadNormalsArrowShader();
 
     //TODO: [SHAPES] Allocate any additional memory you need...
+    m_cube = std::make_unique<Cube>(settings.shapeParameter1);
+    m_cylinder = std::make_unique<Cylinder>(settings.shapeParameter1, settings.shapeParameter2);
+    m_cone = std::make_unique<Cone>(settings.shapeParameter1, settings.shapeParameter2);
+    m_sphere = std::make_unique<Sphere>(settings.shapeParameter1,settings.shapeParameter2);
 
 }
 
@@ -153,7 +157,20 @@ void ShapesScene::renderNormalsPass (SupportCanvas3D *context) {
 
 void ShapesScene::renderGeometry() {
     // TODO: [SHAPES] Render the shape. Lab 1 seems like it'll come in handy...
-
+    switch (settings.shapeType) {
+        case SHAPE_CUBE:
+            m_cube->draw();
+        break;
+        case SHAPE_CYLINDER:
+            m_cylinder->draw();
+        break;
+        case SHAPE_SPHERE:
+            m_sphere->draw();
+        break;
+        case SHAPE_CONE:
+            m_cone->draw();
+        break;
+    }
 }
 
 void ShapesScene::clearLights() {
@@ -176,5 +193,19 @@ void ShapesScene::setLights(const glm::mat4 viewMatrix) {
 
 void ShapesScene::settingsChanged() {
     // TODO: [SHAPES] Fill this in if applicable.
+    switch (settings.shapeType) {
+        case SHAPE_CUBE:
+            m_cube->update(settings.shapeParameter1);
+        break;
+        case SHAPE_CYLINDER:
+            m_cylinder->update(settings.shapeParameter1, settings.shapeParameter2);
+        break;
+        case SHAPE_SPHERE:
+            m_sphere->update(settings.shapeParameter1, settings.shapeParameter2);
+        break;
+        case SHAPE_CONE:
+            m_cone->update(settings.shapeParameter1, settings.shapeParameter2);
+        break;
+    }
 }
 

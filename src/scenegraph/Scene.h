@@ -22,9 +22,13 @@ public:
     virtual void settingsChanged() {}
 
     static void parse(Scene *sceneToFill, CS123ISceneParser *parser);
+    static void traverseTree(Scene *sceneTofill, CS123SceneNode *node, glm::mat4x4 compositeMatrix);
+
+    std::vector<CS123SceneLightData> lights;
+    std::vector<PrimTransPair> primTransPairs;
+    CS123SceneGlobalData global;
 
 protected:
-
     // Adds a primitive to the scene.
     virtual void addPrimitive(const CS123ScenePrimitive &scenePrimitive, const glm::mat4x4 &matrix);
 
@@ -33,6 +37,8 @@ protected:
 
     // Sets the global data for the scene.
     virtual void setGlobal(const CS123SceneGlobalData &global);
+
+    virtual void finishParsing();
 
 };
 

@@ -9,6 +9,11 @@
 
 #include "gl/datatype/FBO.h"
 #include "Settings.h"
+//#include "shapes/openglshape.h"
+#include "shapes/cube.h"
+#include "shapes/cone.h"
+#include "shapes/cylinder.h"
+#include "shapes/sphere.h"
 
 
 namespace CS123 { namespace GL {
@@ -69,6 +74,12 @@ private:
 
     int m_width;
     int m_height;
+
+    /// Shape Assignment
+    std::unique_ptr<Cube> m_cube;               ///cube
+    std::unique_ptr<Cylinder> m_cylinder;       ///cylinder
+    std::unique_ptr<Cone> m_cone;               ///cone
+    std::unique_ptr<Sphere> m_sphere;           ///sphere
 
     void clearLights();
     void loadPhongShader();

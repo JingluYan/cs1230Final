@@ -7,6 +7,9 @@
 #include "SupportCanvas3D.h"
 #include "ResourceLoader.h"
 #include "gl/shaders/CS123Shader.h"
+#include <set>
+#include <iostream>
+
 using namespace CS123::GL;
 
 
@@ -17,6 +20,14 @@ SceneviewScene::SceneviewScene()
     loadWireframeShader();
     loadNormalsShader();
     loadNormalsArrowShader();
+
+    m_cube = std::make_unique<Cube>(settings.shapeParameter1);
+
+    m_cone = std::make_unique<Cone>(settings.shapeParameter1, settings.shapeParameter2);
+
+    m_cylinder = std::make_unique<Cylinder>(settings.shapeParameter1,settings.shapeParameter2);
+
+    m_sphere = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
 }
 
 SceneviewScene::~SceneviewScene()
@@ -82,6 +93,9 @@ void SceneviewScene::setLights()
     // Set up the lighting for your scene using m_phongShader.
     // The lighting information will most likely be stored in CS123SceneLightData structures.
     //
+    for (CS123SceneLightData light : lights) {
+        m_phongShader->setLight(light);
+    }
 }
 
 void SceneviewScene::renderGeometry() {
@@ -94,9 +108,35 @@ void SceneviewScene::renderGeometry() {
     // know about OpenGL and leverage your Shapes classes to get the job done.
     //
 
+    for (PrimTransPair pair : primTransPairs) {
+        m_phongShader->setUniform("m", pair.tranformation);
+        m_phongShader->applyMaterial(pair.primitive.material);
+
+        switch (pair.primitive.type) {
+            case PrimitiveType::PRIMITIVE_CUBE:
+            m_cube->draw();
+            break;
+            case PrimitiveType::PRIMITIVE_CONE:
+            m_cone->draw();
+            break;
+            case PrimitiveType::PRIMITIVE_CYLINDER:
+            m_cylinder->draw();
+            break;
+            case PrimitiveType::PRIMITIVE_SPHERE:
+            m_sphere->draw();
+            break;
+            default:
+            //TODO: Should I do anything here? will I encounter odd shapes
+            continue;
+        }
+    }
 }
 
 void SceneviewScene::settingsChanged() {
     // TODO: [SCENEVIEW] Fill this in if applicable.
+    m_cube->update(settings.shapeParameter1);
+    m_cylinder->update(settings.shapeParameter1, settings.shapeParameter2);
+    m_sphere->update(settings.shapeParameter1, settings.shapeParameter2);
+    m_cone->update(settings.shapeParameter1, settings.shapeParameter2);
 }
 
