@@ -4,7 +4,6 @@
 #include <memory>
 
 #include "SupportCanvas2D.h"
-#include "brush/Brush.h"
 
 
 class RayScene;
@@ -38,16 +37,10 @@ public slots:
     // UI will call this from the button on the "Ray" dock
     void cancelRender();
 
-    // UI will call this from the button on the "Filter" dock
-    void filterImage();
-
 protected:
     void invert();
     void grayScale();
     virtual void paintEvent(QPaintEvent *);  // Overridden from SupportCanvas2D.
-    virtual void mouseDown(int x, int y);    // Called when left mouse button is pressed on canvas
-    virtual void mouseDragged(int x, int y); // Called when left mouse button is dragged on canvas
-    virtual void mouseUp(int x, int y);      // Called when left mouse button is released
 
     // Called when the size of the canvas has been changed
     virtual void notifySizeChanged(int w, int h);
@@ -59,7 +52,6 @@ private:
     std::unique_ptr<RayScene> m_rayScene;
 
     //TODO: [BRUSH, INTERSECT, RAY] Put your member variables here.
-    std::unique_ptr<Brush> m_brush;
 //    InvertFilter invertFilter;
 //    GrayscaleFilter grayScaleFilter;
 //    EdgeDetectFilter edgeDetectFilter;

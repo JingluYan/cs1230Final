@@ -840,7 +840,7 @@ public:
         MainWindow->addDockWidget(static_cast<Qt::DockWidgetArea>(1), camtransDock);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QStringLiteral("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 600, 20));
+        menuBar->setGeometry(QRect(0, 0, 600, 18));
         menuFile = new QMenu(menuBar);
         menuFile->setObjectName(QStringLiteral("menuFile"));
         menuToolbars = new QMenu(menuBar);

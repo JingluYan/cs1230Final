@@ -48,8 +48,6 @@ MainWindow::MainWindow(QWidget *parent) :
     actions.push_back(ui->dock->toggleViewAction()); \
     actions.back()->setShortcut(QKeySequence(key));
 
-    SETUP_ACTION(brushDock,     "CTRL+1");
-    SETUP_ACTION(filterDock,    "CTRL+2");
     SETUP_ACTION(shapesDock,    "CTRL+3");
     SETUP_ACTION(camtransDock,  "CTRL+4");
     SETUP_ACTION(rayDock,       "CTRL+5");
@@ -57,11 +55,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui->menuToolbars->addActions(actions);
 #undef SETUP_ACTION
 
-    tabifyDockWidget(ui->brushDock, ui->filterDock);
-    tabifyDockWidget(ui->brushDock, ui->shapesDock);
-    tabifyDockWidget(ui->brushDock, ui->camtransDock);
-    tabifyDockWidget(ui->brushDock, ui->rayDock);
-    ui->brushDock->raise();
+    tabifyDockWidget(ui->shapesDock, ui->camtransDock);
+    tabifyDockWidget(ui->shapesDock, ui->rayDock);
+    ui->shapesDock->raise();
 
     dataBind();
 
@@ -74,23 +70,6 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Make certain radio buttons switch to the 2D canvas when clicked.
     QList<QRadioButton*> a;
-    a += ui->brushTypeLinear;
-    a += ui->brushTypeQuadratic;
-    a += ui->brushTypeSmudge;
-    a += ui->brushTypeConstant;
-    a += ui->brushTypeSpecial1;
-    a += ui->brushTypeSpecial2;
-    a += ui->filterTypeBlur;
-    a += ui->filterTypeEdgeDetect;
-    a += ui->filterTypeGrayscale;
-    a += ui->filterTypeInvert;
-    a += ui->filterTypeRotate;
-    a += ui->filterTypeScale;
-    a += ui->filterTypeSpecial1;
-    a += ui->filterTypeSpecial2;
-    a += ui->filterTypeSpecial3;
-    foreach (QRadioButton *rb, a)
-        connect(rb, SIGNAL(clicked()), this, SLOT(activateCanvas2D()));
 
     a.clear();
     a += ui->shapeTypeCone;
@@ -120,67 +99,13 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::dataBind() {
-    // Brush dock
 #define BIND(b) { \
     DataBinding *_b = (b); \
     m_bindings.push_back(_b); \
     assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
 }
-    QButtonGroup *brushButtonGroup = new QButtonGroup;
     QButtonGroup *shapesButtonGroup = new QButtonGroup;
-    QButtonGroup *filterButtonGroup = new QButtonGroup;
-    m_buttonGroups.push_back(brushButtonGroup);
     m_buttonGroups.push_back(shapesButtonGroup);
-    m_buttonGroups.push_back(filterButtonGroup);
-
-    BIND(ChoiceBinding::bindRadioButtons(
-            brushButtonGroup,
-            NUM_BRUSH_TYPES,
-            settings.brushType,
-            ui->brushTypeConstant,
-            ui->brushTypeLinear,
-            ui->brushTypeQuadratic,
-            ui->brushTypeSmudge,
-            ui->brushTypeSpecial1,
-            ui->brushTypeSpecial2))
-
-    BIND(IntBinding::bindSliderAndTextbox(
-        ui->brushRadiusSlider, ui->brushRadiusTextbox, settings.brushRadius, 0, 96))
-    BIND(UCharBinding::bindSliderAndTextbox(
-        ui->brushColorSliderRed, ui->brushColorTextboxRed, settings.brushColor.r, 0, 255))
-    BIND(UCharBinding::bindSliderAndTextbox(
-        ui->brushColorSliderGreen, ui->brushColorTextboxGreen, settings.brushColor.g, 0, 255))
-    BIND(UCharBinding::bindSliderAndTextbox(
-        ui->brushColorSliderBlue, ui->brushColorTextboxBlue, settings.brushColor.b, 0, 255))
-    BIND(UCharBinding::bindSliderAndTextbox(
-        ui->brushColorSliderAlpha, ui->brushColorTextboxAlpha, settings.brushColor.a, 0, 255))
-    BIND(BoolBinding::bindCheckbox(ui->brushAlphaBlendingCheckbox, settings.fixAlphaBlending))
-
-    // Filter dock
-    BIND(ChoiceBinding::bindRadioButtons(
-            filterButtonGroup,
-            NUM_FILTER_TYPES,
-            settings.filterType,
-            ui->filterTypeInvert,
-            ui->filterTypeGrayscale,
-            ui->filterTypeEdgeDetect,
-            ui->filterTypeBlur,
-            ui->filterTypeScale,
-            ui->filterTypeRotate,
-            ui->filterTypeSpecial1,
-            ui->filterTypeSpecial2,
-            ui->filterTypeSpecial3))
-    BIND(FloatBinding::bindSliderAndTextbox(
-        ui->edgeDetectSensitivitySlider, ui->edgeDetectSensitivityTextbox, settings.edgeDetectSensitivity,
-            0.f, 1.f))
-    BIND(IntBinding::bindSliderAndTextbox(
-        ui->blurRadiusSlider, ui->blurRadiusTextbox, settings.blurRadius, 1.f, 200.f))
-    BIND(FloatBinding::bindSliderAndTextbox(
-        ui->scaleSliderX, ui->scaleTextboxX, settings.scaleX, 0.1f, 10.f))
-    BIND(FloatBinding::bindSliderAndTextbox(
-        ui->scaleSliderY, ui->scaleTextboxY, settings.scaleY, 0.1f, 10.f))
-    BIND(IntBinding::bindSliderAndTextbox(
-        ui->rotateSlider, ui->rotateAngleEdit, settings.rotateAngle, -360.f, 360.f))
 
     // Shapes dock
     BIND(BoolBinding::bindCheckbox(ui->showSceneviewInstead, settings.useSceneviewScene))
@@ -369,17 +294,6 @@ void MainWindow::uncheckAllRayFeatures() {
     setAllRayFeatures(false);
 }
 
-void MainWindow::filterImage() {
-    // Disable the UI so the user can't interfere with the filtering
-    setAllEnabled(false);
-
-    // Actually do the filter.
-    ui->canvas2D->filterImage();
-
-    // Enable the UI again
-    setAllEnabled(true);
-}
-
 void MainWindow::renderImage() {
     // Make sure OpenGL gets a chance to update the OrbitCamera, which can only be done when
     // that tab is active (because it needs the OpenGL context for its matrix transforms)
@@ -417,8 +331,6 @@ void MainWindow::renderImage() {
 
 void MainWindow::setAllEnabled(bool enabled) {
     QList<QWidget *> widgets;
-    widgets += ui->brushDock;
-    widgets += ui->filterDock;
     widgets += ui->shapesDock;
     widgets += ui->camtransDock;
     widgets += ui->rayAllOrNone;

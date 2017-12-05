@@ -22,11 +22,6 @@ win32 {
 }
 
 SOURCES += \
-    brush/Brush.cpp \
-    brush/ConstantBrush.cpp \
-    brush/LinearBrush.cpp \
-    brush/QuadraticBrush.cpp \
-    brush/SmudgeBrush.cpp \
     camera/OrbitingCamera.cpp \
     camera/CamtransCamera.cpp \
     camera/QuaternionCamera.cpp \
@@ -67,14 +62,6 @@ SOURCES += \
     scenegraph/shapes/openglshape.cpp \
     scenegraph/shapes/sphere.cpp \
     scenegraph/shapes/flatbottomcurveshape.cpp \
-    filter/filter.cpp \
-    filter/edgedetectfilter.cpp \
-    filter/blurfilter.cpp \
-    filter/grayscalefilter.cpp \
-    filter/invertfilter.cpp \
-    filter/scalefilter.cpp \
-    filter/sharpenfilter.cpp \
-    filter/embossfilter.cpp \
     ray/rayshape.cpp \
     ray/rayutils.cpp \
     ray/light.cpp \
@@ -83,11 +70,6 @@ SOURCES += \
 
 
 HEADERS += \
-    brush/Brush.h \
-    brush/ConstantBrush.h \
-    brush/LinearBrush.h \
-    brush/QuadraticBrush.h \
-    brush/SmudgeBrush.h \
     camera/Camera.h \
     camera/OrbitingCamera.h \
     camera/CamtransCamera.h \
@@ -133,14 +115,6 @@ HEADERS += \
     scenegraph/shapes/sphere.h \
     scenegraph/shapes/flatbottomcurveshape.h \
     ../../../../../../../home/yliu82/course/cs1230/src/filter/CamtransCamera.h \
-    filter/filter.h \
-    filter/edgedetectfilter.h \
-    filter/blurfilter.h \
-    filter/grayscalefilter.h \
-    filter/invertfilter.h \
-    filter/scalefilter.h \
-    filter/sharpenfilter.h \
-    filter/embossfilter.h \
     ray/rayshape.h \
     ray/rayutils.h \
     ray/light.h \
