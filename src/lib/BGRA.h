@@ -26,7 +26,12 @@ struct BGRA {
     BGRA operator+(const BGRA &c1) const;
     BGRA operator-(const BGRA &c1) const;
     BGRA operator*(const BGRA &c1) const;
+    BGRA operator*(float v) const;
     BGRA operator/(const BGRA &c1) const;
+    BGRA operator/(const float v) const;
+    void invert();
+    void toGrayScale();
+    int grayscaleIntensity();
 
     friend bool operator==(const BGRA &c1, const BGRA &c2);
     friend bool operator!=(const BGRA &c1, const BGRA &c2);

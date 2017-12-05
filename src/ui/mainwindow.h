@@ -81,6 +81,9 @@ public slots:
     // Unchecks all (disables all) Ray features.
     void uncheckAllRayFeatures();
 
+    // Called when the user presses the "Filter Image" button in the Filter panel
+    void filterImage();
+
     // Called when the user presses the "Render Image" button in the Ray panel
     void renderImage();
 

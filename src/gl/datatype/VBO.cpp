@@ -22,8 +22,12 @@ VBO::VBO(const float *data, int sizeInFloats, std::vector<VBOAttribMarker> marke
     m_triangleLayout(layout)
 {
     // TODO [Task 1]
+    glGenBuffers(1,&m_handle);
 
     // TODO [Task 2]
+    glBindBuffer(GL_ARRAY_BUFFER, m_handle);
+    glBufferData(GL_ARRAY_BUFFER, sizeInFloats * sizeof(GLfloat), data, GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 // This is called a copy constructor, you don't have to worry about it
@@ -57,23 +61,28 @@ VBO& VBO::operator=(VBO &&that) {
 VBO::~VBO()
 {
     // TODO [Task 6]
+    glDeleteBuffers(1,&m_handle);
 }
 
 void VBO::bind() const {
     // TODO [Task 4]
+    glBindBuffer(GL_ARRAY_BUFFER, m_handle);
 }
 
 void VBO::bindAndEnable() const {
     bind();
-    for (unsigned int i = 0; i < m_markers.size(); i ++) {
+    for (unsigned int i = 0; i < m_markers.size(); i++) {
         VBOAttribMarker am = m_markers[i];
 
         // TODO [Task 4]
+        glEnableVertexAttribArray(am.index);
+        glVertexAttribPointer(am.index, am.numElements, am.dataType, am.dataNormalize, m_stride, reinterpret_cast<GLvoid*>(am.offset));
     }
 }
 
 void VBO::unbind() const {
     // TODO [Task 4]
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
 int VBO::numberOfFloatsPerVertex() const {

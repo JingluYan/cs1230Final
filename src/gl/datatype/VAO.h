@@ -29,14 +29,11 @@ public:
     void unbind();
 
 private:
-    std::unique_ptr<VBO> m_VBO;
-
     DRAW_METHOD m_drawMethod;
     GLuint m_handle;
     GLuint m_numVertices;
     int m_size;
     GLenum m_triangleLayout;
-//    VBO::GEOMETRY_LAYOUT m_triangleLayout;
 };
 
 }}

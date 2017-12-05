@@ -111,7 +111,7 @@ void SupportCanvas3D::paintGL() {
         setSceneFromSettings();
     }
 
-    float ratio = static_cast<QGuiApplication *>(QCoreApplication::instance())->devicePixelRatio();
+    float ratio = static_cast<QGuiApplication*>(QCoreApplication::instance())->devicePixelRatio();
     glViewport(0, 0, width() * ratio, height() * ratio);
     getCamera()->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));
     m_currentScene->render(this);
@@ -213,7 +213,7 @@ void SupportCanvas3D::setCameraAxonometric() {
 
 void SupportCanvas3D::updateCameraHeightAngle() {
     // The height angle is half the overall field of view of the camera
-    m_defaultPerspectiveCamera->setHeightAngle(settings.cameraFov / 2);
+    m_defaultPerspectiveCamera->setHeightAngle(settings.cameraFov);
 }
 
 void SupportCanvas3D::updateCameraTranslation() {

@@ -163,5 +163,19 @@ struct CS123SceneNode {
    std::vector<CS123SceneNode*> children;
 };
 
+
+class PrimTransPair {
+public:
+    CS123ScenePrimitive primitive;
+    glm::mat4x4 tranformation;
+
+    PrimTransPair (const CS123ScenePrimitive &prim, const glm::mat4x4 &trans) :
+        primitive(prim),
+        tranformation(trans)
+    {
+
+    }
+};
+
 #endif
 
