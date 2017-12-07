@@ -84,6 +84,7 @@ public:
     QCheckBox *useLightingCheckbox;
     QCheckBox *drawWireframeCheckbox;
     QCheckBox *drawNormalsCheckbox;
+    QCheckBox *deferredLightCheckbox;
     QWidget *shapesDockEmptySpace;
     QDockWidget *rayDock;
     QWidget *rayDockContents;
@@ -377,6 +378,11 @@ public:
         drawNormalsCheckbox->setObjectName(QStringLiteral("drawNormalsCheckbox"));
 
         verticalLayout_7->addWidget(drawNormalsCheckbox);
+
+        deferredLightCheckbox = new QCheckBox(shapesDockContents);
+        deferredLightCheckbox->setObjectName(QStringLiteral("deferredLightCheckbox"));
+
+        verticalLayout_7->addWidget(deferredLightCheckbox);
 
         shapesDockEmptySpace = new QWidget(shapesDockContents);
         shapesDockEmptySpace->setObjectName(QStringLiteral("shapesDockEmptySpace"));
@@ -943,6 +949,7 @@ public:
         useLightingCheckbox->setText(QApplication::translate("MainWindow", "Use lighting", 0));
         drawWireframeCheckbox->setText(QApplication::translate("MainWindow", "Draw wireframe", 0));
         drawNormalsCheckbox->setText(QApplication::translate("MainWindow", "Draw normals", 0));
+        deferredLightCheckbox->setText(QApplication::translate("MainWindow", "Deferred Lighting", 0));
         rayDock->setWindowTitle(QApplication::translate("MainWindow", "Ray", 0));
         rayAllButton->setText(QApplication::translate("MainWindow", "All", 0));
         rayNoneButton->setText(QApplication::translate("MainWindow", "None", 0));

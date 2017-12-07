@@ -349,6 +349,13 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="deferredLightCheckbox">
+       <property name="text">
+        <string>Deferred Lighting</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QWidget" name="shapesDockEmptySpace" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">

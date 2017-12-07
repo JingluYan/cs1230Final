@@ -35,6 +35,7 @@ void Settings::loadSettingsOrDefaults() {
     useLighting = s.value("useLighting", true).toBool();
     drawWireframe = s.value("drawWireframe", true).toBool();
     drawNormals = s.value("drawNormals", false).toBool();
+    deferredLight = s.value("deferredLight", false).toBool();
 
     // Camtrans
     useOrbitCamera = s.value("useOrbitCamera", true).toBool();
@@ -78,6 +79,7 @@ void Settings::saveSettings() {
     s.setValue("useLighting", useLighting);
     s.setValue("drawWireframe", drawWireframe);
     s.setValue("drawNormals", drawNormals);
+    s.setValue("deferredLight", deferredLight);
 
     // Camtrans
     s.setValue("useOrbitCamera", useOrbitCamera);

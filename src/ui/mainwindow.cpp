@@ -129,6 +129,7 @@ void MainWindow::dataBind() {
     BIND(BoolBinding::bindCheckbox(ui->useLightingCheckbox, settings.useLighting))
     BIND(BoolBinding::bindCheckbox(ui->drawWireframeCheckbox, settings.drawWireframe))
     BIND(BoolBinding::bindCheckbox(ui->drawNormalsCheckbox, settings.drawNormals))
+    BIND(BoolBinding::bindCheckbox(ui->deferredLightCheckbox, settings.deferredLight))
 
     // Camtrans dock
     BIND(BoolBinding::bindCheckbox(ui->cameraOrbitCheckbox, settings.useOrbitCamera))
@@ -213,11 +214,6 @@ void MainWindow::setAllRayFeatures(bool checked) {
     ui->rayReflection->setChecked(checked);
     ui->rayRefraction->setChecked(checked);
     ui->rayMultiThreading->setChecked(checked);
-
-    // We don't want to affect the light checkboxes...
-    //ui->rayPointLights->setChecked(checked);
-    //ui->rayDirectionalLights->setChecked(checked);
-    //ui->raySpotLights->setChecked(checked);
 }
 
 void MainWindow::fileCopy3Dto2D() {
