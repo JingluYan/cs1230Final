@@ -33,7 +33,7 @@ int FlatBottomCurveShape::calcBottom(int p1, int p2, float y, std::vector<float>
             vertices.push_back(normal_y);
             vertices.push_back(0.0f);
             //add uv
-            addUV(i * segment_len * cos(rad), i * segment_len * sin(rad), vertices);
+            addUV(i * segment_len * cos(rad), i * segment_len * sin(rad), vertices, down);
 
             // add position
             vertices.push_back((i + 1) * segment_len * cos(rad));
@@ -44,7 +44,7 @@ int FlatBottomCurveShape::calcBottom(int p1, int p2, float y, std::vector<float>
             vertices.push_back(normal_y);
             vertices.push_back(0.0f);
             //add uv
-            addUV((i + 1) * segment_len * cos(rad), (i + 1) * segment_len * sin(rad), vertices);
+            addUV((i + 1) * segment_len * cos(rad), (i + 1) * segment_len * sin(rad), vertices, down);
 
             count += 2;
         }
@@ -53,8 +53,13 @@ int FlatBottomCurveShape::calcBottom(int p1, int p2, float y, std::vector<float>
     return count;
 }
 
-void FlatBottomCurveShape::addUV(float x, float z, std::vector<float> &vertices) {
-    vertices.push_back(x + 0.5f);
-    vertices.push_back(-z + 0.5f);
+void FlatBottomCurveShape::addUV(float x, float z, std::vector<float> &vertices, bool bottom) {
+    if (bottom){
+        vertices.push_back(x + 0.5f);
+        vertices.push_back(z + 0.5f);
+    } else {
+        vertices.push_back(x + 0.5f);
+        vertices.push_back(-z + 0.5f);
+    }
 }
 
