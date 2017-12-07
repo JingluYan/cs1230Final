@@ -13,7 +13,6 @@ public:
     void calcVertex(int tess);
     void update(int tess);
     void addVertex(std::vector<float> vertex, std::vector<float>& vertices);
-    bool intersect(glm::vec3 &eye, glm::vec3 &ray, double &t) override;
 
 private:
     int prevTess; // previous tesselation

@@ -10,6 +10,10 @@
 #include <set>
 #include <iostream>
 
+#include "gl/textures/Texture2D.h"
+#include "gl/textures/TextureParameters.h"
+#include "gl/textures/TextureParametersBuilder.h"
+
 using namespace CS123::GL;
 
 
@@ -112,6 +116,10 @@ void SceneviewScene::renderGeometry() {
         m_phongShader->setUniform("m", pair.tranformation);
         m_phongShader->applyMaterial(pair.primitive.material);
 
+        //texture map
+        loadMaterialData( pair.primitive.material );
+        tryApplyTexture( pair.primitive.material.textureMap );
+
         switch (pair.primitive.type) {
             case PrimitiveType::PRIMITIVE_CUBE:
             m_cube->draw();
@@ -140,3 +148,42 @@ void SceneviewScene::settingsChanged() {
     m_cone->update(settings.shapeParameter1, settings.shapeParameter2);
 }
 
+void SceneviewScene::tryApplyTexture( const CS123SceneFileMap &map ) {
+    if( !map.isUsed ) {
+        m_phongShader->setUniform( "useTexture", 0 );
+        return;
+    }
+    m_phongShader->setUniform( "useTexture", 1 );
+    m_phongShader->setUniform( "repeatUV", glm::vec2{1,1});
+    m_phongShader->setTexture( "tex", m_textures.at( map.filename ) );
+}
+
+void SceneviewScene::loadMaterialData( const CS123SceneMaterial &material ) {
+    // If texture is not used
+    if(!(material.textureMap.isUsed ) && (material.textureMap.filename.compare( "" )) )
+             return;
+
+    // If texture had already been loaded
+    if( m_textures.find( material.textureMap.filename ) != m_textures.end() )
+        return;
+
+    QImage image = QImage( material.textureMap.filename.data() );
+    QImage convertedImage = QGLWidget::convertToGLFormat( image );
+
+    if( convertedImage.isNull() ) {
+        std::cerr << "Could not read file: " << material.textureMap.filename << std::endl;
+        return;
+    }
+
+    Texture2D texture( convertedImage.bits(), convertedImage.width(), convertedImage.height() );
+    buildTexture( texture );
+    m_textures.insert( std::make_pair( material.textureMap.filename, std::move( texture ) ) );
+}
+
+void SceneviewScene::buildTexture( const Texture2D &texture ) {
+    TextureParametersBuilder builder;
+    builder.setFilter( TextureParameters::FILTER_METHOD::LINEAR );
+    builder.setWrap( TextureParameters::WRAP_METHOD::REPEAT );
+    TextureParameters parameters = builder.build();
+    parameters.applyTo( texture );
+}

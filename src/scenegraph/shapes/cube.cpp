@@ -24,6 +24,7 @@ void Cube::update(int tess) {
     setVertexData(&v[0], v.size(),VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, vertexCount);
     setAttribute(CS123::GL::ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     setAttribute(CS123::GL::ShaderAttrib::NORMAL, 3, 3*sizeof(float), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    setAttribute(CS123::GL::ShaderAttrib::TEXCOORD0, 2, 24, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     buildVAO();
 }
 
@@ -36,28 +37,34 @@ void Cube::calcVertex(int tess) {
         for (int j = 0; j < tess; j++) {
             //upper triangle    }
             tmp = {-.5f + j / seg, -.5f + i / seg, .5f,
-                  0.0f, 0.0f, 1.0f};
+                  0.0f, 0.0f, 1.0f,
+                   j / seg, i / seg};
             addVertex(tmp, v);
 
             tmp = {-.5f + (j + 1) / seg, -.5f + (i + 1) / seg, .5f,
-                  0.0f, 0.0f, 1.0f};
+                  0.0f, 0.0f, 1.0f,
+                   (j + 1) / seg, (i + 1) / seg};
             addVertex(tmp, v);
 
             tmp = {-.5f + j / seg, -.5f + (i + 1) / seg , .5f,
-                  0.0f, 0.0f, 1.0f};
+                  0.0f, 0.0f, 1.0f,
+                   j / seg, (i + 1) / seg};
             addVertex(tmp, v);
 
             //lower triangle
             tmp = {-.5f + j / seg, -.5f + i / seg , .5f,
-                  0.0f, 0.0f, 1.0f};
+                  0.0f, 0.0f, 1.0f,
+                   j / seg, i / seg};
             addVertex(tmp, v);
 
             tmp = {-.5f + (j + 1) / seg , -.5f + i / seg, .5f,
-                  0.0f, 0.0f, 1.0f};
+                  0.0f, 0.0f, 1.0f,
+                   (j + 1) / seg, i / seg};
             addVertex(tmp, v);
 
             tmp = { -.5f + (j + 1) / seg, -.5f + (i + 1) / seg, .5f,
-                  0.0f, 0.0f, 1.0f};
+                  0.0f, 0.0f, 1.0f,
+                    (j + 1) / seg, (i + 1) / seg};
             addVertex(tmp, v);
 
         }
@@ -68,28 +75,34 @@ void Cube::calcVertex(int tess) {
         for (int j = 0; j < tess; j++) {
             //upper triangle
             tmp = { .5f - j / seg, -.5f + i / seg, -.5f,
-                  0.0f, 0.0f, -1.0f};
+                  0.0f, 0.0f, -1.0f,
+                    - j / seg, i / seg};
             addVertex(tmp, v);
 
             tmp = { .5f - (j + 1) / seg, -.5f + (i + 1) / seg, -.5f,
-                  0.0f, 0.0f, -1.0f};
+                  0.0f, 0.0f, -1.0f,
+                    - (j + 1) / seg, + (i + 1) / seg};
             addVertex(tmp, v);
 
             tmp = { .5f - j / seg, -.5f + (i + 1) / seg, -.5f,
-                  0.0f, 0.0f, -1.0f};
+                  0.0f, 0.0f, -1.0f,
+                    - j / seg, (i + 1) / seg};
             addVertex(tmp, v);
 
             //lower triangle
             tmp = { .5f - j / seg, -.5f + i / seg, -.5f,
-                  0.0f, 0.0f, -1.0f};
+                  0.0f, 0.0f, -1.0f,
+                    - j / seg, i / seg};
             addVertex(tmp, v);
 
             tmp = { .5f - (j + 1) / seg, -.5f + i / seg, -.5f,
-                  0.0f, 0.0f, -1.0f};
+                  0.0f, 0.0f, -1.0f,
+                    - (j + 1) / seg, i / seg};
             addVertex(tmp, v);
 
             tmp = {.5f - (j + 1) / seg, -.5f + (i + 1) / seg, -.5f,
-                  0.0f, 0.0f, -1.0f};
+                  0.0f, 0.0f, -1.0f,
+                   - (j + 1) / seg, (i + 1) / seg};
             addVertex(tmp, v);
 
         }
@@ -100,28 +113,34 @@ void Cube::calcVertex(int tess) {
         for (int j = 0; j < tess; j++) {
             //upper triangle
             tmp = {.5f, -.5f + j / seg, -.5f + i / seg,
-                  1.0f, 0.0f, 0.0f};
+                  1.0f, 0.0f, 0.0f,
+                   -(j / seg), - i / seg};
             addVertex(tmp, v);
 
             tmp = {.5f, -.5f + (j + 1) / seg, -.5f + (i + 1) / seg,
-                  1.0f, 0.0f, 0.0f};
+                  1.0f, 0.0f, 0.0f,
+                   -(j + 1) / seg, - (i + 1) / seg};
             addVertex(tmp, v);
 
             tmp = {.5f, -.5f + j / seg, -.5f + (i + 1) / seg,
-                  1.0f, 0.0f, 0.0f};
+                  1.0f, 0.0f, 0.0f,
+                  - j / seg, - (i + 1) / seg};
             addVertex(tmp, v);
 
             //lower triangle
             tmp = {.5f, -.5f + j / seg, -.5f + i / seg,
-                  1.0f, 0.0f, 0.0f};
+                  1.0f, 0.0f, 0.0f,
+                  -j / seg, - i / seg};
             addVertex(tmp, v);
 
             tmp = {.5f, -.5f + (j + 1) / seg, -.5f + i / seg,
-                  1.0f, 0.0f, 0.0f};
+                  1.0f, 0.0f, 0.0f,
+                  -(j + 1) / seg, - i / seg};
             addVertex(tmp, v);
 
             tmp = {.5f, -.5f + (j + 1) / seg, -.5f + (i + 1) / seg,
-                  1.0f, 0.0f, 0.0f};
+                  1.0f, 0.0f, 0.0f,
+                  -(j + 1) / seg, -(i + 1) / seg};
             addVertex(tmp, v);
 
         }
@@ -133,28 +152,34 @@ void Cube::calcVertex(int tess) {
         for (int j = 0; j < tess; j++) {
             //upper triangle
             tmp = {-.5f, -.5f + i / seg, -.5f + j / seg,
-                  -1.0f, 0.0f, 0.0f};
+                  -1.0f, 0.0f, 0.0f,
+                  i / seg, j / seg};
             addVertex(tmp, v);
 
             tmp = {-.5f, -.5f + (i + 1) / seg, -.5f + (j + 1) / seg,
-                  -1.0f, 0.0f, 0.0f};
+                  -1.0f, 0.0f, 0.0f,
+                  (i + 1) / seg, (j + 1) / seg};
             addVertex(tmp, v);
 
             tmp = {-.5f, -.5f + (i + 1) / seg, -.5f + j / seg,
-                  -1.0f, 0.0f, 0.0f};
+                  -1.0f, 0.0f, 0.0f,
+                  (i + 1) / seg, j / seg};
             addVertex(tmp, v);
 
             //lower triangle
             tmp = {-.5f, -.5f + i / seg, -.5f + j / seg,
-                  -1.0f, 0.0f, 0.0f};
+                  -1.0f, 0.0f, 0.0f,
+                  i / seg, j / seg};
             addVertex(tmp, v);
 
             tmp = {-.5f, -.5f + i / seg, -.5f + (j + 1) / seg,
-                  -1.0f, 0.0f, 0.0f};
+                  -1.0f, 0.0f, 0.0f,
+                  i / seg, (j + 1) / seg};
             addVertex(tmp, v);
 
             tmp = {-.5f, -.5f + (i + 1) / seg, -.5f + (j + 1) / seg,
-                  -1.0f, 0.0f, 0.0f};
+                  -1.0f, 0.0f, 0.0f,
+                  (i + 1) / seg, (j + 1) / seg};
             addVertex(tmp, v);
 
         }
@@ -167,28 +192,34 @@ void Cube::calcVertex(int tess) {
         for (int j = 0; j < tess; j++) {
             //upper triangle
             tmp = { -.5f + j / seg, -.5f, -.5f + i / seg,
-                  0.0f, -1.0f, 0.0f};
+                  0.0f, -1.0f, 0.0f,
+                    j / seg, i / seg};
             addVertex(tmp, v);
 
             tmp = { -.5f + (j + 1) / seg, -.5f, -.5f + (i + 1) / seg,
-                  0.0f, -1.0f, 0.0f};
+                  0.0f, -1.0f, 0.0f,
+                  (j + 1) / seg, (i + 1) / seg};
             addVertex(tmp, v);
 
             tmp = { -.5f + j / seg, -.5f, -.5f + (i + 1) / seg,
-                  0.0f, -1.0f, 0.0f};
+                  0.0f, -1.0f, 0.0f,
+                  j / seg, (i + 1) / seg};
             addVertex(tmp, v);
 
             //lower triangle
             tmp = { -.5f + j / seg, -.5f, -.5f + i / seg,
-                  0.0f, -1.0f, 0.0f};
+                  0.0f, -1.0f, 0.0f,
+                  j / seg, i / seg};
             addVertex(tmp, v);
 
             tmp = { -.5f + (j + 1) / seg, -.5f, -.5f + i / seg,
-                  0.0f, -1.0f, 0.0f};
+                  0.0f, -1.0f, 0.0f,
+                  (j + 1) / seg,  i / seg};
             addVertex(tmp, v);
 
             tmp = { -.5f + (j + 1) / seg, -.5f, -.5f + (i + 1) / seg,
-                  0.0f, -1.0f, 0.0f};
+                  0.0f, -1.0f, 0.0f,
+                  (j + 1) / seg,  (i + 1) / seg};
             addVertex(tmp, v);
 
 
@@ -201,28 +232,34 @@ void Cube::calcVertex(int tess) {
         for (int j = 0; j < tess; j++) {
             //upper triangle
             tmp = { -.5f + j / seg, .5f, -.5f + i / seg,
-                  0.0f, 1.0f, 0.0f};
+                  0.0f, 1.0f, 0.0f,
+                  i / seg, j / seg};
             addVertex(tmp, v);
 
             tmp = { -.5f + (j + 1) / seg, .5f, -.5f + (i + 1) / seg,
-                  0.0f, 1.0f, 0.0f};
+                  0.0f, 1.0f, 0.0f,
+                  (i + 1) / seg, (j + 1) / seg};
             addVertex(tmp, v);
 
             tmp = { -.5f + (j + 1) / seg, .5f, -.5f + i / seg,
-                  0.0f, 1.0f, 0.0f};
+                  0.0f, 1.0f, 0.0f,
+                  i / seg, (j + 1) / seg};
             addVertex(tmp, v);
 
             //lower triangle
             tmp = { -.5f + j / seg, .5f, -.5f + i / seg,
-                  0.0f, 1.0f, 0.0f};
+                  0.0f, 1.0f, 0.0f,
+                  i / seg, j / seg};
             addVertex(tmp, v);
 
             tmp = { -.5f + j / seg, .5f, -.5f + (i + 1) / seg,
-                  0.0f, 1.0f, 0.0f};
+                  0.0f, 1.0f, 0.0f,
+                  (i + 1) / seg, j / seg};
             addVertex(tmp, v);
 
             tmp = { -.5f + (j + 1) / seg, .5f, -.5f + (i + 1) / seg,
-                  0.0f, 1.0f, 0.0f};
+                  0.0f, 1.0f, 0.0f,
+                  (i + 1) / seg, (j + 1) / seg};
             addVertex(tmp, v);
 
         }
@@ -234,47 +271,3 @@ void Cube::addVertex(std::vector<float> vertex, std::vector<float>& vertices) {
         vertices.push_back(vertex[i]);
     }
 }
-
-//Need scale
-bool Cube::intersect(glm::vec3 &eye, glm::vec3 &ray, double &t) {
-    double px = static_cast<double>(eye.x);
-    double py = static_cast<double>(eye.y);
-    double pz = static_cast<double>(eye.z);
-
-    double dx = static_cast<double>(ray.x);
-    double dy = static_cast<double>(ray.y);
-    double dz = static_cast<double>(ray.z);
-
-    bool res = false;
-
-    double t1 = (0.5f - px) / dx;
-    if ( (py + t1*dy - 0.5f) <= EPSILON && (py + t1*dy + 0.5f) >= EPSILON
-         && (pz + t1*dz - 0.5f) <= EPSILON && (pz + t1*dz + 0.5f) >= EPSILON) {
-        t = std::min(t, t1);
-        res = true;
-    }
-
-    double t2 = (-0.5f - px) / dx;
-    if ( (py + t2*dy - 0.5f) <= EPSILON && (py + t2*dy + 0.5f) >= EPSILON
-         && (pz + t2*dz - 0.5f) <= EPSILON && (pz + t2*dz + 0.5f) >= EPSILON) {
-        t = std::min(t, t2);
-        res = true;
-    }
-
-    double t3 = (0.5f - py) / dy;
-    if ( (px + t3*dx - 0.5f) <= EPSILON && (px + t3*dx + 0.5f) >= EPSILON
-         && (pz + t3*dz - 0.5f) <= EPSILON && (pz + t3*dz + 0.5f) >= EPSILON) {
-        t = std::min(t, t2);
-        res = true;
-    }
-
-    double t4 = (-0.5f - py) / dy;
-    if ( (px + t4*dx - 0.5f) <= EPSILON && (px + t4*dx + 0.5f) >= EPSILON
-         && (pz + t4*dz - 0.5f) <= EPSILON && (pz + t4*dz + 0.5f) >= EPSILON) {
-        t = std::min(t, t2);
-        res = true;
-    }
-
-    return res;
-}
-

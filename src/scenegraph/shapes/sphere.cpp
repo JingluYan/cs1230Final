@@ -30,11 +30,14 @@ int Sphere::calcVertices(int p1, int p2) {
             v.push_back(r * cosf(i * d_phai));
             v.push_back(r * sinf(i * d_phai) * sinf(-j * d_theta));
             addNormal(-j * d_theta, i * d_phai, v);
+            addUV(-j * d_theta, r * cosf(i * d_phai), v);
 
             v.push_back(r * sinf((i + 1) * d_phai) * cosf(-j * d_theta));
             v.push_back(r * cosf((i + 1) * d_phai));
             v.push_back(r * sinf((i + 1) * d_phai) * sinf(-j * d_theta));
             addNormal(-j * d_theta, (i + 1) * d_phai, v);
+            addUV(-j * d_theta, r * cosf((i + 1) * d_phai), v);
+
             count += 2;
         }
     }
@@ -53,6 +56,7 @@ void Sphere::update(int p1, int p2) {
     setVertexData(&v[0], v.size(),VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLE_STRIP, vertexCount);
     setAttribute(CS123::GL::ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     setAttribute(CS123::GL::ShaderAttrib::NORMAL, 3, 3*sizeof(float), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    setAttribute(CS123::GL::ShaderAttrib::TEXCOORD0, 2, 24, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     buildVAO();
 }
 
@@ -62,7 +66,11 @@ void Sphere::addNormal(float theta, float phai, std::vector<float> &vertices) {
     vertices.push_back(sinf(phai) * sinf(theta));
 }
 
-bool Sphere::intersect(glm::vec3 &eye, glm::vec3 &ray, double &t) {
-
-    return false;
+void Sphere::addUV(float theta, float y, std::vector<float> &vertices) {
+    float radius = .5f;
+    float u = 0.f;
+    u = theta < 0 ? u = -theta / (2 * M_PI) : u = 1 -theta / (2 * M_PI);
+    float v = asin(y/ radius)/M_PI + 0.5;
+    vertices.push_back(u);
+    vertices.push_back(v);
 }

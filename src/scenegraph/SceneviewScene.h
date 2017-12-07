@@ -4,6 +4,8 @@
 #include "OpenGLScene.h"
 
 #include <memory>
+#include <map>
+
 #include "scenegraph/shapes/cone.h"
 #include "scenegraph/shapes/cube.h"
 #include "scenegraph/shapes/cylinder.h"
@@ -64,6 +66,12 @@ private:
     std::unique_ptr<Cylinder> m_cylinder;       ///cylinder
     std::unique_ptr<Cone> m_cone;               ///cone
     std::unique_ptr<Sphere> m_sphere;           ///sphere
+
+    // texture map
+    std::map<std::string,CS123::GL::Texture2D> m_textures;
+    void tryApplyTexture( const CS123SceneFileMap &map );
+    void loadMaterialData( const CS123SceneMaterial &material );
+    void buildTexture( const CS123::GL::Texture2D &texture );
 };
 
 #endif // SCENEVIEWSCENE_H

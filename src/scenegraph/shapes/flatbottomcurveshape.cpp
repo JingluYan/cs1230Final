@@ -24,6 +24,7 @@ int FlatBottomCurveShape::calcBottom(int p1, int p2, float y, std::vector<float>
         for (int j = 0; j < p2 + 1; j++) {
             deg += draw_dir * 360 / static_cast<float>(p2);
             float rad = deg * M_PI / 180;
+            //add position
             vertices.push_back(i * segment_len * cos(rad));
             vertices.push_back(y);
             vertices.push_back(i * segment_len * sin(rad));
@@ -31,7 +32,10 @@ int FlatBottomCurveShape::calcBottom(int p1, int p2, float y, std::vector<float>
             vertices.push_back(0.0f);
             vertices.push_back(normal_y);
             vertices.push_back(0.0f);
+            //add uv
+            addUV(i * segment_len * cos(rad), i * segment_len * sin(rad), vertices);
 
+            // add position
             vertices.push_back((i + 1) * segment_len * cos(rad));
             vertices.push_back(y);
             vertices.push_back((i + 1) * segment_len * sin(rad));
@@ -39,11 +43,18 @@ int FlatBottomCurveShape::calcBottom(int p1, int p2, float y, std::vector<float>
             vertices.push_back(0.0f);
             vertices.push_back(normal_y);
             vertices.push_back(0.0f);
+            //add uv
+            addUV((i + 1) * segment_len * cos(rad), (i + 1) * segment_len * sin(rad), vertices);
 
             count += 2;
         }
     }
 
     return count;
+}
+
+void FlatBottomCurveShape::addUV(float x, float z, std::vector<float> &vertices) {
+    vertices.push_back(x + 0.5f);
+    vertices.push_back(-z + 0.5f);
 }
 

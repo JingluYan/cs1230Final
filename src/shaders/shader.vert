@@ -32,6 +32,7 @@ uniform bool useLighting;     // Whether to calculate lighting using lighting eq
 uniform bool useArrowOffsets; // True if rendering the arrowhead of a normal for Shapes
 
 void main() {
+    texc = texCoord;
     texc = texCoord * repeatUV;
 
     vec4 position_cameraSpace = v * m * vec4(position, 1.0);

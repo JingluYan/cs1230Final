@@ -13,13 +13,14 @@ public:
 
     int calcVertices(int p1, int p2);
     void update(int p1, int p2);
-    bool intersect(glm::vec3 &eye, glm::vec3 &ray, double &t) override;
 
 private:
     const float r; //radius
     const float slope; //slope
     int prev_p1;
     int prev_p2;
+    void addUV(float theta, float y, std::vector<float>& vertices);
+
 };
 
 #endif // CONE_H

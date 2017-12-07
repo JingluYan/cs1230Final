@@ -29,6 +29,7 @@ void CS123Shader::applyMaterial(const CS123SceneMaterial &material) {
     setUniform("diffuse_color", toGLMVec3(material.cDiffuse));
     setUniform("specular_color", toGLMVec3(material.cSpecular));
     setUniform("shininess", material.shininess);
+//    setUniform( "repeatUV", glm::vec2{1,1});
 }
 
 void CS123Shader::setLight(const CS123SceneLightData &light) {

@@ -7,8 +7,7 @@ class FlatBottomCurveShape : public OpenGLShape
 public:
     FlatBottomCurveShape();
     int calcBottom(int p1, int p2, float y, std::vector<float>& vertices, bool up);
-    bool intersect(glm::vec3 &eye, glm::vec3 &ray, double &t) = 0;
-
+    void addUV(float x, float z, std::vector<float>& vertices);
 protected:
     const float r; //radius
 };

@@ -41,7 +41,6 @@ public:
     /** Draw the initialized geometry. */
     void draw();
 
-    virtual bool intersect(glm::vec3 &eye, glm::vec3 &ray, double &t) = 0;
 
 protected:
     GLfloat *m_data;                            /// vector of floats containing the vertex data.
