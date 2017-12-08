@@ -35,6 +35,8 @@
 				<specular r="1.0" g="1.0" b="1.0"/>
 				<reflective r="0.6" g="0.6" b="0.6"/>
 				<diffuse r="1" g="1" b="1"/>
+                <texture file="/Users/qianavrilla/Documents/GitHub/cs1230Final/src/image/winter.jpg" u="1" v="1"/>
+                <blend v="1" />
 			</object>
 		</transblock>
         <transblock>
@@ -55,6 +57,8 @@
                 <specular r="1.0" g="1.0" b="1.0"/>
                 <reflective r="0.6" g="0.6" b="0.6"/>
                 <diffuse r="0.83" g="0.686" b="0.215"/>
+                <texture file="/Users/qianavrilla/Documents/GitHub/cs1230Final/src/image/gold.jpg" u="1" v="1"/>
+                <blend v="1" />
             </object>
         </transblock>
 		<transblock>
@@ -62,7 +66,8 @@
 			<scale x="6" y="0.1" z="3"/>
 			<object type="primitive" name="cube" >
 				<diffuse r="1" g="1" b="1"/>
-				<texture file="/course/cs123/data/image/bark.png" u="1" v="5"/>
+                <texture file="/Users/qianavrilla/Documents/GitHub/cs1230Final/src/image/wood_table.jpg" u="1" v="1"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
 				<blend v="0.9"/>
 			</object>
 		</transblock>
