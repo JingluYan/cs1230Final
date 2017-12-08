@@ -68,7 +68,7 @@ SOURCES += \
     ray/light.cpp \
     ray/rendertask.cpp \
     ray/raytracer.cpp \
-    lib/errorchecker.cpp
+    lib/errorchecker.cpp \
 
 
 HEADERS += \
@@ -123,7 +123,7 @@ HEADERS += \
     ray/light.h \
     ray/rendertask.h \
     ray/raytracer.h \
-    lib/errorchecker.h
+    lib/errorchecker.h \
 
 
 FORMS += ui/mainwindow.ui
