@@ -84,12 +84,14 @@ SOURCES       = ../src/camera/OrbitingCamera.cpp \
 		../src/scenegraph/shapes/cylinder.cpp \
 		../src/scenegraph/shapes/openglshape.cpp \
 		../src/scenegraph/shapes/sphere.cpp \
+		../src/scenegraph/shapes/quad.cpp \
 		../src/scenegraph/shapes/flatbottomcurveshape.cpp \
 		../src/ray/rayshape.cpp \
 		../src/ray/rayutils.cpp \
 		../src/ray/light.cpp \
 		../src/ray/rendertask.cpp \
-		../src/ray/raytracer.cpp qrc_resources.cpp \
+		../src/ray/raytracer.cpp \
+		../src/lib/errorchecker.cpp qrc_resources.cpp \
 		moc_Canvas2D.cpp \
 		moc_SupportCanvas2D.cpp \
 		moc_SupportCanvas3D.cpp \
@@ -134,12 +136,14 @@ OBJECTS       = OrbitingCamera.o \
 		cylinder.o \
 		openglshape.o \
 		sphere.o \
+		quad.o \
 		flatbottomcurveshape.o \
 		rayshape.o \
 		rayutils.o \
 		light.o \
 		rendertask.o \
 		raytracer.o \
+		errorchecker.o \
 		qrc_resources.o \
 		moc_Canvas2D.o \
 		moc_SupportCanvas2D.o \
@@ -522,7 +526,7 @@ qmake_all: FORCE
 
 dist: 
 	@test -d .tmp/CS1231.0.0 || mkdir -p .tmp/CS1231.0.0
-	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/resources.qrc .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/camera/Camera.h ../src/camera/OrbitingCamera.h ../src/camera/CamtransCamera.h ../src/camera/QuaternionCamera.h ../src/scenegraph/Scene.h ../src/scenegraph/OpenGLScene.h ../src/scenegraph/ShapesScene.h ../src/scenegraph/SceneviewScene.h ../src/scenegraph/RayScene.h ../src/ui/Canvas2D.h ../src/ui/SupportCanvas2D.h ../src/ui/SupportCanvas3D.h ../src/ui/Settings.h ../src/ui/mainwindow.h ../src/ui/Databinding.h ui_mainwindow.h ../src/gl/shaders/Shader.h ../src/gl/GLDebug.h ../src/gl/shaders/ShaderAttribLocations.h ../src/gl/datatype/VBOAttribMarker.h ../src/gl/datatype/VBO.h ../src/gl/datatype/IBO.h ../src/gl/datatype/VAO.h ../src/gl/datatype/FBO.h ../src/gl/textures/Texture.h ../src/gl/textures/Texture2D.h ../src/gl/textures/TextureParameters.h ../src/gl/textures/TextureParametersBuilder.h ../src/gl/textures/RenderBuffer.h ../src/gl/textures/DepthBuffer.h ../src/gl/shaders/CS123Shader.h ../src/gl/util/FullScreenQuad.h ../src/lib/BGRA.h ../src/lib/CS123XmlSceneParser.h ../src/lib/CS123SceneData.h ../src/lib/CS123ISceneParser.h ../src/lib/ResourceLoader.h ../src/glew-1.10.0/include/GL/glew.h ../src/scenegraph/shapes/cone.h ../src/scenegraph/shapes/cube.h ../src/scenegraph/shapes/cylinder.h ../src/scenegraph/shapes/openglshape.h ../src/scenegraph/shapes/sphere.h ../src/scenegraph/shapes/flatbottomcurveshape.h ../../../../../../../home/yliu82/course/cs1230/src/filter/CamtransCamera.h ../src/ray/rayshape.h ../src/ray/rayutils.h ../src/ray/light.h ../src/ray/rendertask.h ../src/ray/raytracer.h .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/camera/OrbitingCamera.cpp ../src/camera/CamtransCamera.cpp ../src/camera/QuaternionCamera.cpp ../src/scenegraph/Scene.cpp ../src/scenegraph/OpenGLScene.cpp ../src/scenegraph/ShapesScene.cpp ../src/scenegraph/SceneviewScene.cpp ../src/scenegraph/RayScene.cpp ../src/ui/Canvas2D.cpp ../src/ui/SupportCanvas2D.cpp ../src/ui/SupportCanvas3D.cpp ../src/ui/Settings.cpp ../src/ui/mainwindow.cpp ../src/ui/Databinding.cpp ../src/lib/BGRA.cpp ../src/lib/CS123XmlSceneParser.cpp ../src/lib/ResourceLoader.cpp ../src/gl/shaders/Shader.cpp ../src/gl/GLDebug.cpp ../src/gl/datatype/VBOAttribMarker.cpp ../src/gl/datatype/VBO.cpp ../src/gl/datatype/IBO.cpp ../src/gl/datatype/VAO.cpp ../src/gl/datatype/FBO.cpp ../src/gl/textures/Texture.cpp ../src/gl/textures/Texture2D.cpp ../src/gl/textures/TextureParameters.cpp ../src/gl/textures/TextureParametersBuilder.cpp ../src/gl/textures/RenderBuffer.cpp ../src/gl/textures/DepthBuffer.cpp ../src/gl/shaders/CS123Shader.cpp ../src/gl/util/FullScreenQuad.cpp ../src/main.cpp ../src/glew-1.10.0/src/glew.c ../src/scenegraph/shapes/cone.cpp ../src/scenegraph/shapes/cube.cpp ../src/scenegraph/shapes/cylinder.cpp ../src/scenegraph/shapes/openglshape.cpp ../src/scenegraph/shapes/sphere.cpp ../src/scenegraph/shapes/flatbottomcurveshape.cpp ../src/ray/rayshape.cpp ../src/ray/rayutils.cpp ../src/ray/light.cpp ../src/ray/rendertask.cpp ../src/ray/raytracer.cpp .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/ui/mainwindow.ui .tmp/CS1231.0.0/ && (cd `dirname .tmp/CS1231.0.0` && $(TAR) CS1231.0.0.tar CS1231.0.0 && $(COMPRESS) CS1231.0.0.tar) && $(MOVE) `dirname .tmp/CS1231.0.0`/CS1231.0.0.tar.gz . && $(DEL_FILE) -r .tmp/CS1231.0.0
+	$(COPY_FILE) --parents $(SOURCES) $(DIST) .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/resources.qrc .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/camera/Camera.h ../src/camera/OrbitingCamera.h ../src/camera/CamtransCamera.h ../src/camera/QuaternionCamera.h ../src/scenegraph/Scene.h ../src/scenegraph/OpenGLScene.h ../src/scenegraph/ShapesScene.h ../src/scenegraph/SceneviewScene.h ../src/scenegraph/RayScene.h ../src/ui/Canvas2D.h ../src/ui/SupportCanvas2D.h ../src/ui/SupportCanvas3D.h ../src/ui/Settings.h ../src/ui/mainwindow.h ../src/ui/Databinding.h ui_mainwindow.h ../src/gl/shaders/Shader.h ../src/gl/GLDebug.h ../src/gl/shaders/ShaderAttribLocations.h ../src/gl/datatype/VBOAttribMarker.h ../src/gl/datatype/VBO.h ../src/gl/datatype/IBO.h ../src/gl/datatype/VAO.h ../src/gl/datatype/FBO.h ../src/gl/textures/Texture.h ../src/gl/textures/Texture2D.h ../src/gl/textures/TextureParameters.h ../src/gl/textures/TextureParametersBuilder.h ../src/gl/textures/RenderBuffer.h ../src/gl/textures/DepthBuffer.h ../src/gl/shaders/CS123Shader.h ../src/gl/util/FullScreenQuad.h ../src/lib/BGRA.h ../src/lib/CS123XmlSceneParser.h ../src/lib/CS123SceneData.h ../src/lib/CS123ISceneParser.h ../src/lib/ResourceLoader.h ../src/glew-1.10.0/include/GL/glew.h ../src/scenegraph/shapes/cone.h ../src/scenegraph/shapes/cube.h ../src/scenegraph/shapes/cylinder.h ../src/scenegraph/shapes/openglshape.h ../src/scenegraph/shapes/sphere.h ../src/scenegraph/shapes/quad.h ../src/scenegraph/shapes/flatbottomcurveshape.h ../../../../../../../home/yliu82/course/cs1230/src/filter/CamtransCamera.h ../src/ray/rayshape.h ../src/ray/rayutils.h ../src/ray/light.h ../src/ray/rendertask.h ../src/ray/raytracer.h ../src/lib/errorchecker.h .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/camera/OrbitingCamera.cpp ../src/camera/CamtransCamera.cpp ../src/camera/QuaternionCamera.cpp ../src/scenegraph/Scene.cpp ../src/scenegraph/OpenGLScene.cpp ../src/scenegraph/ShapesScene.cpp ../src/scenegraph/SceneviewScene.cpp ../src/scenegraph/RayScene.cpp ../src/ui/Canvas2D.cpp ../src/ui/SupportCanvas2D.cpp ../src/ui/SupportCanvas3D.cpp ../src/ui/Settings.cpp ../src/ui/mainwindow.cpp ../src/ui/Databinding.cpp ../src/lib/BGRA.cpp ../src/lib/CS123XmlSceneParser.cpp ../src/lib/ResourceLoader.cpp ../src/gl/shaders/Shader.cpp ../src/gl/GLDebug.cpp ../src/gl/datatype/VBOAttribMarker.cpp ../src/gl/datatype/VBO.cpp ../src/gl/datatype/IBO.cpp ../src/gl/datatype/VAO.cpp ../src/gl/datatype/FBO.cpp ../src/gl/textures/Texture.cpp ../src/gl/textures/Texture2D.cpp ../src/gl/textures/TextureParameters.cpp ../src/gl/textures/TextureParametersBuilder.cpp ../src/gl/textures/RenderBuffer.cpp ../src/gl/textures/DepthBuffer.cpp ../src/gl/shaders/CS123Shader.cpp ../src/gl/util/FullScreenQuad.cpp ../src/main.cpp ../src/glew-1.10.0/src/glew.c ../src/scenegraph/shapes/cone.cpp ../src/scenegraph/shapes/cube.cpp ../src/scenegraph/shapes/cylinder.cpp ../src/scenegraph/shapes/openglshape.cpp ../src/scenegraph/shapes/sphere.cpp ../src/scenegraph/shapes/quad.cpp ../src/scenegraph/shapes/flatbottomcurveshape.cpp ../src/ray/rayshape.cpp ../src/ray/rayutils.cpp ../src/ray/light.cpp ../src/ray/rendertask.cpp ../src/ray/raytracer.cpp ../src/lib/errorchecker.cpp .tmp/CS1231.0.0/ && $(COPY_FILE) --parents ../src/ui/mainwindow.ui .tmp/CS1231.0.0/ && (cd `dirname .tmp/CS1231.0.0` && $(TAR) CS1231.0.0.tar CS1231.0.0 && $(COMPRESS) CS1231.0.0.tar) && $(MOVE) `dirname .tmp/CS1231.0.0`/CS1231.0.0.tar.gz . && $(DEL_FILE) -r .tmp/CS1231.0.0
 
 
 clean:compiler_clean 
@@ -547,18 +551,24 @@ compiler_rcc_make_all: qrc_resources.cpp
 compiler_rcc_clean:
 	-$(DEL_FILE) qrc_resources.cpp
 qrc_resources.cpp: ../src/resources.qrc \
-		../src/shaders/wireframe/wireframe.frag \
-		../src/shaders/normals/normals.frag \
-		../src/shaders/fullscreenquad/fullscreenquad.frag \
+		../src/shaders/wireframe/wireframe.vert \
+		../src/shaders/normals/normalsArrow.vert \
+		../src/shaders/defered_shading/third_pass/third_pass.frag \
+		../src/shaders/defered_shading/first_pass/gbuffer.frag \
+		../src/shaders/fullscreenquad/fullscreenquad.vert \
 		../src/shaders/shader.frag \
+		../src/shaders/defered_shading/second_pass/lighting.frag \
+		../src/shaders/wireframe/wireframe.frag \
+		../src/shaders/normals/normals.vert \
 		../src/shaders/normals/normalsArrow.frag \
 		../src/shaders/normals/normalsArrow.gsh \
 		../src/shaders/normals/normals.gsh \
-		../src/shaders/wireframe/wireframe.vert \
-		../src/shaders/normals/normals.vert \
-		../src/shaders/fullscreenquad/fullscreenquad.vert \
+		../src/shaders/defered_shading/third_pass/third_pass.vert \
+		../src/shaders/defered_shading/first_pass/gbuffer.vert \
+		../src/shaders/fullscreenquad/fullscreenquad.frag \
 		../src/shaders/shader.vert \
-		../src/shaders/normals/normalsArrow.vert
+		../src/shaders/normals/normals.frag \
+		../src/shaders/defered_shading/second_pass/lighting.vert
 	/contrib/projects/qt5.2.0/5.2.0/gcc_64/bin/rcc -name resources ../src/resources.qrc -o qrc_resources.cpp
 
 compiler_moc_header_make_all: moc_Canvas2D.cpp moc_SupportCanvas2D.cpp moc_SupportCanvas3D.cpp moc_mainwindow.cpp moc_Databinding.cpp
@@ -2286,6 +2296,7 @@ SceneviewScene.o: ../src/scenegraph/SceneviewScene.cpp ../src/scenegraph/Scenevi
 		../src/scenegraph/shapes/cube.h \
 		../src/scenegraph/shapes/cylinder.h \
 		../src/scenegraph/shapes/sphere.h \
+		../src/scenegraph/shapes/quad.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/QGLWidget \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/qgl.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qopengl.h \
@@ -2414,7 +2425,13 @@ SceneviewScene.o: ../src/scenegraph/SceneviewScene.cpp ../src/scenegraph/Scenevi
 		../src/ui/SupportCanvas3D.h \
 		../src/lib/ResourceLoader.h \
 		../src/gl/shaders/CS123Shader.h \
-		../src/gl/shaders/Shader.h
+		../src/gl/shaders/Shader.h \
+		../src/gl/textures/Texture2D.h \
+		../src/gl/textures/Texture.h \
+		../src/gl/textures/TextureParameters.h \
+		../src/gl/textures/TextureParametersBuilder.h \
+		../src/lib/errorchecker.h \
+		../src/gl/datatype/FBO.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o SceneviewScene.o ../src/scenegraph/SceneviewScene.cpp
 
 RayScene.o: ../src/scenegraph/RayScene.cpp ../src/scenegraph/RayScene.h \
@@ -3142,6 +3159,7 @@ SupportCanvas3D.o: ../src/ui/SupportCanvas3D.cpp ../src/ui/SupportCanvas3D.h \
 		../src/scenegraph/shapes/cube.h \
 		../src/scenegraph/shapes/cylinder.h \
 		../src/scenegraph/shapes/sphere.h \
+		../src/scenegraph/shapes/quad.h \
 		../src/ui/Settings.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QObject \
 		../src/scenegraph/ShapesScene.h \
@@ -3460,29 +3478,75 @@ mainwindow.o: ../src/ui/mainwindow.cpp ../src/ui/mainwindow.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qtabwidget.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qicon.h \
 		ui_mainwindow.h \
-		../src/ui/Databinding.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QObject \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QVariant \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QSlider \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qslider.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QAction \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qaction.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qactiongroup.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QApplication \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qapplication.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreapplication.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeventloop.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdesktopwidget.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qguiapplication.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qinputmethod.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QCheckBox \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qcheckbox.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QDial \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdial.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractslider.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QDockWidget \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdockwidget.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QGridLayout \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qgridlayout.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qlayout.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qlayoutitem.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qboxlayout.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QGroupBox \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qgroupbox.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qframe.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QHBoxLayout \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QHeaderView \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qheaderview.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractitemview.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractscrollarea.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractitemmodel.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qitemselectionmodel.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractitemdelegate.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qstyleoption.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractspinbox.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qvalidator.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregularexpression.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qslider.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qstyle.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qtabbar.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qrubberband.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QLabel \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qlabel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QLineEdit \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qlineedit.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qframe.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtextcursor.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtextformat.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qpen.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qtextoption.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QCheckBox \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qcheckbox.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qabstractbutton.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QMenu \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qmenu.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QMenuBar \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qmenubar.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QPushButton \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qpushbutton.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QRadioButton \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qradiobutton.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QDockWidget \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdockwidget.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QScrollArea \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qscrollarea.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QSlider \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QTabWidget \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QDial \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/qdial.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QVBoxLayout \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QWidget \
+		../src/ui/Canvas2D.h \
+		../src/ui/SupportCanvas2D.h \
+		../src/ui/Databinding.h \
+		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QObject \
 		../src/ui/SupportCanvas3D.h \
 		../src/glew-1.10.0/include/GL/glew.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtOpenGL/QGLWidget \
@@ -3610,10 +3674,8 @@ mainwindow.o: ../src/ui/mainwindow.cpp ../src/ui/mainwindow.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporarydir.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/QScopedPointer \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtemporaryfile.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractitemmodel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractproxymodel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qidentityproxymodel.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qitemselectionmodel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qsortfilterproxymodel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstringlistmodel.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonarray.h \
@@ -3621,10 +3683,8 @@ mainwindow.o: ../src/ui/mainwindow.cpp ../src/ui/mainwindow.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsondocument.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qjsonobject.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstracteventdispatcher.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qeventloop.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qabstractnativeeventfilter.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qbasictimer.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qcoreapplication.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmath.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmetaobject.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmimedata.h \
@@ -3678,7 +3738,6 @@ mainwindow.o: ../src/ui/mainwindow.cpp ../src/ui/mainwindow.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qlinkedlist.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qmessageauthenticationcode.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qqueue.h \
-		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qregularexpression.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qscopedvaluerollback.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qstack.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtCore/qtextboundaryfinder.h \
@@ -3711,6 +3770,7 @@ mainwindow.o: ../src/ui/mainwindow.cpp ../src/ui/mainwindow.h \
 		../src/scenegraph/shapes/cylinder.h \
 		../src/scenegraph/shapes/sphere.h \
 		../src/scenegraph/SceneviewScene.h \
+		../src/scenegraph/shapes/quad.h \
 		../src/camera/CamtransCamera.h \
 		../src/camera/Camera.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtWidgets/QFileDialog \
@@ -5080,6 +5140,90 @@ sphere.o: ../src/scenegraph/shapes/sphere.cpp ../src/scenegraph/shapes/sphere.h 
 		../src/gl/shaders/ShaderAttribLocations.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sphere.o ../src/scenegraph/shapes/sphere.cpp
 
+quad.o: ../src/scenegraph/shapes/quad.cpp ../src/scenegraph/shapes/quad.h \
+		../src/scenegraph/shapes/openglshape.h \
+		../src/glew-1.10.0/include/GL/glew.h \
+		../src/glm/glm.hpp \
+		../src/glm/detail/_fixes.hpp \
+		../src/glm/fwd.hpp \
+		../src/glm/detail/type_int.hpp \
+		../src/glm/detail/setup.hpp \
+		../src/glm/detail/type_float.hpp \
+		../src/glm/detail/type_vec.hpp \
+		../src/glm/detail/precision.hpp \
+		../src/glm/detail/type_mat.hpp \
+		../src/glm/vec2.hpp \
+		../src/glm/detail/type_vec2.hpp \
+		../src/glm/detail/_swizzle.hpp \
+		../src/glm/detail/_swizzle_func.hpp \
+		../src/glm/detail/type_vec2.inl \
+		../src/glm/vec3.hpp \
+		../src/glm/detail/type_vec3.hpp \
+		../src/glm/detail/type_vec3.inl \
+		../src/glm/vec4.hpp \
+		../src/glm/detail/type_vec4.hpp \
+		../src/glm/detail/type_vec4.inl \
+		../src/glm/mat2x2.hpp \
+		../src/glm/detail/type_mat2x2.hpp \
+		../src/glm/detail/type_mat2x2.inl \
+		../src/glm/mat2x3.hpp \
+		../src/glm/detail/type_mat2x3.hpp \
+		../src/glm/detail/type_mat2x3.inl \
+		../src/glm/mat2x4.hpp \
+		../src/glm/detail/type_mat2x4.hpp \
+		../src/glm/detail/type_mat2x4.inl \
+		../src/glm/mat3x2.hpp \
+		../src/glm/detail/type_mat3x2.hpp \
+		../src/glm/detail/type_mat3x2.inl \
+		../src/glm/mat3x3.hpp \
+		../src/glm/detail/type_mat3x3.hpp \
+		../src/glm/detail/type_mat3x3.inl \
+		../src/glm/mat3x4.hpp \
+		../src/glm/detail/type_mat3x4.hpp \
+		../src/glm/detail/type_mat3x4.inl \
+		../src/glm/mat4x2.hpp \
+		../src/glm/detail/type_mat4x2.hpp \
+		../src/glm/detail/type_mat4x2.inl \
+		../src/glm/mat4x3.hpp \
+		../src/glm/detail/type_mat4x3.hpp \
+		../src/glm/detail/type_mat4x3.inl \
+		../src/glm/mat4x4.hpp \
+		../src/glm/detail/type_mat4x4.hpp \
+		../src/glm/detail/type_mat4x4.inl \
+		../src/glm/trigonometric.hpp \
+		../src/glm/detail/func_trigonometric.hpp \
+		../src/glm/detail/func_trigonometric.inl \
+		../src/glm/detail/_vectorize.hpp \
+		../src/glm/detail/type_vec1.hpp \
+		../src/glm/detail/type_vec1.inl \
+		../src/glm/exponential.hpp \
+		../src/glm/detail/func_exponential.hpp \
+		../src/glm/detail/func_exponential.inl \
+		../src/glm/detail/func_vector_relational.hpp \
+		../src/glm/detail/func_vector_relational.inl \
+		../src/glm/common.hpp \
+		../src/glm/detail/func_common.hpp \
+		../src/glm/detail/func_common.inl \
+		../src/glm/packing.hpp \
+		../src/glm/detail/func_packing.hpp \
+		../src/glm/detail/func_packing.inl \
+		../src/glm/detail/type_half.hpp \
+		../src/glm/detail/type_half.inl \
+		../src/glm/geometric.hpp \
+		../src/glm/detail/func_geometric.hpp \
+		../src/glm/detail/func_geometric.inl \
+		../src/glm/matrix.hpp \
+		../src/glm/detail/func_matrix.hpp \
+		../src/glm/detail/func_matrix.inl \
+		../src/glm/vector_relational.hpp \
+		../src/glm/integer.hpp \
+		../src/glm/detail/func_integer.hpp \
+		../src/glm/detail/func_integer.inl \
+		../src/gl/datatype/VBO.h \
+		../src/gl/datatype/VBOAttribMarker.h \
+		../src/gl/shaders/ShaderAttribLocations.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o quad.o ../src/scenegraph/shapes/quad.cpp
+
 flatbottomcurveshape.o: ../src/scenegraph/shapes/flatbottomcurveshape.cpp ../src/scenegraph/shapes/flatbottomcurveshape.h \
 		../src/scenegraph/shapes/openglshape.h \
 		../src/glew-1.10.0/include/GL/glew.h \
@@ -5798,6 +5942,10 @@ raytracer.o: ../src/ray/raytracer.cpp ../src/ray/raytracer.h \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/QColor \
 		../../../../../../sys/shared/psfu/contrib/projects/qt5.2.0/5.2.0/gcc_64/include/QtGui/qcolor.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o raytracer.o ../src/ray/raytracer.cpp
+
+errorchecker.o: ../src/lib/errorchecker.cpp ../src/lib/errorchecker.h \
+		../src/glew-1.10.0/include/GL/glew.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o errorchecker.o ../src/lib/errorchecker.cpp
 
 qrc_resources.o: qrc_resources.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_resources.o qrc_resources.cpp

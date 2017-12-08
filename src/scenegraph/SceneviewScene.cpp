@@ -14,6 +14,10 @@
 #include "gl/textures/TextureParameters.h"
 #include "gl/textures/TextureParametersBuilder.h"
 
+#include "lib/errorchecker.h"
+#include "gl/datatype/FBO.h"
+#include "gl/textures/Texture2D.h"
+
 using namespace CS123::GL;
 
 
@@ -21,6 +25,7 @@ SceneviewScene::SceneviewScene()
 {
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     loadPhongShader();
+    loadDeferredShader();
     loadWireframeShader();
     loadNormalsShader();
     loadNormalsArrowShader();
@@ -32,6 +37,16 @@ SceneviewScene::SceneviewScene()
     m_cylinder = std::make_unique<Cylinder>(settings.shapeParameter1,settings.shapeParameter2);
 
     m_sphere = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
+
+    // build full screen quad
+    m_quad = std::make_unique<Quad>();
+}
+
+SceneviewScene::SceneviewScene(int w, int h) :
+    m_width(w),
+    m_height(h)
+{
+//    init();
 }
 
 SceneviewScene::~SceneviewScene()
@@ -43,6 +58,14 @@ void SceneviewScene::loadPhongShader() {
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/default.frag");
     m_phongShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
 }
+
+void SceneviewScene::loadDeferredShader() {
+    //load first pass
+    std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/gbuffer.vert");
+    std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/gbuffer.frag");
+    m_deferredShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
+}
+
 
 void SceneviewScene::loadWireframeShader() {
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/wireframe.vert");
@@ -68,21 +91,42 @@ void SceneviewScene::render(SupportCanvas3D *context) {
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    m_phongShader->bind();
-    setSceneUniforms(context);
-    setLights();
-    renderGeometry();
-    glBindTexture(GL_TEXTURE_2D, 0);
-    m_phongShader->unbind();
-
+    // use deferred lighting
+    if (settings.deferredLight) {
+        m_gbuffer_FBO = std::make_unique<FBO>(3,
+                                              FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY,
+                                              m_width,
+                                              m_height,
+                                              TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE);
+//        m_gbuffer_FBO->bind();
+        m_deferredShader->bind();
+        setSceneUniforms(context);
+        renderGeometry();
+        m_deferredShader->unbind();
+//        m_gbuffer_FBO->unbind();
+    } else { // use default phong shader
+        m_phongShader->bind();
+        setSceneUniforms(context);
+        setLights();
+        renderGeometry();
+        glBindTexture(GL_TEXTURE_2D, 0);
+        m_phongShader->unbind();
+    }
 }
 
 void SceneviewScene::setSceneUniforms(SupportCanvas3D *context) {
     Camera *camera = context->getCamera();
-    m_phongShader->setUniform("useLighting", settings.useLighting);
-    m_phongShader->setUniform("useArrowOffsets", false);
-    m_phongShader->setUniform("p" , camera->getProjectionMatrix());
-    m_phongShader->setUniform("v", camera->getViewMatrix());
+    if (settings.deferredLight) {
+        ErrorChecker::printGLErrors("line 101");
+        m_deferredShader->setUniform("p" , camera->getProjectionMatrix());
+        m_deferredShader->setUniform("v", camera->getViewMatrix());
+        ErrorChecker::printGLErrors("line 104");
+    } else {
+        m_phongShader->setUniform("useLighting", settings.useLighting);
+        m_phongShader->setUniform("useArrowOffsets", false);
+        m_phongShader->setUniform("p" , camera->getProjectionMatrix());
+        m_phongShader->setUniform("v", camera->getViewMatrix());
+    }
 }
 
 void SceneviewScene::setMatrixUniforms(Shader *shader, SupportCanvas3D *context) {
@@ -113,12 +157,22 @@ void SceneviewScene::renderGeometry() {
     //
 
     for (PrimTransPair pair : primTransPairs) {
-        m_phongShader->setUniform("m", pair.tranformation);
-        m_phongShader->applyMaterial(pair.primitive.material);
+        if (settings.deferredLight) {
+            m_deferredShader->setUniform("m", pair.tranformation);
+//            glm::mat3 normalMat = glm::mat3(pair.tranformation);
+//            m_deferredShader->setUniform("normalMatrix", normalMat);
 
+            m_deferredShader->applyMaterial(pair.primitive.material);
+            ErrorChecker::printGLErrors("line 165");
+        } else {
+            m_phongShader->setUniform("m", pair.tranformation);
+            m_phongShader->applyMaterial(pair.primitive.material);
+        }
         //texture map
-        loadMaterialData( pair.primitive.material );
-        tryApplyTexture( pair.primitive.material.textureMap );
+        loadDiffuseMapData( pair.primitive.material );
+        loadBumpMapData ( pair.primitive.material );
+        tryApplyDiffuseTexture( pair.primitive.material.textureMap );
+        tryApplyBumpTexture( pair.primitive.material.bumpMap );
 
         switch (pair.primitive.type) {
             case PrimitiveType::PRIMITIVE_CUBE:
@@ -129,6 +183,7 @@ void SceneviewScene::renderGeometry() {
             break;
             case PrimitiveType::PRIMITIVE_CYLINDER:
             m_cylinder->draw();
+            ErrorChecker::printGLErrors("line 192");
             break;
             case PrimitiveType::PRIMITIVE_SPHERE:
             m_sphere->draw();
@@ -137,6 +192,8 @@ void SceneviewScene::renderGeometry() {
             //TODO: Should I do anything here? will I encounter odd shapes
             continue;
         }
+
+        ErrorChecker::printGLErrors("line 201");
     }
 }
 
@@ -148,17 +205,38 @@ void SceneviewScene::settingsChanged() {
     m_cone->update(settings.shapeParameter1, settings.shapeParameter2);
 }
 
-void SceneviewScene::tryApplyTexture( const CS123SceneFileMap &map ) {
-    if( !map.isUsed ) {
-        m_phongShader->setUniform( "useTexture", 0 );
-        return;
+void SceneviewScene::tryApplyDiffuseTexture( const CS123SceneFileMap &map ) {
+    if (settings.deferredLight) {
+        if (!map.isUsed) {
+            m_deferredShader->setUniform( "useTexture", 0 );
+            return;
+        }
+        m_deferredShader->setUniform( "useTexture", 1 );
+        m_deferredShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
+        m_deferredShader->setTexture( "tex", m_textures.at( map.filename ) );
+        ErrorChecker::printGLErrors("line 186");
+    } else {
+        if( !map.isUsed ) {
+            m_phongShader->setUniform( "useTexture", 0 );
+            return;
+        }
+        m_phongShader->setUniform( "useTexture", 1 );
+        m_phongShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
+        m_phongShader->setTexture( "tex", m_textures.at( map.filename ) );
     }
-    m_phongShader->setUniform( "useTexture", 1 );
-    m_phongShader->setUniform( "repeatUV", glm::vec2{1,1});
-    m_phongShader->setTexture( "tex", m_textures.at( map.filename ) );
 }
 
-void SceneviewScene::loadMaterialData( const CS123SceneMaterial &material ) {
+void SceneviewScene::tryApplyBumpTexture( const CS123SceneFileMap &map ) {
+    if( !map.isUsed ) {
+        m_phongShader->setUniform( "useBumpTexture", 0 );
+        return;
+    }
+    m_phongShader->setUniform( "useBumpTexture", 1 );
+    m_phongShader->setUniform( "repeatBumpUV", glm::vec2{map.repeatU, map.repeatV});
+    m_phongShader->setTexture( "texBump", m_bumpmaps.at( map.filename ) );
+}
+
+void SceneviewScene::loadDiffuseMapData( const CS123SceneMaterial &material ) {
     // If texture is not used
     if(!(material.textureMap.isUsed ) && (material.textureMap.filename.compare( "" )) )
              return;
@@ -171,7 +249,6 @@ void SceneviewScene::loadMaterialData( const CS123SceneMaterial &material ) {
     QImage convertedImage = QGLWidget::convertToGLFormat( image );
 
     if( convertedImage.isNull() ) {
-        std::cerr << "Could not read file: " << material.textureMap.filename << std::endl;
         return;
     }
 
@@ -180,10 +257,36 @@ void SceneviewScene::loadMaterialData( const CS123SceneMaterial &material ) {
     m_textures.insert( std::make_pair( material.textureMap.filename, std::move( texture ) ) );
 }
 
+void SceneviewScene::loadBumpMapData( const CS123SceneMaterial &material ) {
+    // If texture is not used
+    if(!(material.bumpMap.isUsed ) && (material.bumpMap.filename.compare( "" )) )
+             return;
+
+    // If texture had already been loaded
+    if( m_bumpmaps.find( material.bumpMap.filename ) != m_bumpmaps.end() )
+        return;
+
+    QImage image = QImage( material.bumpMap.filename.data() );
+    QImage convertedImage = QGLWidget::convertToGLFormat( image );
+
+    if( convertedImage.isNull() ) {
+        return;
+    }
+
+    Texture2D texture( convertedImage.bits(), convertedImage.width(), convertedImage.height() );
+    buildTexture( texture );
+    m_bumpmaps.insert( std::make_pair( material.bumpMap.filename, std::move( texture ) ) );
+}
+
 void SceneviewScene::buildTexture( const Texture2D &texture ) {
     TextureParametersBuilder builder;
     builder.setFilter( TextureParameters::FILTER_METHOD::LINEAR );
     builder.setWrap( TextureParameters::WRAP_METHOD::REPEAT );
     TextureParameters parameters = builder.build();
     parameters.applyTo( texture );
+}
+
+void SceneviewScene::setWindowDim(int w, int h) {
+    m_width = w;
+    m_height = h;
 }

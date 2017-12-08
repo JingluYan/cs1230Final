@@ -30,7 +30,9 @@ public:
     std::vector<RayShape*> m_rayShapes;
     std::vector<Light*> m_rayLights;
     std::vector<QImage*> m_textures;
+//    std::vector<QImage*> m_bumpmaps;
     std::unordered_map<std::string, QImage> m_fileNameToTexture;
+    std::unordered_map<std::string, QImage> m_fileNameToBumpMap;
 };
 
 #endif // RAYSCENE_H

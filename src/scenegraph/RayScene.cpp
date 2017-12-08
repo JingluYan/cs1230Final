@@ -68,6 +68,15 @@ RayScene::RayScene(Scene &scene) :
             }
         }
 
+//        if (pair.primitive.material.bumpMap.isUsed) {
+//            std::string fileName = pair.primitive.material.bumpMap.filename;
+//            if (m_fileNameToBumpMap.find(fileName) == m_fileNameToBumpMap.end()) {
+//                // filename not found
+//                QString qFileName(fileName.c_str());
+//                m_fileNameToBumpMap[fileName] = QImage(qFileName);
+//            }
+//        }
+
         m_rayShapes.push_back(rayShape);
     }
 
