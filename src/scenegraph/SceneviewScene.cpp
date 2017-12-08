@@ -159,7 +159,10 @@ void SceneviewScene::renderGeometry() {
     for (PrimTransPair pair : primTransPairs) {
         if (settings.deferredLight) {
             m_deferredShader->setUniform("m", pair.tranformation);
-            m_deferredShader->applyMaterial(pair.primitive.material);
+            glm::mat3 normalMat = glm::mat3(pair.tranformation);
+            m_deferredShader->setUniform("normalMatrix", normalMat);
+
+//            m_deferredShader->applyMaterial(pair.primitive.material);
             ErrorChecker::printGLErrors("line 165");
         } else {
             m_phongShader->setUniform("m", pair.tranformation);
@@ -203,12 +206,12 @@ void SceneviewScene::settingsChanged() {
 void SceneviewScene::tryApplyTexture( const CS123SceneFileMap &map ) {
     if (settings.deferredLight) {
         if (!map.isUsed) {
-            m_deferredShader->setUniform( "useTexture", 0 );
+//            m_deferredShader->setUniform( "useTexture", 0 );
             return;
         }
-        m_deferredShader->setUniform( "useTexture", 1 );
-        m_deferredShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
-        m_deferredShader->setTexture( "tex", m_textures.at( map.filename ) );
+//        m_deferredShader->setUniform( "useTexture", 1 );
+//        m_deferredShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
+//        m_deferredShader->setTexture( "tex", m_textures.at( map.filename ) );
         ErrorChecker::printGLErrors("line 186");
     } else {
         if( !map.isUsed ) {
