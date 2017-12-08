@@ -16,6 +16,7 @@ namespace CS123 { namespace GL {
     class Shader;
     class CS123Shader;
     class Texture2D;
+    class FBO;
 }}
 
 /**
@@ -36,6 +37,8 @@ namespace CS123 { namespace GL {
 class SceneviewScene : public OpenGLScene {
 public:
     SceneviewScene();
+    SceneviewScene(int w, int h);
+    void init();
     virtual ~SceneviewScene();
 
     virtual void render(SupportCanvas3D *context) override;
@@ -45,10 +48,12 @@ public:
     // pointer.  This will be used during the "modeler" lab, so don't worry about it for now.
     void setSelection(int x, int y);
 
+    void setWindowDim(int w, int h);
 
 private:
 
     void loadPhongShader();
+    void loadDeferredShader();
     void loadWireframeShader();
     void loadNormalsShader();
     void loadNormalsArrowShader();
@@ -62,16 +67,24 @@ private:
     std::unique_ptr<CS123::GL::Shader> m_wireframeShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsArrowShader;
+    std::unique_ptr<CS123::GL::CS123Shader> m_deferredShader;
     std::unique_ptr<Cube> m_cube;               ///cube
     std::unique_ptr<Cylinder> m_cylinder;       ///cylinder
     std::unique_ptr<Cone> m_cone;               ///cone
     std::unique_ptr<Sphere> m_sphere;           ///sphere
+
+    std::unique_ptr<OpenGLShape> m_quad;        /// full screen quad
 
     // texture map
     std::map<std::string,CS123::GL::Texture2D> m_textures;
     void tryApplyTexture( const CS123SceneFileMap &map );
     void loadMaterialData( const CS123SceneMaterial &material );
     void buildTexture( const CS123::GL::Texture2D &texture );
+
+    int m_width;  /// window width
+    int m_height;
+    std::unique_ptr<FBO> m_gbuffer_FBO;
+    std::unique_ptr<FBO> m_tmp_FBO;
 };
 
 #endif // SCENEVIEWSCENE_H

@@ -12,5 +12,11 @@
         <file alias="normalsArrow.frag">shaders/normals/normalsArrow.frag</file>
         <file alias="normalsArrow.gsh">shaders/normals/normalsArrow.gsh</file>
         <file alias="normalsArrow.vert">shaders/normals/normalsArrow.vert</file>
+        <file alias="gbuffer.frag">shaders/defered_shading/first_pass/gbuffer.frag</file>
+        <file alias="gbuffer.vert">shaders/defered_shading/first_pass/gbuffer.vert</file>
+        <file alias="lighting.frag">shaders/defered_shading/second_pass/lighting.frag</file>
+        <file alias="lighting.vert">shaders/defered_shading/second_pass/lighting.vert</file>
+        <file alias="third_pass.frag">shaders/defered_shading/third_pass/third_pass.frag</file>
+        <file alias="third_pass.vert">shaders/defered_shading/third_pass/third_pass.vert</file>
     </qresource>
 </RCC>
