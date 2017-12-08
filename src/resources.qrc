@@ -19,4 +19,9 @@
         <file alias="third_pass.frag">shaders/defered_shading/third_pass/third_pass.frag</file>
         <file alias="third_pass.vert">shaders/defered_shading/third_pass/third_pass.vert</file>
     </qresource>
+    <qresource prefix="/textures">
+        <file>images/gold.jpg</file>
+        <file>images/winter.jpg</file>
+        <file>images/wood_table.jpg</file>
+    </qresource>
 </RCC>
