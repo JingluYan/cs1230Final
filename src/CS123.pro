@@ -66,7 +66,8 @@ SOURCES += \
     ray/rayutils.cpp \
     ray/light.cpp \
     ray/rendertask.cpp \
-    ray/raytracer.cpp
+    ray/raytracer.cpp \
+    lib/errorchecker.cpp
 
 
 HEADERS += \
@@ -119,7 +120,8 @@ HEADERS += \
     ray/rayutils.h \
     ray/light.h \
     ray/rendertask.h \
-    ray/raytracer.h
+    ray/raytracer.h \
+    lib/errorchecker.h
 
 
 FORMS += ui/mainwindow.ui
@@ -138,12 +140,15 @@ OTHER_FILES += shaders/shader.frag \
     shaders/normals/normalsArrow.vert \
     shaders/normals/normalsArrow.gsh \
     shaders/normals/normalsArrow.frag \
-    shaders/deferredlighting/gbuffer/gbuffer.frag \
-    shaders/deferredlighting/gbuffer/gbuffer.vert \
-    shaders/deferredlighting/lighting/lighting.frag \
-    shaders/deferredlighting/lighting/lighting.vert \
-    shaders/deferredlighting/compositing/compositing.frag \
-    shaders/deferredlighting/compositing/compositing.vert
+    shaders/defered_shading/first_pass/gbuffer.frag \
+    shaders/defered_shading/first_pass/gbuffer.vert \
+    shaders/defered_shading/second_pass/lighting.frag \
+    shaders/defered_shading/second_pass/lighting.vert \
+    shaders/skybox/skybox.frag \
+    shaders/skybox/skybox.vert \
+    shaders/defered_shading/third_pass/third_pass.frag \
+    shaders/defered_shading/third_pass/third_pass.vert
+
 
 # Don't add the -pg flag unless you know what you are doing. It makes QThreadPool freeze on Mac OS X
 QMAKE_CXXFLAGS_RELEASE -= -O2

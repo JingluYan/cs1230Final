@@ -14,6 +14,10 @@
 #include "gl/textures/TextureParameters.h"
 #include "gl/textures/TextureParametersBuilder.h"
 
+#include "lib/errorchecker.h"
+#include "gl/datatype/FBO.h"
+#include "gl/textures/Texture2D.h"
+
 using namespace CS123::GL;
 
 
@@ -21,6 +25,7 @@ SceneviewScene::SceneviewScene()
 {
     // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
     loadPhongShader();
+    loadDeferredShader();
     loadWireframeShader();
     loadNormalsShader();
     loadNormalsArrowShader();
@@ -34,6 +39,45 @@ SceneviewScene::SceneviewScene()
     m_sphere = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
 }
 
+SceneviewScene::SceneviewScene(int w, int h) :
+    m_width(w),
+    m_height(h)
+{
+    init();
+}
+
+void SceneviewScene::init() {
+    loadPhongShader();
+    loadDeferredShader();
+    loadWireframeShader();
+    loadNormalsShader();
+    loadNormalsArrowShader();
+
+    // build full screen quad
+//    std::vector<GLfloat> quadData{
+//        -1.f, 1.f, .0f, .0f, .0f,
+//        -1.f, -1.f, .0f, .0f, 1.f,
+//        1.f, 1.f, .0f, 1.f, .0f,
+//        1.f, -1.f, .0f, 1.f, 1.f
+//    };
+//    m_quad = std::make_unique<OpenGLShape>();
+//    m_quad->setVertexData(&quadData[0], quadData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLE_STRIP, 4);
+//    m_quad->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+//    m_quad->setAttribute(ShaderAttrib::TEXCOORD0, 2, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+//    m_quad->buildVAO();
+
+    m_cube = std::make_unique<Cube>(settings.shapeParameter1);
+
+    m_cone = std::make_unique<Cone>(settings.shapeParameter1, settings.shapeParameter2);
+
+    m_cylinder = std::make_unique<Cylinder>(settings.shapeParameter1,settings.shapeParameter2);
+
+    m_sphere = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
+
+    m_gbuffer_FBO = std::make_unique<FBO>(3, FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY, m_width, m_height, TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE);
+
+}
+
 SceneviewScene::~SceneviewScene()
 {
 }
@@ -43,6 +87,14 @@ void SceneviewScene::loadPhongShader() {
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/default.frag");
     m_phongShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
 }
+
+void SceneviewScene::loadDeferredShader() {
+    //load first pass
+    std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/gbuffer.vert");
+    std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/gbuffer.frag");
+    m_deferredShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
+}
+
 
 void SceneviewScene::loadWireframeShader() {
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/wireframe.vert");
@@ -68,21 +120,42 @@ void SceneviewScene::render(SupportCanvas3D *context) {
     setClearColor();
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    m_phongShader->bind();
-    setSceneUniforms(context);
-    setLights();
-    renderGeometry();
-    glBindTexture(GL_TEXTURE_2D, 0);
-    m_phongShader->unbind();
-
+    // use deferred lighting
+    if (settings.deferredLight) {
+        m_gbuffer_FBO = std::make_unique<FBO>(3,
+                                              FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY,
+                                              m_width,
+                                              m_height,
+                                              TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE);
+//        m_gbuffer_FBO->bind();
+        m_deferredShader->bind();
+        setSceneUniforms(context);
+        renderGeometry();
+        m_deferredShader->unbind();
+//        m_gbuffer_FBO->unbind();
+    } else { // use default phong shader
+        m_phongShader->bind();
+        setSceneUniforms(context);
+        setLights();
+        renderGeometry();
+        glBindTexture(GL_TEXTURE_2D, 0);
+        m_phongShader->unbind();
+    }
 }
 
 void SceneviewScene::setSceneUniforms(SupportCanvas3D *context) {
     Camera *camera = context->getCamera();
-    m_phongShader->setUniform("useLighting", settings.useLighting);
-    m_phongShader->setUniform("useArrowOffsets", false);
-    m_phongShader->setUniform("p" , camera->getProjectionMatrix());
-    m_phongShader->setUniform("v", camera->getViewMatrix());
+    if (settings.deferredLight) {
+        ErrorChecker::printGLErrors("line 101");
+        m_deferredShader->setUniform("p" , camera->getProjectionMatrix());
+        m_deferredShader->setUniform("v", camera->getViewMatrix());
+        ErrorChecker::printGLErrors("line 104");
+    } else {
+        m_phongShader->setUniform("useLighting", settings.useLighting);
+        m_phongShader->setUniform("useArrowOffsets", false);
+        m_phongShader->setUniform("p" , camera->getProjectionMatrix());
+        m_phongShader->setUniform("v", camera->getViewMatrix());
+    }
 }
 
 void SceneviewScene::setMatrixUniforms(Shader *shader, SupportCanvas3D *context) {
@@ -113,9 +186,15 @@ void SceneviewScene::renderGeometry() {
     //
 
     for (PrimTransPair pair : primTransPairs) {
-        m_phongShader->setUniform("m", pair.tranformation);
-        m_phongShader->applyMaterial(pair.primitive.material);
-
+        if (settings.deferredLight) {
+            m_deferredShader->setUniform("m", pair.tranformation);
+            glm::mat3 normalMat = glm::mat3(pair.tranformation);
+            m_deferredShader->setUniform("normalMatrix", normalMat);
+            ErrorChecker::printGLErrors("line 144");
+        } else {
+            m_phongShader->setUniform("m", pair.tranformation);
+            m_phongShader->applyMaterial(pair.primitive.material);
+        }
         //texture map
         loadMaterialData( pair.primitive.material );
         tryApplyTexture( pair.primitive.material.textureMap );
@@ -129,6 +208,7 @@ void SceneviewScene::renderGeometry() {
             break;
             case PrimitiveType::PRIMITIVE_CYLINDER:
             m_cylinder->draw();
+            ErrorChecker::printGLErrors("line 192");
             break;
             case PrimitiveType::PRIMITIVE_SPHERE:
             m_sphere->draw();
@@ -137,6 +217,8 @@ void SceneviewScene::renderGeometry() {
             //TODO: Should I do anything here? will I encounter odd shapes
             continue;
         }
+
+        ErrorChecker::printGLErrors("line 201");
     }
 }
 
@@ -149,13 +231,18 @@ void SceneviewScene::settingsChanged() {
 }
 
 void SceneviewScene::tryApplyTexture( const CS123SceneFileMap &map ) {
-    if( !map.isUsed ) {
-        m_phongShader->setUniform( "useTexture", 0 );
-        return;
+    if (settings.deferredLight) {
+
+    ErrorChecker::printGLErrors("line 186");
+    } else {
+        if( !map.isUsed ) {
+            m_phongShader->setUniform( "useTexture", 0 );
+            return;
+        }
+        m_phongShader->setUniform( "useTexture", 1 );
+        m_phongShader->setUniform( "repeatUV", glm::vec2{1,1});
+        m_phongShader->setTexture( "tex", m_textures.at( map.filename ) );
     }
-    m_phongShader->setUniform( "useTexture", 1 );
-    m_phongShader->setUniform( "repeatUV", glm::vec2{1,1});
-    m_phongShader->setTexture( "tex", m_textures.at( map.filename ) );
 }
 
 void SceneviewScene::loadMaterialData( const CS123SceneMaterial &material ) {
@@ -171,7 +258,7 @@ void SceneviewScene::loadMaterialData( const CS123SceneMaterial &material ) {
     QImage convertedImage = QGLWidget::convertToGLFormat( image );
 
     if( convertedImage.isNull() ) {
-        std::cerr << "Could not read file: " << material.textureMap.filename << std::endl;
+//        std::cerr << "Could not read file: " << material.textureMap.filename << std::endl;
         return;
     }
 
@@ -186,4 +273,9 @@ void SceneviewScene::buildTexture( const Texture2D &texture ) {
     builder.setWrap( TextureParameters::WRAP_METHOD::REPEAT );
     TextureParameters parameters = builder.build();
     parameters.applyTo( texture );
+}
+
+void SceneviewScene::setWindowDim(int w, int h) {
+    m_width = w;
+    m_height = h;
 }
