@@ -169,8 +169,10 @@ void SceneviewScene::renderGeometry() {
             m_phongShader->applyMaterial(pair.primitive.material);
         }
         //texture map
-        loadMaterialData( pair.primitive.material );
-        tryApplyTexture( pair.primitive.material.textureMap );
+        loadDiffuseMapData( pair.primitive.material );
+        loadBumpMapData ( pair.primitive.material );
+        tryApplyDiffuseTexture( pair.primitive.material.textureMap );
+        tryApplyBumpTexture( pair.primitive.material.bumpMap );
 
         switch (pair.primitive.type) {
             case PrimitiveType::PRIMITIVE_CUBE:
@@ -203,7 +205,7 @@ void SceneviewScene::settingsChanged() {
     m_cone->update(settings.shapeParameter1, settings.shapeParameter2);
 }
 
-void SceneviewScene::tryApplyTexture( const CS123SceneFileMap &map ) {
+void SceneviewScene::tryApplyDiffuseTexture( const CS123SceneFileMap &map ) {
     if (settings.deferredLight) {
         if (!map.isUsed) {
 //            m_deferredShader->setUniform( "useTexture", 0 );
@@ -224,7 +226,17 @@ void SceneviewScene::tryApplyTexture( const CS123SceneFileMap &map ) {
     }
 }
 
-void SceneviewScene::loadMaterialData( const CS123SceneMaterial &material ) {
+void SceneviewScene::tryApplyBumpTexture( const CS123SceneFileMap &map ) {
+    if( !map.isUsed ) {
+        m_phongShader->setUniform( "useBumpTexture", 0 );
+        return;
+    }
+    m_phongShader->setUniform( "useBumpTexture", 1 );
+    m_phongShader->setUniform( "repeatBumpUV", glm::vec2{map.repeatU, map.repeatV});
+    m_phongShader->setTexture( "texBump", m_bumpmaps.at( map.filename ) );
+}
+
+void SceneviewScene::loadDiffuseMapData( const CS123SceneMaterial &material ) {
     // If texture is not used
     if(!(material.textureMap.isUsed ) && (material.textureMap.filename.compare( "" )) )
              return;
@@ -237,13 +249,33 @@ void SceneviewScene::loadMaterialData( const CS123SceneMaterial &material ) {
     QImage convertedImage = QGLWidget::convertToGLFormat( image );
 
     if( convertedImage.isNull() ) {
-//        std::cerr << "Could not read file: " << material.textureMap.filename << std::endl;
         return;
     }
 
     Texture2D texture( convertedImage.bits(), convertedImage.width(), convertedImage.height() );
     buildTexture( texture );
     m_textures.insert( std::make_pair( material.textureMap.filename, std::move( texture ) ) );
+}
+
+void SceneviewScene::loadBumpMapData( const CS123SceneMaterial &material ) {
+    // If texture is not used
+    if(!(material.bumpMap.isUsed ) && (material.bumpMap.filename.compare( "" )) )
+             return;
+
+    // If texture had already been loaded
+    if( m_bumpmaps.find( material.bumpMap.filename ) != m_bumpmaps.end() )
+        return;
+
+    QImage image = QImage( material.bumpMap.filename.data() );
+    QImage convertedImage = QGLWidget::convertToGLFormat( image );
+
+    if( convertedImage.isNull() ) {
+        return;
+    }
+
+    Texture2D texture( convertedImage.bits(), convertedImage.width(), convertedImage.height() );
+    buildTexture( texture );
+    m_bumpmaps.insert( std::make_pair( material.bumpMap.filename, std::move( texture ) ) );
 }
 
 void SceneviewScene::buildTexture( const Texture2D &texture ) {

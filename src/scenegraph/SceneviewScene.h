@@ -78,8 +78,14 @@ private:
 
     // texture map
     std::map<std::string,CS123::GL::Texture2D> m_textures;
-    void tryApplyTexture( const CS123SceneFileMap &map );
-    void loadMaterialData( const CS123SceneMaterial &material );
+    void tryApplyDiffuseTexture( const CS123SceneFileMap &map );
+    void loadDiffuseMapData( const CS123SceneMaterial &material );
+
+    // bump map
+    std::map<std::string,CS123::GL::Texture2D> m_bumpmaps;
+    void tryApplyBumpTexture( const CS123SceneFileMap &map );
+    void loadBumpMapData( const CS123SceneMaterial &material );
+
     void buildTexture( const CS123::GL::Texture2D &texture );
 
     int m_width;  /// window width
