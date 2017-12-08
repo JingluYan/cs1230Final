@@ -37,45 +37,16 @@ SceneviewScene::SceneviewScene()
     m_cylinder = std::make_unique<Cylinder>(settings.shapeParameter1,settings.shapeParameter2);
 
     m_sphere = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
+
+    // build full screen quad
+    m_quad = std::make_unique<Quad>();
 }
 
 SceneviewScene::SceneviewScene(int w, int h) :
     m_width(w),
     m_height(h)
 {
-    init();
-}
-
-void SceneviewScene::init() {
-    loadPhongShader();
-    loadDeferredShader();
-    loadWireframeShader();
-    loadNormalsShader();
-    loadNormalsArrowShader();
-
-    // build full screen quad
-//    std::vector<GLfloat> quadData{
-//        -1.f, 1.f, .0f, .0f, .0f,
-//        -1.f, -1.f, .0f, .0f, 1.f,
-//        1.f, 1.f, .0f, 1.f, .0f,
-//        1.f, -1.f, .0f, 1.f, 1.f
-//    };
-//    m_quad = std::make_unique<OpenGLShape>();
-//    m_quad->setVertexData(&quadData[0], quadData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLE_STRIP, 4);
-//    m_quad->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
-//    m_quad->setAttribute(ShaderAttrib::TEXCOORD0, 2, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
-//    m_quad->buildVAO();
-
-    m_cube = std::make_unique<Cube>(settings.shapeParameter1);
-
-    m_cone = std::make_unique<Cone>(settings.shapeParameter1, settings.shapeParameter2);
-
-    m_cylinder = std::make_unique<Cylinder>(settings.shapeParameter1,settings.shapeParameter2);
-
-    m_sphere = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
-
-    m_gbuffer_FBO = std::make_unique<FBO>(3, FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY, m_width, m_height, TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE);
-
+//    init();
 }
 
 SceneviewScene::~SceneviewScene()
@@ -188,9 +159,8 @@ void SceneviewScene::renderGeometry() {
     for (PrimTransPair pair : primTransPairs) {
         if (settings.deferredLight) {
             m_deferredShader->setUniform("m", pair.tranformation);
-            glm::mat3 normalMat = glm::mat3(pair.tranformation);
-            m_deferredShader->setUniform("normalMatrix", normalMat);
-            ErrorChecker::printGLErrors("line 144");
+            m_deferredShader->applyMaterial(pair.primitive.material);
+            ErrorChecker::printGLErrors("line 165");
         } else {
             m_phongShader->setUniform("m", pair.tranformation);
             m_phongShader->applyMaterial(pair.primitive.material);
@@ -232,15 +202,21 @@ void SceneviewScene::settingsChanged() {
 
 void SceneviewScene::tryApplyTexture( const CS123SceneFileMap &map ) {
     if (settings.deferredLight) {
-
-    ErrorChecker::printGLErrors("line 186");
+        if (!map.isUsed) {
+            m_deferredShader->setUniform( "useTexture", 0 );
+            return;
+        }
+        m_deferredShader->setUniform( "useTexture", 1 );
+        m_deferredShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
+        m_deferredShader->setTexture( "tex", m_textures.at( map.filename ) );
+        ErrorChecker::printGLErrors("line 186");
     } else {
         if( !map.isUsed ) {
             m_phongShader->setUniform( "useTexture", 0 );
             return;
         }
         m_phongShader->setUniform( "useTexture", 1 );
-        m_phongShader->setUniform( "repeatUV", glm::vec2{1,1});
+        m_phongShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
         m_phongShader->setTexture( "tex", m_textures.at( map.filename ) );
     }
 }

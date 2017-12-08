@@ -10,6 +10,7 @@
 #include "scenegraph/shapes/cube.h"
 #include "scenegraph/shapes/cylinder.h"
 #include "scenegraph/shapes/sphere.h"
+#include "scenegraph/shapes/quad.h"
 
 namespace CS123 { namespace GL {
 
@@ -85,6 +86,7 @@ private:
     int m_height;
     std::unique_ptr<FBO> m_gbuffer_FBO;
     std::unique_ptr<FBO> m_tmp_FBO;
+
 };
 
 #endif // SCENEVIEWSCENE_H
