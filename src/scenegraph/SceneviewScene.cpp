@@ -238,7 +238,7 @@ void SceneviewScene::tryApplyBumpTexture( const CS123SceneFileMap &map ) {
 
 void SceneviewScene::loadDiffuseMapData( const CS123SceneMaterial &material ) {
     // If texture is not used
-    if(!(material.textureMap.isUsed ) && (material.textureMap.filename.compare( "" )) )
+    if(!((material.textureMap.isUsed ) && (material.textureMap.filename.compare( "" ))) )
              return;
 
     // If texture had already been loaded
@@ -259,7 +259,7 @@ void SceneviewScene::loadDiffuseMapData( const CS123SceneMaterial &material ) {
 
 void SceneviewScene::loadBumpMapData( const CS123SceneMaterial &material ) {
     // If texture is not used
-    if(!(material.bumpMap.isUsed ) && (material.bumpMap.filename.compare( "" )) )
+    if(!((material.bumpMap.isUsed ) && (material.bumpMap.filename.compare( "" ))))
              return;
 
     // If texture had already been loaded
