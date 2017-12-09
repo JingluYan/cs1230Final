@@ -24,4 +24,12 @@
         <file>images/winter.jpg</file>
         <file>images/wood_table.jpg</file>
     </qresource>
+    <qresource prefix="/skybox">
+        <file alias="negx.jpg">images/skybox/negx.jpg</file>
+        <file alias="negy.jpg">images/skybox/negy.jpg</file>
+        <file alias="negz.jpg">images/skybox/negz.jpg</file>
+        <file alias="posx.jpg">images/skybox/posx.jpg</file>
+        <file alias="posy.jpg">images/skybox/posy.jpg</file>
+        <file alias="posz.jpg">images/skybox/posz.jpg</file>
+    </qresource>
 </RCC>
