@@ -126,7 +126,8 @@ HEADERS += \
     ray/raytracer.h \
     lib/errorchecker.h \
     lib/uniformvariable.h \
-    lib/common.h
+    lib/common.h \
+    lib/cubeData.h
 
 
 FORMS += ui/mainwindow.ui

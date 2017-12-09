@@ -35,9 +35,8 @@ void main()
     pos_cam = pos_cam_vec4.xyz;
 
     //world space pos and normal
-
     vec4 pos_world_vec4 = m * vec4(position, 1.0);
-    vec3 pos_world = pos_world_vec4.xyz;
+    pos_world = pos_world_vec4.xyz;
     normal_world = normalize(mat3(transpose(inverse(m))) * normal);
 
     color = ambient_color + diffuse_color;

@@ -3,8 +3,9 @@
 
 #include <exception>
 #include <string>
+#include <QGLShaderProgram>
 
-#include "GL/glew.h"
+//#include "GL/glew.h"
 
 namespace CS123 {
 
@@ -20,10 +21,16 @@ private:
 
 }
 
-class ResourceLoader
+namespace ResourceLoader
 {
-public:
-    static std::string loadResourceFileToString(const std::string &resourcePath);
+    std::string loadResourceFileToString(const std::string &resourcePath);
+
+//    static void initializeGlew();
+
+    // These return a new QGLShaderProgram.  THIS MUST BE DELETED BY THE CALLER.
+    QGLShaderProgram * newVertShaderProgram(const QGLContext *context, QString vertShader);
+    QGLShaderProgram * newFragShaderProgram(const QGLContext *context, QString fragShader);
+    QGLShaderProgram * newShaderProgram(const QGLContext *context, QString vertShader, QString fragShader, QString *errors = 0);
 };
 
 #endif // RESOURCELOADER_H

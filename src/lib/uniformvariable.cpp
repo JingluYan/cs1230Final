@@ -2,6 +2,7 @@
 
 //#include "glwidget.h"
 #include <QFileInfo>
+#include "SupportCanvas3D.h"
 
 GLuint UniformVariable::s_numTextures = 2;
 QList<GLuint> UniformVariable::s_faceTextures;
@@ -192,9 +193,10 @@ const char *UniformVariable::getAsciiName() const
     return asciiName.constData();
 }
 
-void UniformVariable::setName(const QString &name)
+void UniformVariable::setName(const QString &_name)
 {
-    this->name = name;
+//    this->name = name;
+    name = _name;
     asciiName = name.toUtf8();
 }
 
@@ -416,37 +418,37 @@ QString UniformVariable::toString() const
     return str;
 }
 
-//UniformVariable *checkStatics(const QString &str, UniformVariable::Type type) {
-//    switch (type) {
-//    case UniformVariable::TYPE_MAT4:
-//        if (qstrcmp(str, "<model>")) return GLWidget::s_model;
-//        if (qstrcmp(str, "<view>")) return GLWidget::s_view;
-//        if (qstrcmp(str, "<projection>")) return GLWidget::s_projection;
-//        if (qstrcmp(str, "<mvp>")) return GLWidget::s_mvp;
-//        break;
-//    case UniformVariable::TYPE_TEXCUBE:
-//        if (qstrcmp(str, "<skybox>")) return GLWidget::s_skybox;
-//        break;
+UniformVariable *checkStatics(const QString &str, UniformVariable::Type type) {
+    switch (type) {
+    case UniformVariable::TYPE_MAT4:
+//        if (qstrcmp(str, "<model>")) return SupportCanvas3D::s_model;
+        if (qstrcmp(str, "<view>")) return SupportCanvas3D::s_view;
+        if (qstrcmp(str, "<projection>")) return SupportCanvas3D::s_projection;
+//        if (qstrcmp(str, "<mvp>")) return SupportCanvas3D::s_mvp;
+        break;
+    case UniformVariable::TYPE_TEXCUBE:
+        if (qstrcmp(str, "<skybox>")) return SupportCanvas3D::s_skybox;
+        break;
 //    case UniformVariable::TYPE_FLOAT:
-//        if (qstrcmp(str, "<time>")) return GLWidget::s_time;
+//        if (qstrcmp(str, "<time>")) return SupportCanvas3D::s_time;
 //        break;
 //    case UniformVariable::TYPE_FLOAT2:
-//        if (qstrcmp(str, "<size>")) return GLWidget::s_size;
+//        if (qstrcmp(str, "<size>")) return SupportCanvas3D::s_size;
 //    case UniformVariable::TYPE_FLOAT3:
-//        if (qstrcmp(str, "<mouse>")) return GLWidget::s_mouse;
-//    default:
-//        return NULL;
-//    }
-//    return NULL;
-//}
+//        if (qstrcmp(str, "<mouse>")) return SupportCanvas3D::s_mouse;
+    default:
+        return NULL;
+    }
+    return NULL;
+}
 
 bool UniformVariable::parse(const QString &value, bool verifyOnly)
 {
-//    copyFrom = checkStatics(value, this->type);
-//    if (copyFrom) {
-//        strVal = value;
-//        return true;
-//    }
+    copyFrom = checkStatics(value, this->type);
+    if (copyFrom) {
+        strVal = value;
+        return true;
+    }
     strVal = "";
     copyFrom = this;
 

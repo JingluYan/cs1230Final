@@ -112,6 +112,16 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         glBindTexture(GL_TEXTURE_2D, 0);
         m_phongShader->unbind();
     }
+
+    // this is to test skybox code
+//    context->skybox_shader->bind();
+//    context->s_skybox->setValue(context->skybox_shader);
+//    context->s_projection->setValue(context->skybox_shader);
+//    context->s_view->setValue(context->skybox_shader);
+//    glCullFace(GL_FRONT);
+//    context->skybox_cube->draw();
+//    glCullFace(GL_BACK);
+//    context->skybox_shader->release();
 }
 
 void SceneviewScene::setSceneUniforms(SupportCanvas3D *context) {
@@ -189,6 +199,7 @@ void SceneviewScene::renderGeometry() {
             m_cone->draw();
             break;
             case PrimitiveType::PRIMITIVE_CYLINDER:
+            ErrorChecker::printGLErrors("line 191");
             m_cylinder->draw();
             ErrorChecker::printGLErrors("line 192");
             break;

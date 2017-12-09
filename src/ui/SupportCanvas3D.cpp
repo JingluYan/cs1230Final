@@ -15,6 +15,13 @@
 #include <iostream>
 #include "gl/GLDebug.h"
 #include "CS123XmlSceneParser.h"
+#include "lib/cubeData.h"
+#include "ResourceLoader.h"
+
+UniformVariable *SupportCanvas3D::s_skybox = NULL;
+UniformVariable *SupportCanvas3D::s_projection = NULL;
+UniformVariable *SupportCanvas3D::s_view = NULL;
+
 
 SupportCanvas3D::SupportCanvas3D(QGLFormat format, QWidget *parent) : QGLWidget(format, parent),
     m_isDragging(false),
@@ -27,6 +34,9 @@ SupportCanvas3D::SupportCanvas3D(QGLFormat format, QWidget *parent) : QGLWidget(
 
 SupportCanvas3D::~SupportCanvas3D()
 {
+    delete skybox_shader;
+    delete current_shader;
+
 }
 
 Camera *SupportCanvas3D::getCamera() {
@@ -68,7 +78,89 @@ void SupportCanvas3D::initializeGL() {
 
     settingsChanged();
 
+    //init skybox
+    skybox_shader = ResourceLoader::newShaderProgram(context(), ":/shaders/skybox.vert", ":/shaders/skybox.frag");
+
+    s_skybox = new UniformVariable(this->context()->contextHandle());
+    s_skybox->setName("skybox");
+    s_skybox->setType(UniformVariable::TYPE_TEXCUBE);
+    //top, bottom, left, right, front, back
+    s_skybox->parse(":/skybox/posy.jpg,:/skybox/negy.jpg,:/skybox/negx.jpg,:/skybox/posx.jpg,:/skybox/posz.jpg,:/skybox/negz.jpg");
+
+    gl = QOpenGLFunctions(context()->contextHandle());
+
+    QString error;
+    loadShader(":/shaders/default.vert", ":/shaders/default.frag", &error);
+
+    //init a sphere to test why nothing shows up
+    std::vector<GLfloat> sphereData = SPHERE_VERTEX_POSITIONS;
+    m_sphere = std::make_unique<OpenGLShape>();
+    m_sphere->setVertexData(&sphereData[0], sphereData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, NUM_SPHERE_VERTICES);
+    m_sphere->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_sphere->setAttribute(ShaderAttrib::NORMAL, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    m_sphere->buildVAO();
+
+    std::vector<float> cubeData = CUBE_DATA_POSITIONS;
+    skybox_cube = std::make_unique<OpenGLShape>();
+    skybox_cube->setVertexData(&cubeData[0], cubeData.size(), VBO::GEOMETRY_LAYOUT::LAYOUT_TRIANGLES, NUM_CUBE_VERTICES);
+    skybox_cube->setAttribute(ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    skybox_cube->setAttribute(ShaderAttrib::NORMAL, 3, 3*sizeof(GLfloat), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    skybox_cube->buildVAO();
+
+    s_projection = new UniformVariable(this->context()->contextHandle());
+    s_projection->setName("projection");
+    s_projection->setType(UniformVariable::TYPE_MAT4);
+
+    s_view = new UniformVariable(this->context()->contextHandle());
+    s_view->setName("view");
+    s_view->setType(UniformVariable::TYPE_MAT4);
+
+    //end skybox init code
 }
+
+
+bool SupportCanvas3D::loadShader(QString vert, QString frag, QString *errors)
+{
+    QGLShaderProgram *new_shader = ResourceLoader::newShaderProgram(context(), vert, frag, errors);
+    if (new_shader == NULL) {
+        return false;
+    }
+
+//    delete wireframe_shader2;
+//    wireframe_shader2 = ResourceLoader::newShaderProgram(context(), vert, ":/shaders/color.frag", errors);
+
+//    UniformVariable::s_numTextures = 2;
+
+//    UniformVariable::resetTimer();
+
+    // http://stackoverflow.com/questions/440144/in-opengl-is-there-a-way-to-get-a-list-of-all-uniforms-attribs-used-by-a-shade
+
+    std::vector<GLchar> nameData(256);
+    GLint numActiveUniforms = 0;
+    gl.glGetProgramiv(new_shader->programId(), GL_ACTIVE_UNIFORMS, &numActiveUniforms);
+
+    for (int unif = 0; unif < numActiveUniforms; unif++) {
+        GLint arraySize = 0;
+        GLenum type = 0;
+        GLsizei actualLength = 0;
+        gl.glGetActiveUniform(new_shader->programId(), unif, nameData.size(), &actualLength, &arraySize, &type, &nameData[0]);
+        std::string name((char*)&nameData[0], actualLength);
+
+        UniformVariable::Type uniformType = UniformVariable::typeFromGLEnum(type);
+
+        QString qname = QString::fromStdString(name);
+        if (qname.startsWith("gl_")) continue;
+        emit(addUniform(uniformType, qname, true, arraySize));
+    }
+
+//    delete current_shader;
+    current_shader = new_shader;
+//    camera->mouseScrolled(0);
+//    camera->updateMats();
+    update();
+    return true;
+}
+
 
 void SupportCanvas3D::initializeGlew() {
     glewExperimental = GL_TRUE;
@@ -97,6 +189,19 @@ void SupportCanvas3D::initializeOpenGLSettings() {
     // the default).
     glFrontFace(GL_CCW);
 
+    //init for the skybox
+    glClearColor(0.5, 0.5, 0.5, 1.0);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_TEXTURE_2D);
+    glEnable(GL_TEXTURE_CUBE_MAP);
+
+    glDisable(GL_COLOR_MATERIAL);
+    glCullFace(GL_BACK);
+    glEnable(GL_CULL_FACE);
+    glDisable(GL_BLEND);
+    glEnable(GL_TEXTURE_CUBE_MAP_SEAMLESS);
+    // end skybox code
+
     // Calculate the orbiting camera matrices.
     getOrbitingCamera()->updateMatrices();
 }
@@ -108,6 +213,7 @@ void SupportCanvas3D::initializeScenes() {
 }
 
 void SupportCanvas3D::paintGL() {
+
     if (m_settingsDirty) {
         setSceneFromSettings();
     }
@@ -116,6 +222,32 @@ void SupportCanvas3D::paintGL() {
     glViewport(0, 0, width() * ratio, height() * ratio);
     getCamera()->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));
     m_currentScene->render(this);
+
+    // draw skybox
+    skybox_shader->bind();
+    s_skybox->setValue(skybox_shader);
+    s_projection->setValue(skybox_shader);
+    s_view->setValue(skybox_shader);
+    glCullFace(GL_FRONT);
+    skybox_cube->draw();
+    glCullFace(GL_BACK);
+    skybox_shader->release();
+
+    // draw test sphere
+    if (current_shader) {
+        current_shader->bind();
+
+//        foreach (const UniformVariable *var, *activeUniforms) {
+//            var->setValue(current_shader);
+//        }
+    }
+
+    m_sphere->draw();
+    if (current_shader) {
+        current_shader->release();
+    }
+
+    // end skybox draw
 }
 
 void SupportCanvas3D::settingsChanged() {

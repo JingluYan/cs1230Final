@@ -69,7 +69,7 @@ public:
 
     const QString& getName() const;
     const char* getAsciiName() const;
-    void setName(const QString&);
+    void setName(const QString&_name);
 
     Type getType() const;
     void setType(Type);
