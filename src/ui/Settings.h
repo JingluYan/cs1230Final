@@ -68,7 +68,9 @@ struct Settings {
     bool useLighting;           // Enable default lighting
     bool drawWireframe;         // Draw wireframe only
     bool drawNormals;           // Turn normals on and off
-    bool deferredLight;
+    bool deferredLight;         // Turn on deferred lighting
+    bool textureMapping;        // Turn on texture mapping
+    bool bumpMapping;           // Turn on bump mapping
 
     // Camtrans
     bool useOrbitCamera;        // Use the built-in orbiting camera instead of the Camtrans camera

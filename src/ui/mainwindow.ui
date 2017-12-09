@@ -356,6 +356,20 @@
       </widget>
      </item>
      <item>
+      <widget class="QCheckBox" name="textureMappingCheckBox">
+       <property name="text">
+        <string>Texture Mapping</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="bumpMappingCheckbox">
+       <property name="text">
+        <string>Bump Mapping</string>
+       </property>
+      </widget>
+     </item>
+     <item>
       <widget class="QWidget" name="shapesDockEmptySpace" native="true">
        <property name="sizePolicy">
         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">

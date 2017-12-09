@@ -125,6 +125,8 @@ void MainWindow::dataBind() {
     BIND(BoolBinding::bindCheckbox(ui->drawWireframeCheckbox, settings.drawWireframe))
     BIND(BoolBinding::bindCheckbox(ui->drawNormalsCheckbox, settings.drawNormals))
     BIND(BoolBinding::bindCheckbox(ui->deferredLightCheckbox, settings.deferredLight))
+    BIND(BoolBinding::bindCheckbox(ui->textureMappingCheckBox, settings.textureMapping))
+    BIND(BoolBinding::bindCheckbox(ui->bumpMappingCheckbox, settings.bumpMapping))
 
     // Camtrans dock
     BIND(BoolBinding::bindCheckbox(ui->cameraOrbitCheckbox, settings.useOrbitCamera))
