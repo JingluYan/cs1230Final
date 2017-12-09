@@ -69,6 +69,7 @@ SOURCES += \
     ray/rendertask.cpp \
     ray/raytracer.cpp \
     lib/errorchecker.cpp \
+    lib/uniformvariable.cpp
 
 
 HEADERS += \
@@ -124,6 +125,7 @@ HEADERS += \
     ray/rendertask.h \
     ray/raytracer.h \
     lib/errorchecker.h \
+    lib/uniformvariable.h
 
 
 FORMS += ui/mainwindow.ui
