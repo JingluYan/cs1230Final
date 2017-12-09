@@ -1,6 +1,6 @@
 #include "uniformvariable.h"
 
-#include "glwidget.h"
+//#include "glwidget.h"
 #include <QFileInfo>
 
 GLuint UniformVariable::s_numTextures = 2;
@@ -416,37 +416,37 @@ QString UniformVariable::toString() const
     return str;
 }
 
-UniformVariable *checkStatics(const QString &str, UniformVariable::Type type) {
-    switch (type) {
-    case UniformVariable::TYPE_MAT4:
-        if (qstrcmp(str, "<model>")) return GLWidget::s_model;
-        if (qstrcmp(str, "<view>")) return GLWidget::s_view;
-        if (qstrcmp(str, "<projection>")) return GLWidget::s_projection;
-        if (qstrcmp(str, "<mvp>")) return GLWidget::s_mvp;
-        break;
-    case UniformVariable::TYPE_TEXCUBE:
-        if (qstrcmp(str, "<skybox>")) return GLWidget::s_skybox;
-        break;
-    case UniformVariable::TYPE_FLOAT:
-        if (qstrcmp(str, "<time>")) return GLWidget::s_time;
-        break;
-    case UniformVariable::TYPE_FLOAT2:
-        if (qstrcmp(str, "<size>")) return GLWidget::s_size;
-    case UniformVariable::TYPE_FLOAT3:
-        if (qstrcmp(str, "<mouse>")) return GLWidget::s_mouse;
-    default:
-        return NULL;
-    }
-    return NULL;
-}
+//UniformVariable *checkStatics(const QString &str, UniformVariable::Type type) {
+//    switch (type) {
+//    case UniformVariable::TYPE_MAT4:
+//        if (qstrcmp(str, "<model>")) return GLWidget::s_model;
+//        if (qstrcmp(str, "<view>")) return GLWidget::s_view;
+//        if (qstrcmp(str, "<projection>")) return GLWidget::s_projection;
+//        if (qstrcmp(str, "<mvp>")) return GLWidget::s_mvp;
+//        break;
+//    case UniformVariable::TYPE_TEXCUBE:
+//        if (qstrcmp(str, "<skybox>")) return GLWidget::s_skybox;
+//        break;
+//    case UniformVariable::TYPE_FLOAT:
+//        if (qstrcmp(str, "<time>")) return GLWidget::s_time;
+//        break;
+//    case UniformVariable::TYPE_FLOAT2:
+//        if (qstrcmp(str, "<size>")) return GLWidget::s_size;
+//    case UniformVariable::TYPE_FLOAT3:
+//        if (qstrcmp(str, "<mouse>")) return GLWidget::s_mouse;
+//    default:
+//        return NULL;
+//    }
+//    return NULL;
+//}
 
 bool UniformVariable::parse(const QString &value, bool verifyOnly)
 {
-    copyFrom = checkStatics(value, this->type);
-    if (copyFrom) {
-        strVal = value;
-        return true;
-    }
+//    copyFrom = checkStatics(value, this->type);
+//    if (copyFrom) {
+//        strVal = value;
+//        return true;
+//    }
     strVal = "";
     copyFrom = this;
 
