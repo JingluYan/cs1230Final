@@ -168,11 +168,18 @@ void SceneviewScene::renderGeometry() {
             m_phongShader->setUniform("m", pair.tranformation);
             m_phongShader->applyMaterial(pair.primitive.material);
         }
-        //texture map
-        loadDiffuseMapData( pair.primitive.material );
-        loadBumpMapData ( pair.primitive.material );
-        tryApplyDiffuseTexture( pair.primitive.material.textureMap );
-        tryApplyBumpTexture( pair.primitive.material.bumpMap );
+
+        //texture mapping
+        if (settings.textureMapping){
+            loadDiffuseMapData( pair.primitive.material );
+            tryApplyDiffuseTexture( pair.primitive.material.textureMap );
+        }
+
+        //bump mapping
+        if (settings.bumpMapping){
+            loadBumpMapData ( pair.primitive.material );
+            tryApplyBumpTexture( pair.primitive.material.bumpMap );
+        }
 
         switch (pair.primitive.type) {
             case PrimitiveType::PRIMITIVE_CUBE:
