@@ -50,19 +50,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
     SETUP_ACTION(shapesDock,    "CTRL+3");
     SETUP_ACTION(camtransDock,  "CTRL+4");
-    SETUP_ACTION(rayDock,       "CTRL+5");
 
     ui->menuToolbars->addActions(actions);
 #undef SETUP_ACTION
 
     tabifyDockWidget(ui->shapesDock, ui->camtransDock);
-    tabifyDockWidget(ui->shapesDock, ui->rayDock);
     ui->shapesDock->raise();
 
     dataBind();
-
-    // Hide the "stop rendering" button until we need it
-    ui->rayStopRenderingButton->setHidden(true);
 
 
     // Reset the contents of both canvas widgets (make a new 500x500 image for the 2D one)
@@ -146,19 +141,6 @@ void MainWindow::dataBind() {
     BIND(FloatBinding::bindSliderAndTextbox(
               ui->cameraFarSlider, ui->cameraFarTextbox, settings.cameraFar, 0.1, 50))
 
-    // Ray dock
-    BIND(BoolBinding::bindCheckbox(ui->raySuperSamping,          settings.useSuperSampling))
-    BIND(IntBinding::bindTextbox(ui->raySuperSamplesTextbox,   settings.numSuperSamples))
-    BIND(BoolBinding::bindCheckbox(ui->rayAntiAliasing,          settings.useAntiAliasing))
-    BIND(BoolBinding::bindCheckbox(ui->rayShadows,               settings.useShadows))
-    BIND(BoolBinding::bindCheckbox(ui->rayTextureMapping,        settings.useTextureMapping))
-    BIND(BoolBinding::bindCheckbox(ui->rayReflection,            settings.useReflection))
-    BIND(BoolBinding::bindCheckbox(ui->rayRefraction,            settings.useRefraction))
-    BIND(BoolBinding::bindCheckbox(ui->rayPointLights,           settings.usePointLights))
-    BIND(BoolBinding::bindCheckbox(ui->rayDirectionalLights,     settings.useDirectionalLights))
-    BIND(BoolBinding::bindCheckbox(ui->raySpotLights,            settings.useSpotLights))
-    BIND(BoolBinding::bindCheckbox(ui->rayMultiThreading,        settings.useMultiThreading))
-
     BIND(ChoiceBinding::bindTabs(ui->tabWidget, settings.currentTab))
 
 #undef BIND
@@ -204,16 +186,6 @@ void MainWindow::updateAspectRatio() {
 void MainWindow::settingsChanged() {
     ui->canvas2D->settingsChanged();
     m_canvas3D->settingsChanged();
-}
-
-void MainWindow::setAllRayFeatures(bool checked) {
-    ui->raySuperSamping->setChecked(checked);
-    ui->rayAntiAliasing->setChecked(checked);
-    ui->rayShadows->setChecked(checked);
-    ui->rayTextureMapping->setChecked(checked);
-    ui->rayReflection->setChecked(checked);
-    ui->rayRefraction->setChecked(checked);
-    ui->rayMultiThreading->setChecked(checked);
 }
 
 void MainWindow::fileCopy3Dto2D() {
@@ -282,14 +254,6 @@ void MainWindow::fileSave() {
         ui->canvas2D->saveImage();
 }
 
-void MainWindow::checkAllRayFeatures() {
-    setAllRayFeatures(true);
-}
-
-void MainWindow::uncheckAllRayFeatures() {
-    setAllRayFeatures(false);
-}
-
 void MainWindow::renderImage() {
     // Make sure OpenGL gets a chance to update the OrbitCamera, which can only be done when
     // that tab is active (because it needs the OpenGL context for its matrix transforms)
@@ -308,17 +272,9 @@ void MainWindow::renderImage() {
         // Disable the UI so the user can't interfere with the raytracing
         setAllEnabled(false);
 
-        // Swap the "render" button for the "stop rendering" button
-        ui->rayRenderButton->setHidden(true);
-        ui->rayStopRenderingButton->setHidden(false);
-
         // Render the image
         QSize activeTabSize = ui->tabWidget->currentWidget()->size();
         ui->canvas2D->renderImage(m_canvas3D->getCamera(), activeTabSize.width(), activeTabSize.height());
-
-        // Swap the "stop rendering" button for the "render" button
-        ui->rayRenderButton->setHidden(false);
-        ui->rayStopRenderingButton->setHidden(true);
 
         // Enable the UI again
         setAllEnabled(true);
@@ -329,10 +285,6 @@ void MainWindow::setAllEnabled(bool enabled) {
     QList<QWidget *> widgets;
     widgets += ui->shapesDock;
     widgets += ui->camtransDock;
-    widgets += ui->rayAllOrNone;
-    widgets += ui->rayFeatures;
-    widgets += ui->rayLighting;
-    widgets += ui->rayRenderButton;
 
     QList<QAction *> actions;
     actions += ui->actionNew;

@@ -36,10 +36,6 @@ protected:
 
 private:
 
-    // Helper function for checkAllRayFeatures() and uncheckAllRayFeatures(), either check or
-    // clear all checkboxes associated with rendering features for Ray, depending on 'checked'.
-    void setAllRayFeatures(bool checked);
-
     // Enables or disables the UI controls.
     void setAllEnabled(bool enabled);
 
