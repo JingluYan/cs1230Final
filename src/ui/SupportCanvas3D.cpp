@@ -20,8 +20,13 @@
 
 UniformVariable *SupportCanvas3D::s_skybox = NULL;
 UniformVariable *SupportCanvas3D::s_projection = NULL;
+UniformVariable *SupportCanvas3D::s_model = NULL;
 UniformVariable *SupportCanvas3D::s_view = NULL;
-
+UniformVariable *SupportCanvas3D::s_mvp = NULL;
+UniformVariable *SupportCanvas3D::s_time = NULL;
+UniformVariable *SupportCanvas3D::s_size = NULL;
+UniformVariable *SupportCanvas3D::s_mouse = NULL;
+std::vector<UniformVariable*> *SupportCanvas3D::s_staticVars = NULL;
 
 SupportCanvas3D::SupportCanvas3D(QGLFormat format, QWidget *parent) : QGLWidget(format, parent),
     m_isDragging(false),
@@ -30,13 +35,20 @@ SupportCanvas3D::SupportCanvas3D(QGLFormat format, QWidget *parent) : QGLWidget(
     m_defaultOrbitingCamera(new OrbitingCamera()),
     m_currentScene(nullptr)
 {
+    //for skybox
+    s_staticVars = new std::vector<UniformVariable*>();
+
 }
 
 SupportCanvas3D::~SupportCanvas3D()
 {
     delete skybox_shader;
     delete current_shader;
-
+    for(int i = 0; i < s_staticVars->size(); i++) {
+        UniformVariable* item = (*s_staticVars)[i];
+        delete item;
+    }
+    delete s_staticVars;
 }
 
 Camera *SupportCanvas3D::getCamera() {
@@ -86,6 +98,45 @@ void SupportCanvas3D::initializeGL() {
     s_skybox->setType(UniformVariable::TYPE_TEXCUBE);
     //top, bottom, left, right, front, back
     s_skybox->parse(":/skybox/posy.jpg,:/skybox/negy.jpg,:/skybox/negx.jpg,:/skybox/posx.jpg,:/skybox/posz.jpg,:/skybox/negz.jpg");
+
+    s_model = new UniformVariable(this->context()->contextHandle());
+    s_model->setName("model");
+    s_model->setType(UniformVariable::TYPE_MAT4);
+    s_model->parse("1,0,0,0,0,1,0,0,0,0,1,0,0,0,0,1");
+
+    s_projection = new UniformVariable(this->context()->contextHandle());
+    s_projection->setName("projection");
+    s_projection->setType(UniformVariable::TYPE_MAT4);
+
+    s_view = new UniformVariable(this->context()->contextHandle());
+    s_view->setName("view");
+    s_view->setType(UniformVariable::TYPE_MAT4);
+
+    s_mvp = new UniformVariable(this->context()->contextHandle());
+    s_mvp->setName("mvp");
+    s_mvp->setType(UniformVariable::TYPE_MAT4);
+
+    s_time = new UniformVariable(this->context()->contextHandle());
+    s_time->setName("time");
+    s_time->setType(UniformVariable::TYPE_TIME);
+
+    s_size = new UniformVariable(this->context()->contextHandle());
+    s_size->setName("size");
+    s_size->setType(UniformVariable::TYPE_FLOAT2);
+
+    s_mouse = new UniformVariable(this->context()->contextHandle());
+    s_mouse->setName("mouse");
+    s_mouse->setType(UniformVariable::TYPE_FLOAT3);
+
+    s_staticVars->push_back(s_skybox);
+    s_staticVars->push_back(s_model);
+    s_staticVars->push_back(s_projection);
+    s_staticVars->push_back(s_view);
+    s_staticVars->push_back(s_mvp);
+    s_staticVars->push_back(s_time);
+    s_staticVars->push_back(s_size);
+    s_staticVars->push_back(s_mouse);
+
 
     gl = QOpenGLFunctions(context()->contextHandle());
 

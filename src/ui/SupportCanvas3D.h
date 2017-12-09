@@ -66,6 +66,14 @@ public:
     static UniformVariable* s_skybox;
     static UniformVariable* s_projection;
     static UniformVariable* s_view;
+    // these seem to have no effect on the skybox
+    static UniformVariable* s_model;
+    static UniformVariable* s_mvp;
+    static UniformVariable* s_time;
+    static UniformVariable* s_size;
+    static UniformVariable* s_mouse;
+    static std::vector<UniformVariable*> *s_staticVars;
+
     bool loadShader(QString vert, QString frag, QString *errors);
     // end skybox
 

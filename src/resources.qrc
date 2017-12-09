@@ -34,4 +34,7 @@
         <file alias="posy.jpg">images/skybox/posy.jpg</file>
         <file alias="posz.jpg">images/skybox/posz.jpg</file>
     </qresource>
+    <qresource prefix="/scene">
+        <file alias="scene.xml">cs123Final_snowball.xml</file>
+    </qresource>
 </RCC>
