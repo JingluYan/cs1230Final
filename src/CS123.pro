@@ -125,7 +125,8 @@ HEADERS += \
     ray/rendertask.h \
     ray/raytracer.h \
     lib/errorchecker.h \
-    lib/uniformvariable.h
+    lib/uniformvariable.h \
+    lib/common.h
 
 
 FORMS += ui/mainwindow.ui
