@@ -23,7 +23,7 @@
 		<id v="1"/>
 		<type v="directional"/>
 		<color r="0.4" g="0.4" b="0.4"/>
-		<direction x="1" y="-1" z="0"/>
+		<direction x="-1" y="-1" z="0"/>
 	</lightdata>
 
 	<object type="tree" name="root">
