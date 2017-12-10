@@ -68,7 +68,8 @@ private:
     std::unique_ptr<CS123::GL::Shader> m_wireframeShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsShader;
     std::unique_ptr<CS123::GL::Shader> m_normalsArrowShader;
-    std::unique_ptr<CS123::GL::CS123Shader> m_deferredShader;
+    std::unique_ptr<CS123::GL::CS123Shader> m_gBufferShader;
+    std::unique_ptr<CS123::GL::CS123Shader> m_deferredLightingShader;
     std::unique_ptr<Cube> m_cube;               ///cube
     std::unique_ptr<Cylinder> m_cylinder;       ///cylinder
     std::unique_ptr<Cone> m_cone;               ///cone

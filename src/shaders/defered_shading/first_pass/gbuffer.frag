@@ -1,14 +1,11 @@
 #version 330 core
-//layout (location = 0) out vec3 gPosition;
-//layout (location = 1) out vec3 gNormal;
-//layout (location = 2) out vec4 gAlbedoSpec;
+layout (location = 0) out vec3 gPosition;
+layout (location = 1) out vec3 gNormal;
+layout (location = 2) out vec4 gAlbedoSpec;
 
-//out vec4 out_normal_cam; // w is shininess
-//out vec3 out_pos_cam;
-//out vec4 fragColor;
-out vec3 gNormal;
-vec3 gPosition;
-vec4 gAlbedoSpec;
+//vec3 gNormal;
+//vec3 gPosition;
+//vec4 gAlbedoSpec;
 
 in vec3 pos_cam;
 in vec3 normal_cam;
@@ -33,8 +30,6 @@ vec3 pack( vec3 v )
 
 void main()
 {
-//    out_pos_cam = pack( pos_cam );
-//    out_normal_cam = vec4( pack( normal_cam ), 1.0 );//shininess set to 1 for now;
     vec3 texColor = texture(tex, texc*repeatUV).rgb;
     texColor = clamp(texColor + vec3(1-useTexture), vec3(0), vec3(1));
 //    fragColor = vec4(color * texColor, 1);

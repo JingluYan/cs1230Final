@@ -153,7 +153,9 @@ OTHER_FILES += shaders/shader.frag \
     shaders/skybox/skybox.frag \
     shaders/skybox/skybox.vert \
     shaders/defered_shading/third_pass/third_pass.frag \
-    shaders/defered_shading/third_pass/third_pass.vert
+    shaders/defered_shading/third_pass/third_pass.vert \
+    shaders/fullscreenquad/fullscreenquad.frag \
+    shaders/fullscreenquad/fullscreenquad.vert
 
 
 # Don't add the -pg flag unless you know what you are doing. It makes QThreadPool freeze on Mac OS X

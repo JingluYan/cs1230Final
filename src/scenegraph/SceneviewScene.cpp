@@ -63,9 +63,13 @@ void SceneviewScene::loadDeferredShader() {
     //load first pass
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/gbuffer.vert");
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/gbuffer.frag");
-    m_deferredShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
-}
+    m_gBufferShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
 
+    //load second pass
+    std::string vertexSource2 = ResourceLoader::loadResourceFileToString(":/shaders/lighting.vert");
+    std::string fragmentSource2 = ResourceLoader::loadResourceFileToString(":/shaders/lighting.frag");
+    m_deferredLightingShader = std::make_unique<CS123Shader>(vertexSource2, fragmentSource2);
+}
 
 void SceneviewScene::loadWireframeShader() {
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/wireframe.vert");
@@ -93,17 +97,38 @@ void SceneviewScene::render(SupportCanvas3D *context) {
 
     // use deferred lighting
     if (settings.deferredLight) {
+        // TODO: need to move FBO init to sceneviewscene constructor
         m_gbuffer_FBO = std::make_unique<FBO>(3,
                                               FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY,
                                               m_width,
                                               m_height,
                                               TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE);
-//        m_gbuffer_FBO->bind();
-        m_deferredShader->bind();
+        m_gbuffer_FBO->bind();
+        ErrorChecker::printGLErrors("line 107");
+        m_gBufferShader->bind();
         setSceneUniforms(context);
         renderGeometry();
-        m_deferredShader->unbind();
-//        m_gbuffer_FBO->unbind();
+        m_gBufferShader->unbind();
+        m_gbuffer_FBO->unbind();
+
+        //test reading from gbuffer_FBO
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+//        glViewport(0, 0, m_width, m_height);
+        m_deferredLightingShader->bind();
+        glActiveTextureARB(GL_TEXTURE0);
+        m_gbuffer_FBO->getColorAttachment(0).bind();
+        glActiveTextureARB(GL_TEXTURE1);
+        m_gbuffer_FBO->getColorAttachment(1).bind();
+        glActiveTextureARB(GL_TEXTURE2);
+        m_gbuffer_FBO->getColorAttachment(2).bind();
+        glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gPosition"), 0);
+        glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gNormal"), 1);
+        glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gAlbedoSpec"), 2);
+
+        m_quad->draw();
+        m_deferredLightingShader->unbind();
+
+
     } else { // use default phong shader
         m_phongShader->bind();
         setSceneUniforms(context);
@@ -127,10 +152,10 @@ void SceneviewScene::render(SupportCanvas3D *context) {
 void SceneviewScene::setSceneUniforms(SupportCanvas3D *context) {
     Camera *camera = context->getCamera();
     if (settings.deferredLight) {
-        ErrorChecker::printGLErrors("line 101");
-        m_deferredShader->setUniform("p" , camera->getProjectionMatrix());
-        m_deferredShader->setUniform("v", camera->getViewMatrix());
-        ErrorChecker::printGLErrors("line 104");
+        ErrorChecker::printGLErrors("line 154");
+        m_gBufferShader->setUniform("p" , camera->getProjectionMatrix());
+        m_gBufferShader->setUniform("v", camera->getViewMatrix());
+        ErrorChecker::printGLErrors("line 157");
     } else {
         m_phongShader->setUniform("useLighting", settings.useLighting);
         m_phongShader->setUniform("useArrowOffsets", false);
@@ -168,12 +193,13 @@ void SceneviewScene::renderGeometry() {
 
     for (PrimTransPair pair : primTransPairs) {
         if (settings.deferredLight) {
-            m_deferredShader->setUniform("m", pair.tranformation);
+            m_gBufferShader->setUniform("m", pair.tranformation);
 //            glm::mat3 normalMat = glm::mat3(pair.tranformation);
 //            m_deferredShader->setUniform("normalMatrix", normalMat);
+            ErrorChecker::printGLErrors("line 198");
+            m_gBufferShader->applyMaterial(pair.primitive.material);
+            ErrorChecker::printGLErrors("line 200");
 
-            m_deferredShader->applyMaterial(pair.primitive.material);
-            ErrorChecker::printGLErrors("line 165");
         } else {
             m_phongShader->setUniform("m", pair.tranformation);
             m_phongShader->applyMaterial(pair.primitive.material);
@@ -199,9 +225,9 @@ void SceneviewScene::renderGeometry() {
             m_cone->draw();
             break;
             case PrimitiveType::PRIMITIVE_CYLINDER:
-            ErrorChecker::printGLErrors("line 191");
+            ErrorChecker::printGLErrors("line 227");
             m_cylinder->draw();
-            ErrorChecker::printGLErrors("line 192");
+            ErrorChecker::printGLErrors("line 229");
             break;
             case PrimitiveType::PRIMITIVE_SPHERE:
             m_sphere->draw();
@@ -211,7 +237,7 @@ void SceneviewScene::renderGeometry() {
             continue;
         }
 
-        ErrorChecker::printGLErrors("line 201");
+        ErrorChecker::printGLErrors("line 239");
     }
 }
 
@@ -226,13 +252,13 @@ void SceneviewScene::settingsChanged() {
 void SceneviewScene::tryApplyDiffuseTexture( const CS123SceneFileMap &map ) {
     if (settings.deferredLight) {
         if (!map.isUsed) {
-            m_deferredShader->setUniform( "useTexture", 0 );
+            m_gBufferShader->setUniform( "useTexture", 0 );
             return;
         }
-        m_deferredShader->setUniform( "useTexture", 1 );
-        m_deferredShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
-        m_deferredShader->setTexture( "tex", m_textures.at( map.filename ) );
-        ErrorChecker::printGLErrors("line 186");
+        m_gBufferShader->setUniform( "useTexture", 1 );
+        m_gBufferShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
+        m_gBufferShader->setTexture( "tex", m_textures.at( map.filename ) );
+        ErrorChecker::printGLErrors("line 260");
     } else {
         if( !map.isUsed ) {
             m_phongShader->setUniform( "useTexture", 0 );
