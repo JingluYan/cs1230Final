@@ -71,12 +71,6 @@ public slots:
     // save the current 3D scene.
     void fileSave();
 
-    // Checks all (enables all) Ray features.
-    void checkAllRayFeatures();
-
-    // Unchecks all (disables all) Ray features.
-    void uncheckAllRayFeatures();
-
     // Called when the user presses the "Render Image" button in the Ray panel
     void renderImage();
 
