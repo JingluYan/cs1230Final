@@ -3,9 +3,9 @@ out vec4 FragColor;
 
 in vec2 texc;
 
-uniform sampler2D gPosition;   // world space
-uniform sampler2D gNormal;     // world space
-uniform sampler2D gAlbedoSpec; // world space
+uniform sampler2D gPosition;   // camera space
+uniform sampler2D gNormal;     // camera space
+uniform sampler2D gAlbedoSpec; // camera space
 
 //struct Light {
 //    vec3 Position;
@@ -60,10 +60,10 @@ void main()
             lighting += max(vec3(0), lightColors[i] * Albedo * diffuseIntensity);
 
             // Add specular component
-            vec4 lightReflection = normalize(reflect(-vertexToLight, normal_camSpace_vec4));
-            vec4 eyeDirection = normalize(vec4(0,0,0,1) - pos_camSpace_vec4);
-            float specIntensity = pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
-            lighting += min(max (vec3(0), lightColors[i] * Albedo * specIntensity), vec3(1.0));
+//            vec4 lightReflection = normalize(reflect(-vertexToLight, normal_camSpace_vec4));
+//            vec4 eyeDirection = normalize(vec4(0,0,0,1) - pos_camSpace_vec4);
+//            float specIntensity = pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
+//            lighting += min(max (vec3(0), lightColors[i] * Albedo * specIntensity), vec3(1.0));
         }
     }
 
