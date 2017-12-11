@@ -42,38 +42,28 @@ void main()
 
     // then calculate lighting as usual
     vec3 lighting = Albedo*0.1; // hard-coded ambient component
-    //transform the viewPos from cam space to world space
-//    vec3 viewPos = (inverse(v) * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
-//    vec3 viewDir = normalize(viewPos - FragPos);
-//    for(int i = 0; i < NR_LIGHTS; ++i)
-//    {
-//        // diffuse
-//        vec3 lightDir = normalize(lights[i].Position - FragPos);
-//        vec3 diffuse = max(dot(Normal, lightDir), 0.0) * Albedo * lights[i].Color;
-//        lighting += diffuse;
-//    }
 
-    vec4 normal_cam = normalize(v*vec4(Normal, 0));
-    vec4 pos_cam = v*vec4(FragPos, 1);
+    vec4 normal_camSpace = normalize(v*vec4(Normal, 0));
+    vec4 pos_camSpace = v*vec4(FragPos, 1);
     if (useLighting) {
         for (int i = 0; i < MAX_LIGHTS; i++) {
             vec4 vertexToLight = vec4(0);
             // Point Light
             if (lightTypes[i] == 0) {
-                vertexToLight = normalize(v * vec4(lightPositions[i], 1) - pos_cam);
+                vertexToLight = normalize(v * vec4(lightPositions[i], 1) - pos_camSpace);
             } else if (lightTypes[i] == 1) { // Dir Light
                 vertexToLight = normalize(v * vec4(-lightDirections[i], 0));
             }
 
             // Add diffuse component
-            float diffuseIntensity = max(0.0, dot(vertexToLight, normal_cam));
+            float diffuseIntensity = max(0.0, dot(vertexToLight, normal_camSpace));
             lighting += max(vec3(0), lightColors[i] * Albedo * diffuseIntensity);
 
             // Add specular component
-//            vec4 lightReflection = normalize(reflect(-vertexToLight, normal_cam));
-//            vec4 eyeDirection = normalize(vec4(0,0,0,1) - pos_cam);
+//            vec4 lightReflection = normalize(reflect(-vertexToLight, normal_camSpace));
+//            vec4 eyeDirection = normalize(vec4(0,0,0,1) - pos_camSpace);
 //            float specIntensity = pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
-//            lighting += min(max (vec3(0), lightColors[i] * Albedo * specIntensity), 1.0);
+//            lighting += min(max (vec3(0), lightColors[i] * Albedo * specIntensity), vec3(1.0));
         }
     }
 
