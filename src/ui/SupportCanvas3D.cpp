@@ -464,4 +464,6 @@ void SupportCanvas3D::wheelEvent(QWheelEvent *event) {
 
 void SupportCanvas3D::resizeEvent(QResizeEvent *event) {
     emit aspectRatioChanged();
+    if (m_sceneviewScene.get())
+        m_sceneviewScene->setWindowDim(this->width(), this->height());
 }

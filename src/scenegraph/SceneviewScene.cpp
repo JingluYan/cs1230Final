@@ -116,7 +116,7 @@ void SceneviewScene::render(SupportCanvas3D *context) {
 
         // test reading from gbuffer_FBO
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-//        glViewport(0, 0, m_width, m_height);
+        glViewport(0, 0, m_width, m_height);
         m_deferredLightingShader->bind();
         // setup uniforms in m_deferredLightingShader
         m_deferredLightingShader->setUniform("v", context->getCamera()->getViewMatrix());
@@ -138,7 +138,6 @@ void SceneviewScene::render(SupportCanvas3D *context) {
 
         m_quad->draw();
         m_deferredLightingShader->unbind();
-
 
     } else { // use default phong shader
         m_phongShader->bind();
