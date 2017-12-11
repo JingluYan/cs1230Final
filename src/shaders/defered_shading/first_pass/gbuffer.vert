@@ -11,6 +11,7 @@ uniform mat4 m;
 //uniform mat3 normalMatrix;
 
 uniform vec2 repeatUV;
+
 uniform vec3 ambient_color;
 uniform vec3 diffuse_color;
 uniform vec3 specular_color;

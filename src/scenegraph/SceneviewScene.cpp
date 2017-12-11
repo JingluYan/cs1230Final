@@ -93,7 +93,9 @@ void SceneviewScene::loadNormalsArrowShader() {
 
 void SceneviewScene::render(SupportCanvas3D *context) {
     setClearColor();
+    ErrorChecker::printGLErrors("line 96");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    ErrorChecker::printGLErrors("line 98");
 
     // use deferred lighting
     if (settings.deferredLight) {
@@ -104,23 +106,32 @@ void SceneviewScene::render(SupportCanvas3D *context) {
                                               m_height,
                                               TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE);
         m_gbuffer_FBO->bind();
-        ErrorChecker::printGLErrors("line 107");
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         m_gBufferShader->bind();
         setSceneUniforms(context);
         renderGeometry();
         m_gBufferShader->unbind();
         m_gbuffer_FBO->unbind();
 
-        //test reading from gbuffer_FBO
+        // test reading from gbuffer_FBO
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 //        glViewport(0, 0, m_width, m_height);
         m_deferredLightingShader->bind();
+        // setup uniforms in m_deferredLightingShader
+        m_deferredLightingShader->setUniform("v", context->getCamera()->getViewMatrix());
+        m_deferredLightingShader->setUniform("useLighting", settings.useLighting);
+        setLights();
+        // bind the m_gbuffer_FBO texture attachments
         glActiveTextureARB(GL_TEXTURE0);
         m_gbuffer_FBO->getColorAttachment(0).bind();
         glActiveTextureARB(GL_TEXTURE1);
         m_gbuffer_FBO->getColorAttachment(1).bind();
         glActiveTextureARB(GL_TEXTURE2);
         m_gbuffer_FBO->getColorAttachment(2).bind();
+
+        // pass the m_gbuffer_FBO texture attachments to uniforms
+        // notice the 0, 1, 2 matches the index of the m_gbuffer_FBO->getColorAttachment(index)
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gPosition"), 0);
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gNormal"), 1);
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gAlbedoSpec"), 2);
@@ -177,7 +188,11 @@ void SceneviewScene::setLights()
     // The lighting information will most likely be stored in CS123SceneLightData structures.
     //
     for (CS123SceneLightData light : lights) {
-        m_phongShader->setLight(light);
+        if (settings.deferredLight) {
+            m_deferredLightingShader->setLight(light);
+        } else {
+            m_phongShader->setLight(light);
+        }
     }
 }
 
@@ -271,13 +286,24 @@ void SceneviewScene::tryApplyDiffuseTexture( const CS123SceneFileMap &map ) {
 }
 
 void SceneviewScene::tryApplyBumpTexture( const CS123SceneFileMap &map ) {
-    if( !map.isUsed ) {
-        m_phongShader->setUniform( "useBumpTexture", 0 );
-        return;
+    if (settings.deferredLight) {
+        if (!map.isUsed) {
+            m_gBufferShader->setUniform( "useTexture", 0 );
+            return;
+        }
+        m_gBufferShader->setUniform( "useTexture", 1 );
+        m_gBufferShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
+        m_gBufferShader->setTexture( "tex", m_textures.at( map.filename ) );
+        ErrorChecker::printGLErrors("line 260");
+    } else {
+        if( !map.isUsed ) {
+            m_phongShader->setUniform( "useBumpTexture", 0 );
+            return;
+        }
+        m_phongShader->setUniform( "useBumpTexture", 1 );
+        m_phongShader->setUniform( "repeatBumpUV", glm::vec2{map.repeatU, map.repeatV});
+        m_phongShader->setTexture( "texBump", m_bumpmaps.at( map.filename ) );
     }
-    m_phongShader->setUniform( "useBumpTexture", 1 );
-    m_phongShader->setUniform( "repeatBumpUV", glm::vec2{map.repeatU, map.repeatV});
-    m_phongShader->setTexture( "texBump", m_bumpmaps.at( map.filename ) );
 }
 
 void SceneviewScene::loadDiffuseMapData( const CS123SceneMaterial &material ) {
