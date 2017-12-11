@@ -36,6 +36,8 @@ void main()
     vec3 FragPos = texture(gPosition, texc).rgb;
     vec3 Normal = texture(gNormal, texc).rgb;
     vec3 Albedo = texture(gAlbedoSpec, texc).rgb;
+    // this is for no texture mode
+//    vec3 Albedo = vec3(1);
     float shininess = texture(gAlbedoSpec, texc).a;
 
     // then calculate lighting as usual

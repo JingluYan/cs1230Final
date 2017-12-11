@@ -16,6 +16,8 @@ in vec3 color;
 
 // Material data
 uniform float shininess;
+
+//texture data
 uniform int useTexture = 0;
 uniform sampler2D tex;
 uniform vec2 repeatUV;
