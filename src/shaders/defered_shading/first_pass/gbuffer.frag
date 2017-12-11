@@ -48,7 +48,7 @@ void main()
     gNormal = normalize(normal_world);
 
     // and the diffuse per-fragment color
-    gAlbedoSpec.rgb = texture(tex, texc).rgb;
+    gAlbedoSpec.rgb = color * texColor;
     // store specular intensity in gAlbedoSpec's alpha component
 //    gAlbedoSpec.a = texture(texture_specular1, TexCoords).r;
     gAlbedoSpec.a = shininess;

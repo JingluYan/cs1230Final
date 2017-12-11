@@ -73,7 +73,7 @@ void main()
 //            vec4 lightReflection = normalize(reflect(-vertexToLight, normal_cam));
 //            vec4 eyeDirection = normalize(vec4(0,0,0,1) - pos_cam);
 //            float specIntensity = pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
-//            lighting += max (vec3(0), lightColors[i] * specIntensity);
+//            lighting += min(max (vec3(0), lightColors[i] * Albedo * specIntensity), 1.0);
         }
     }
 

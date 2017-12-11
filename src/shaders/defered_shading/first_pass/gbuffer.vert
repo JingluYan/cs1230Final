@@ -40,4 +40,5 @@ void main()
     normal_world = normalize(mat3(transpose(inverse(m))) * normal);
 
     color = ambient_color + diffuse_color;
+    color = clamp(color, 0.0, 1.0);
 }
