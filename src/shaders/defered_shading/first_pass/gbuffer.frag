@@ -23,10 +23,10 @@ uniform vec2 repeatUV;
 
 //out vec4 fragColor;
 
-vec3 pack( vec3 v )
-{
-    return 0.5 * v + vec3( 0.5 );
-}
+//vec3 pack( vec3 v )
+//{
+//    return 0.5 * v + vec3( 0.5 );
+//}
 
 void main()
 {
@@ -49,5 +49,6 @@ void main()
     gAlbedoSpec.rgb = texture(tex, texc).rgb;
     // store specular intensity in gAlbedoSpec's alpha component
 //    gAlbedoSpec.a = texture(texture_specular1, TexCoords).r;
+    gAlbedoSpec.a = shininess;
 
 }

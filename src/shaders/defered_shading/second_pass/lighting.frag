@@ -3,16 +3,17 @@ out vec4 FragColor;
 
 in vec2 texc;
 
-uniform sampler2D gPosition;
-uniform sampler2D gNormal;
-uniform sampler2D gAlbedoSpec;
+uniform sampler2D gPosition;   // world space
+uniform sampler2D gNormal;     // world space
+uniform sampler2D gAlbedoSpec; // world space
 
-struct Light {
-    vec3 Position;
-    vec3 Color;
-};
-const int NR_LIGHTS = 32;
-uniform Light lights[NR_LIGHTS];
+//struct Light {
+//    vec3 Position;
+//    vec3 Color;
+//};
+//const int NR_LIGHTS = 32;
+//uniform Light lights[NR_LIGHTS];
+
 uniform mat4 v;
 
 // Light data
@@ -24,7 +25,6 @@ uniform vec3 lightDirections[MAX_LIGHTS];   // For directional lights
 uniform vec3 lightColors[MAX_LIGHTS];
 
 // Material data
-uniform float shininess;
 uniform vec2 repeatUV;
 
 uniform bool useLighting;     // Whether to calculate lighting using lighting equation
@@ -36,10 +36,10 @@ void main()
     vec3 FragPos = texture(gPosition, texc).rgb;
     vec3 Normal = texture(gNormal, texc).rgb;
     vec3 Albedo = texture(gAlbedoSpec, texc).rgb;
-    float Specular = texture(gAlbedoSpec, texc).a;
+    float shininess = texture(gAlbedoSpec, texc).a;
 
     // then calculate lighting as usual
-    vec3 lighting = Albedo * 0.08; // hard-coded ambient component
+    vec3 lighting = Albedo*0.1; // hard-coded ambient component
     //transform the viewPos from cam space to world space
 //    vec3 viewPos = (inverse(v) * vec4(0.0, 0.0, 0.0, 1.0)).xyz;
 //    vec3 viewDir = normalize(viewPos - FragPos);
@@ -51,10 +51,9 @@ void main()
 //        lighting += diffuse;
 //    }
 
-    vec4 normal_cam = v*vec4(Normal, 0);
+    vec4 normal_cam = normalize(v*vec4(Normal, 0));
     vec4 pos_cam = v*vec4(FragPos, 1);
     if (useLighting) {
-//        FragColor = vec4(1.0, 0.0, 0.0, 0.0);
         for (int i = 0; i < MAX_LIGHTS; i++) {
             vec4 vertexToLight = vec4(0);
             // Point Light
@@ -68,15 +67,17 @@ void main()
             float diffuseIntensity = max(0.0, dot(vertexToLight, normal_cam));
             lighting += max(vec3(0), lightColors[i] * Albedo * diffuseIntensity);
 
-//            // Add specular component
-//            vec4 lightReflection = normalize(-reflect(vertexToLight, normal_cam));
+            // Add specular component
+//            vec4 lightReflection = normalize(reflect(-vertexToLight, normal_cam));
 //            vec4 eyeDirection = normalize(vec4(0,0,0,1) - pos_cam);
 //            float specIntensity = pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
-//            lighting += max (vec3(0), lightColors[i] * specular_color * specIntensity);
+//            lighting += max (vec3(0), lightColors[i] * specIntensity);
         }
     }
 
     FragColor = vec4(lighting, 1.0);
+//            FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+
 }
 
 

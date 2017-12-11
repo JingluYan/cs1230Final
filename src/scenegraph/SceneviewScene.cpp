@@ -105,16 +105,18 @@ void SceneviewScene::render(SupportCanvas3D *context) {
                                               m_width,
                                               m_height,
                                               TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE);
+        // first pass
         m_gbuffer_FBO->bind();
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         m_gBufferShader->bind();
+
         setSceneUniforms(context);
         renderGeometry();
+
         m_gBufferShader->unbind();
         m_gbuffer_FBO->unbind();
 
-        // test reading from gbuffer_FBO
+        // second pass
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glViewport(0, 0, m_width, m_height);
         m_deferredLightingShader->bind();
@@ -208,8 +210,6 @@ void SceneviewScene::renderGeometry() {
     for (PrimTransPair pair : primTransPairs) {
         if (settings.deferredLight) {
             m_gBufferShader->setUniform("m", pair.tranformation);
-//            glm::mat3 normalMat = glm::mat3(pair.tranformation);
-//            m_deferredShader->setUniform("normalMatrix", normalMat);
             ErrorChecker::printGLErrors("line 198");
             m_gBufferShader->applyMaterial(pair.primitive.material);
             ErrorChecker::printGLErrors("line 200");
@@ -239,9 +239,7 @@ void SceneviewScene::renderGeometry() {
             m_cone->draw();
             break;
             case PrimitiveType::PRIMITIVE_CYLINDER:
-            ErrorChecker::printGLErrors("line 227");
             m_cylinder->draw();
-            ErrorChecker::printGLErrors("line 229");
             break;
             case PrimitiveType::PRIMITIVE_SPHERE:
             m_sphere->draw();

@@ -15,7 +15,6 @@ uniform vec2 repeatUV;
 uniform vec3 ambient_color;
 uniform vec3 diffuse_color;
 uniform vec3 specular_color;
-uniform float shininess;
 
 out vec3 pos_cam;
 out vec3 normal_cam;
