@@ -13,30 +13,35 @@
 	</cameradata>
     
     <lightdata>
+        <type v="point" />
         <id v="0"/>
         <color r="0.8" g="0.8" b="0.8"/>
         <position x="0" y="0" z="0" />
     </lightdata>
     
     <lightdata>
+        <type v="point" />
         <id v="1" />
         <color r="1" g="0" b="0" />
         <position x="-1" y="1" z="0" />
     </lightdata>
     
     <lightdata>
+        <type v="point" />
         <id v="2" />
         <color r="0" g="1" b="0" />
         <position x="1" y="1" z="0" />
     </lightdata>
     
     <lightdata>
+        <type v="point" />
         <id v="3" />
         <color r="0" g="0" b="1" />
         <position x="0" y="2" z="0" />
     </lightdata>
 
     <lightdata>
+        <type v="point" />
         <id v="4" />
         <color r="0.8" g="0.8" b="0.8" />
         <position x="1.5" y="1.1" z="-1" />
