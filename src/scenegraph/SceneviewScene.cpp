@@ -107,7 +107,10 @@ void SceneviewScene::render(SupportCanvas3D *context) {
                                               TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE);
         // first pass
         m_gbuffer_FBO->bind();
+        glEnable(GL_DEPTH_TEST);
+        glClearColor(0.2f, 0.2f, 0.2f, 0.2f); // has to go before glClear
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
         m_gBufferShader->bind();
 
         setSceneUniforms(context);
@@ -117,12 +120,15 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         m_gbuffer_FBO->unbind();
 
         // second pass
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+//        glDisable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glViewport(0, 0, m_width, m_height);
         m_deferredLightingShader->bind();
         // setup uniforms in m_deferredLightingShader
         m_deferredLightingShader->setUniform("v", context->getCamera()->getViewMatrix());
         m_deferredLightingShader->setUniform("useLighting", settings.useLighting);
+        m_deferredLightingShader->setUniform("lightCount", (int)lights.size());
         setLights();
         // bind the m_gbuffer_FBO texture attachments
         glActiveTextureARB(GL_TEXTURE0);
@@ -145,6 +151,7 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         m_phongShader->bind();
         setSceneUniforms(context);
         setLights();
+
         renderGeometry();
         glBindTexture(GL_TEXTURE_2D, 0);
         m_phongShader->unbind();
@@ -290,8 +297,7 @@ void SceneviewScene::tryApplyBumpTexture( const CS123SceneFileMap &map ) {
         }
         m_gBufferShader->setUniform( "useTexture", 1 );
         m_gBufferShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
-        m_gBufferShader->setTexture( "tex", m_textures.at( map.filename ) );
-        ErrorChecker::printGLErrors("line 260");
+//        ErrorChecker::printGLErrors("line 260");
     } else {
         if( !map.isUsed ) {
             m_phongShader->setUniform( "useBumpTexture", 0 );

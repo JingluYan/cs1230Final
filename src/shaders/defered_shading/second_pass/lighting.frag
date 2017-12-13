@@ -3,9 +3,9 @@ out vec4 FragColor;
 
 in vec2 texc;
 
-uniform sampler2D gPosition;   // camera space
-uniform sampler2D gNormal;     // camera space
-uniform sampler2D gAlbedoSpec; // camera space
+uniform sampler2D gPosition;   // world space
+uniform sampler2D gNormal;     // world space
+uniform sampler2D gAlbedoSpec; // world space
 
 //struct Light {
 //    vec3 Position;
@@ -21,8 +21,9 @@ const int MAX_LIGHTS = 30;
 uniform int lightTypes[MAX_LIGHTS];         // 0 for point, 1 for directional
 uniform vec3 lightPositions[MAX_LIGHTS];    // For point lights
 uniform vec3 lightDirections[MAX_LIGHTS];   // For directional lights
-//uniform vec3 lightAttenuations[MAX_LIGHTS]; // Constant, linear, and quadratic term
+uniform vec3 lightAttenuations[MAX_LIGHTS]; // Constant, linear, and quadratic term
 uniform vec3 lightColors[MAX_LIGHTS];
+uniform int lightCount = 0;
 
 // Material data
 uniform vec2 repeatUV;
@@ -41,32 +42,41 @@ void main()
     float shininess = texture(gAlbedoSpec, texc).a;
 
     // then calculate lighting as usual
-    vec3 lighting = Albedo*0.1; // hard-coded ambient component
+    vec3 lighting = Albedo*0.3; // hard-coded ambient component
 
-    vec4 normal_camSpace_vec4 = normalize(vec4(Normal, 0));
-    vec4 pos_camSpace_vec4 = vec4(FragPos, 1);
     if (useLighting) {
-        for (int i = 0; i < MAX_LIGHTS; i++) {
-            vec4 vertexToLight = vec4(0);
+        for (int i = 0; i < lightCount; i++) {
+            vec3 vertexToLight = vec3(0);
             // Point Light
             if (lightTypes[i] == 0) {
-                vertexToLight = normalize(v * vec4(lightPositions[i], 1) - pos_camSpace_vec4);
+                vertexToLight = normalize(lightPositions[i] - FragPos);
             } else if (lightTypes[i] == 1) { // Dir Light
-                vertexToLight = normalize(v * vec4(-lightDirections[i], 0));
+                vertexToLight = normalize(-lightDirections[i]);
             }
 
+            float distance = length(lightPositions[i] - FragPos);
+            float atten = min(1 / (lightAttenuations[i].x
+                                   + lightAttenuations[i].y * distance
+                                   + lightAttenuations[i].y * pow(distance, 2)), 1);
+//            float atten = min(1, 1 / distance);
             // Add diffuse component
-            float diffuseIntensity = max(0.0, dot(vertexToLight, normal_camSpace_vec4));
+            float diffuseIntensity = max(0.0, dot(vertexToLight, Normal));
+            if (lightTypes[i] == 0) { // only attenuates point lights
+                diffuseIntensity = diffuseIntensity * atten;
+            }
             lighting += max(vec3(0), lightColors[i] * Albedo * diffuseIntensity);
 
             // Add specular component
-//            vec4 lightReflection = normalize(reflect(-vertexToLight, normal_camSpace_vec4));
-//            vec4 eyeDirection = normalize(vec4(0,0,0,1) - pos_camSpace_vec4);
-//            float specIntensity = pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
-//            lighting += min(max (vec3(0), lightColors[i] * Albedo * specIntensity), vec3(1.0));
+//            vec3 lightReflection = normalize(reflect(-vertexToLight, normalize(Normal)));
+//            vec3 eyeDirection = normalize((inverse(v) * vec4(0,0,0,1) - vec4(FragPos, 1.0)).xyz);
+//            float specIntensity = 0.3 * pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
+//            if (lightTypes[i] == 0) { // only attenuates point lights
+//                specIntensity = specIntensity * atten;
+//            }
+//            lighting += max (vec3(0), lightColors[i] * Albedo * specIntensity);
         }
     }
-
+    lighting = clamp(lighting, vec3(0), vec3(1));
     FragColor = vec4(lighting, 1.0);
 //            FragColor = vec4(1.0, 0.0, 0.0, 1.0);
 
