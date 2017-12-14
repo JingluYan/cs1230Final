@@ -38,7 +38,7 @@ namespace CS123 { namespace GL {
 class SceneviewScene : public OpenGLScene {
 public:
     SceneviewScene();
-    SceneviewScene(int w, int h);
+    SceneviewScene(int w, int h, float ratio);
     void init();
     virtual ~SceneviewScene();
 
@@ -55,6 +55,7 @@ private:
 
     void loadPhongShader();
     void loadDeferredShader();
+    void loadSSAOShader();
     void loadWireframeShader();
     void loadNormalsShader();
     void loadNormalsArrowShader();
@@ -70,6 +71,8 @@ private:
     std::unique_ptr<CS123::GL::Shader> m_normalsArrowShader;
     std::unique_ptr<CS123::GL::CS123Shader> m_gBufferShader;
     std::unique_ptr<CS123::GL::CS123Shader> m_deferredLightingShader;
+    std::unique_ptr<CS123::GL::CS123Shader> m_SSAOShader;
+    std::unique_ptr<CS123::GL::CS123Shader> m_blurShader;
     std::unique_ptr<Cube> m_cube;               ///cube
     std::unique_ptr<Cylinder> m_cylinder;       ///cylinder
     std::unique_ptr<Cone> m_cone;               ///cone
@@ -94,6 +97,11 @@ private:
     float m_ratio; // resolution
     std::unique_ptr<FBO> m_gbuffer_FBO;
     std::unique_ptr<FBO> m_tmp_FBO;
+    std::unique_ptr<FBO> m_SSAO_FBO;
+    std::unique_ptr<FBO> m_blur_FBO;
+
+    std::vector<glm::vec3> ssaoKernel;
+    unsigned int noiseTexture;
 
 };
 

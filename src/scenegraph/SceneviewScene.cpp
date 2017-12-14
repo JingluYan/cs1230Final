@@ -17,15 +17,70 @@
 #include "lib/errorchecker.h"
 #include "gl/datatype/FBO.h"
 #include "gl/textures/Texture2D.h"
+#include <random>
 
 using namespace CS123::GL;
 
 
+float lerp(float a, float b, float f)
+{
+    return a + f * (b - a);
+}
+
+
+ std::vector<glm::vec3> generateSampleKernel() {
+     std::uniform_real_distribution<GLfloat> randomFloats(0.0, 1.0); // generates random floats between 0.0 and 1.0
+     std::vector<glm::vec3> ssaoKernel;
+     std::default_random_engine generator;
+     for (unsigned int i = 0; i < 64; ++i)
+     {
+         glm::vec3 sample(randomFloats(generator) * 2.0 - 1.0, randomFloats(generator) * 2.0 - 1.0, randomFloats(generator));
+         sample = glm::normalize(sample);
+         sample *= randomFloats(generator);
+         float scale = float(i) / 64.0;
+
+         // scale samples s.t. they're more aligned to center of kernel
+         scale = lerp(0.1f, 1.0f, scale * scale);
+         sample *= scale;
+         ssaoKernel.push_back(sample);
+     }
+     return ssaoKernel;
+ }
+
+
+unsigned int generateNoiseTexture() {
+     // generate noise texture
+     // ----------------------
+     std::uniform_real_distribution<GLfloat> randomFloats(0.0, 1.0); // generates random floats between 0.0 and 1.0
+     std::default_random_engine generator;
+     std::vector<glm::vec3> ssaoNoise;
+     for (unsigned int i = 0; i < 16; i++)
+     {
+         glm::vec3 noise(randomFloats(generator) * 2.0 - 1.0, randomFloats(generator) * 2.0 - 1.0, 0.0f); // rotate around z-axis (in tangent space)
+         ssaoNoise.push_back(noise);
+     }
+     unsigned int noiseTexture; glGenTextures(1, &noiseTexture);
+     glBindTexture(GL_TEXTURE_2D, noiseTexture);
+     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB32F, 4, 4, 0, GL_RGB, GL_FLOAT, &ssaoNoise[0]);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+     return noiseTexture;
+ }
+
 SceneviewScene::SceneviewScene()
 {
-    // TODO: [SCENEVIEW] Set up anything you need for your Sceneview scene here...
+}
+
+SceneviewScene::SceneviewScene(int w, int h, float ratio) :
+    m_width(w),
+    m_height(h),
+    m_ratio(ratio)
+{
     loadPhongShader();
     loadDeferredShader();
+    loadSSAOShader();
     loadWireframeShader();
     loadNormalsShader();
     loadNormalsArrowShader();
@@ -41,15 +96,35 @@ SceneviewScene::SceneviewScene()
     // build full screen quad
     m_quad = std::make_unique<Quad>();
 
+
     //TODO: to be cleaned up
     m_ratio = 1.0f;
-}
 
-SceneviewScene::SceneviewScene(int w, int h) :
-    m_width(w),
-    m_height(h)
-{
-//    init();
+    // generate sample kernel
+    // ----------------------
+    ssaoKernel = generateSampleKernel();
+    noiseTexture = generateNoiseTexture();
+    m_gbuffer_FBO = std::make_unique<FBO>(3,
+                                          FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY,
+                                          m_width,
+                                          m_height,
+                                          TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE,
+                                          TextureParameters::FILTER_METHOD::LINEAR,
+                                          GL_FLOAT);
+    m_SSAO_FBO = std::make_unique<FBO>(1,
+                                          FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY,
+                                          m_width,
+                                          m_height,
+                                          TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE,
+                                          TextureParameters::FILTER_METHOD::LINEAR,
+                                          GL_FLOAT);
+    m_blur_FBO = std::make_unique<FBO>(1,
+                                          FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY,
+                                          m_width,
+                                          m_height,
+                                          TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE,
+                                          TextureParameters::FILTER_METHOD::LINEAR,
+                                          GL_FLOAT);
 }
 
 SceneviewScene::~SceneviewScene()
@@ -74,6 +149,18 @@ void SceneviewScene::loadDeferredShader() {
     m_deferredLightingShader = std::make_unique<CS123Shader>(vertexSource2, fragmentSource2);
 }
 
+void SceneviewScene::loadSSAOShader() {
+    //load SSAO pass
+    std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/SSAO.vert");
+    std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/SSAO.frag");
+    m_SSAOShader = std::make_unique<CS123Shader>(vertexSource, fragmentSource);
+
+    //load Blur pass
+    std::string vertexSource2 = ResourceLoader::loadResourceFileToString(":/shaders/blur.vert");
+    std::string fragmentSource2 = ResourceLoader::loadResourceFileToString(":/shaders/blur.frag");
+    m_blurShader = std::make_unique<CS123Shader>(vertexSource2, fragmentSource2);
+}
+
 void SceneviewScene::loadWireframeShader() {
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/wireframe.vert");
     std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/wireframe.frag");
@@ -96,20 +183,12 @@ void SceneviewScene::loadNormalsArrowShader() {
 
 void SceneviewScene::render(SupportCanvas3D *context) {
     setClearColor();
-    ErrorChecker::printGLErrors("line 96");
+//    ErrorChecker::printGLErrors("line 96");
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    ErrorChecker::printGLErrors("line 98");
+//    ErrorChecker::printGLErrors("line 98");
 
     // use deferred lighting
     if (settings.deferredLight) {
-        // TODO: need to move FBO init to sceneviewscene constructor
-        m_gbuffer_FBO = std::make_unique<FBO>(3,
-                                              FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY,
-                                              m_width,
-                                              m_height,
-                                              TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE,
-                                              TextureParameters::FILTER_METHOD::LINEAR,
-                                              GL_FLOAT);
         // first pass
         m_gbuffer_FBO->bind();
         glEnable(GL_DEPTH_TEST);
@@ -176,10 +255,10 @@ void SceneviewScene::render(SupportCanvas3D *context) {
 void SceneviewScene::setSceneUniforms(SupportCanvas3D *context) {
     Camera *camera = context->getCamera();
     if (settings.deferredLight) {
-        ErrorChecker::printGLErrors("line 154");
+//        ErrorChecker::printGLErrors("line 154");
         m_gBufferShader->setUniform("p" , camera->getProjectionMatrix());
         m_gBufferShader->setUniform("v", camera->getViewMatrix());
-        ErrorChecker::printGLErrors("line 157");
+//        ErrorChecker::printGLErrors("line 157");
     } else {
         m_phongShader->setUniform("useLighting", settings.useLighting);
         m_phongShader->setUniform("useArrowOffsets", false);
@@ -222,9 +301,7 @@ void SceneviewScene::renderGeometry() {
     for (PrimTransPair pair : primTransPairs) {
         if (settings.deferredLight) {
             m_gBufferShader->setUniform("m", pair.tranformation);
-            ErrorChecker::printGLErrors("line 198");
             m_gBufferShader->applyMaterial(pair.primitive.material);
-            ErrorChecker::printGLErrors("line 200");
 
         } else {
             m_phongShader->setUniform("m", pair.tranformation);
@@ -261,7 +338,7 @@ void SceneviewScene::renderGeometry() {
             continue;
         }
 
-        ErrorChecker::printGLErrors("line 239");
+//        ErrorChecker::printGLErrors("line 239");
     }
 }
 
@@ -282,7 +359,7 @@ void SceneviewScene::tryApplyDiffuseTexture( const CS123SceneFileMap &map ) {
         m_gBufferShader->setUniform( "useTexture", 1 );
         m_gBufferShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
         m_gBufferShader->setTexture( "tex", m_textures.at( map.filename ) );
-        ErrorChecker::printGLErrors("line 260");
+//        ErrorChecker::printGLErrors("line 260");
     } else {
         if( !map.isUsed ) {
             m_phongShader->setUniform( "useTexture", 0 );

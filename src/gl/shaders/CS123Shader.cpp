@@ -29,15 +29,11 @@ glm::vec3 toGLMVec3(const CS123SceneColor &c) {
 }
 
 void CS123Shader::applyMaterial(const CS123SceneMaterial &material) {
-    ErrorChecker::printGLErrors("line 1");
     setUniform("ambient_color", toGLMVec3(material.cAmbient));
-    ErrorChecker::printGLErrors("line 2");
 
     setUniform("diffuse_color", toGLMVec3(material.cDiffuse));
-    ErrorChecker::printGLErrors("line 3");
 
     setUniform("specular_color", toGLMVec3(material.cSpecular));
-    ErrorChecker::printGLErrors("line 4");
 
     setUniform("shininess", material.shininess);
 //    setUniform( "repeatUV", glm::vec2{1,1});

@@ -6,6 +6,9 @@ in vec2 texc;
 uniform sampler2D gPosition;   // world space
 uniform sampler2D gNormal;     // world space
 uniform sampler2D gAlbedoSpec; // world space
+
+uniform sampler2D ssaoColor;
+
 uniform mat4 v;
 
 // Light data
@@ -32,12 +35,14 @@ void main()
     vec3 FragPos = texture(gPosition, texc).rgb;
     vec3 Normal = texture(gNormal, texc).rgb;
     vec3 Albedo = texture(gAlbedoSpec, texc).rgb;
+//    float AmbientOcclusion = texture(ssaoColor, texc).r;
+    float AmbientOcclusion = 1.0f;
     // this is for no texture mode
 //    vec3 Albedo = vec3(1);
     float shininess = texture(gAlbedoSpec, texc).a;
 
     // then calculate lighting as usual
-    vec3 lighting = Albedo*0.3; // hard-coded ambient component
+    vec3 lighting = Albedo*0.2*AmbientOcclusion; // hard-coded ambient component
 
     if (useLighting) {
         for (int i = 0; i < lightCount; i++) {
@@ -73,7 +78,7 @@ void main()
     }
     lighting = clamp(lighting, vec3(0), vec3(1));
     FragColor = vec4(lighting, 1.0);
-//            FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+//    FragColor = vec4(AmbientOcclusion);
 
 }
 
