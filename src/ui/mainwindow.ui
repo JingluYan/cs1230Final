@@ -83,8 +83,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>100</width>
-             <height>30</height>
+             <width>371</width>
+             <height>3067</height>
             </rect>
            </property>
           </widget>
@@ -967,8 +967,14 @@
    <addaction name="menuToolbars"/>
   </widget>
   <widget class="QDockWidget" name="featuresDock">
+   <property name="acceptDrops">
+    <bool>false</bool>
+   </property>
    <property name="features">
     <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
+   <property name="windowTitle">
+    <string>Feature</string>
    </property>
    <attribute name="dockWidgetArea">
     <number>1</number>

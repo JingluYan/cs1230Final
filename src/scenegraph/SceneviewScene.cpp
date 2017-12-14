@@ -335,7 +335,7 @@ void SceneviewScene::setSceneUniforms(SupportCanvas3D *context) {
         m_gBufferShader->setUniform("v", camera->getViewMatrix());
 //        ErrorChecker::printGLErrors("line 157");
     } else {
-        m_phongShader->setUniform("useLighting", settings.useLighting);
+        m_phongShader->setUniform("useLighting", settings.useFeatureLighting);
         m_phongShader->setUniform("useArrowOffsets", false);
         m_phongShader->setUniform("p" , camera->getProjectionMatrix());
         m_phongShader->setUniform("v", camera->getViewMatrix());
