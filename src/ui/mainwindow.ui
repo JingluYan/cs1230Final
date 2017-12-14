@@ -83,8 +83,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>100</width>
-             <height>30</height>
+             <width>371</width>
+             <height>3067</height>
             </rect>
            </property>
           </widget>
@@ -345,27 +345,6 @@
       <widget class="QCheckBox" name="drawNormalsCheckbox">
        <property name="text">
         <string>Draw normals</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="deferredLightCheckbox">
-       <property name="text">
-        <string>Deferred Lighting</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="textureMappingCheckBox">
-       <property name="text">
-        <string>Texture Mapping</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QCheckBox" name="bumpMappingCheckbox">
-       <property name="text">
-        <string>Bump Mapping</string>
        </property>
       </widget>
      </item>
@@ -987,6 +966,267 @@
    <addaction name="menuFile"/>
    <addaction name="menuToolbars"/>
   </widget>
+  <widget class="QDockWidget" name="featuresDock">
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="featuresDockContents">
+    <widget class="QGroupBox" name="sceneType">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>201</width>
+       <height>121</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Scene Type</string>
+     </property>
+     <widget class="QRadioButton" name="Scene1">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>85</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Scene 1</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="Sceen2">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>85</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Scene 2</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="Scene3">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>85</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Scene 3</string>
+      </property>
+     </widget>
+    </widget>
+    <widget class="QGroupBox" name="groupBox">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>150</y>
+       <width>201</width>
+       <height>331</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>Features</string>
+     </property>
+     <widget class="QCheckBox" name="useFeaturesLightingCheckbox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>30</y>
+        <width>171</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Use Lighting</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="textureMapCheckbox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>60</y>
+        <width>151</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Apply Texture Map</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="bumpMapCheckbox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>90</y>
+        <width>121</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Apply Bump Map</string>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="defferredLightingCheckbox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>120</y>
+        <width>151</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Use Deferred Lighting</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="ambientLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>150</y>
+        <width>51</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Ambient</string>
+      </property>
+     </widget>
+     <widget class="QSlider" name="ambientSlider">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>150</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="ambientTextbox">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>150</y>
+        <width>31</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="SSAOCheckbox">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>180</y>
+        <width>73</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>SSAO</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="radiusLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>210</y>
+        <width>41</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Radius</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="radiusTextbox">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>210</y>
+        <width>31</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QSlider" name="radiusSlider">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>210</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QLabel" name="biasLabel">
+      <property name="geometry">
+       <rect>
+        <x>20</x>
+        <y>240</y>
+        <width>21</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Bias</string>
+      </property>
+     </widget>
+     <widget class="QLineEdit" name="biasTextbox">
+      <property name="geometry">
+       <rect>
+        <x>160</x>
+        <y>240</y>
+        <width>31</width>
+        <height>21</height>
+       </rect>
+      </property>
+     </widget>
+     <widget class="QSlider" name="biasSlider">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>240</y>
+        <width>81</width>
+        <height>20</height>
+       </rect>
+      </property>
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+     </widget>
+     <widget class="QCheckBox" name="visualizeSSAO">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>270</y>
+        <width>151</width>
+        <height>19</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Visualize SSAO</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
   <action name="actionNew">
    <property name="text">
     <string>New</string>
@@ -1057,6 +1297,7 @@
     <string>Ctrl+B</string>
    </property>
   </action>
+  <zorder>featuresDock</zorder>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <customwidgets>

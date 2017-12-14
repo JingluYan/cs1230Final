@@ -48,14 +48,16 @@ MainWindow::MainWindow(QWidget *parent) :
     actions.push_back(ui->dock->toggleViewAction()); \
     actions.back()->setShortcut(QKeySequence(key));
 
+    SETUP_ACTION(featuresDock,  "CTRL+2");
     SETUP_ACTION(shapesDock,    "CTRL+3");
     SETUP_ACTION(camtransDock,  "CTRL+4");
 
     ui->menuToolbars->addActions(actions);
 #undef SETUP_ACTION
 
-    tabifyDockWidget(ui->shapesDock, ui->camtransDock);
-    ui->shapesDock->raise();
+    tabifyDockWidget(ui->featuresDock, ui->shapesDock);
+    tabifyDockWidget(ui->featuresDock, ui->camtransDock);
+    ui->featuresDock->raise();
 
     dataBind();
 
@@ -99,10 +101,50 @@ void MainWindow::dataBind() {
     m_bindings.push_back(_b); \
     assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
 }
+    // Features dock
+    QButtonGroup *featuresButtonGroup = new QButtonGroup;
+    m_buttonGroups.push_back(featuresButtonGroup);
+
+//    BIND(ChoiceBinding::bindRadioButtons(
+//            featuresButtonGroup,
+//            SCENE_1,
+//            settings.sceneType,
+//            ui->Scene1,
+//            ui->Sceen2,
+//            ui->Scene3))
+    BIND(FloatBinding::bindSliderAndTextbox(
+        ui->ambientSlider, ui->ambientTextbox, settings.ambient, 0.f, 1.f))
+    BIND(FloatBinding::bindSliderAndTextbox(
+        ui->radiusSlider, ui->radiusTextbox, settings.radius, 0.f, 1.f))
+    BIND(FloatBinding::bindSliderAndTextbox(
+        ui->biasSlider, ui->biasTextbox, settings.bias, 0.f, 1.f))
+    BIND(BoolBinding::bindCheckbox(ui->useFeaturesLightingCheckbox, settings.useFeatureLighting))
+    BIND(BoolBinding::bindCheckbox(ui->bumpMapCheckbox, settings.bumpMapping))
+    BIND(BoolBinding::bindCheckbox(ui->textureMapCheckbox, settings.textureMapping))
+    BIND(BoolBinding::bindCheckbox(ui->defferredLightingCheckbox, settings.deferredLight))
+    BIND(BoolBinding::bindCheckbox(ui->SSAOCheckbox, settings.SSAO))
+    BIND(BoolBinding::bindCheckbox(ui->visualizeSSAO, settings.visualizeSSAO))
+
+    // Camtrans dock
+    BIND(BoolBinding::bindCheckbox(ui->cameraOrbitCheckbox, settings.useOrbitCamera))
+    BIND(FloatBinding::bindDial(ui->transX, settings.cameraPosX, -2, 2, true))
+    BIND(FloatBinding::bindDial(ui->transY, settings.cameraPosY, -2, 2, true))
+    BIND(FloatBinding::bindDial(ui->transZ, settings.cameraPosZ, -2, 2, true))
+    BIND(FloatBinding::bindDial(ui->rotU,   settings.cameraRotU, -20, 20, true))
+    BIND(FloatBinding::bindDial(ui->rotV,   settings.cameraRotV, -20, 20, true))
+    BIND(FloatBinding::bindDial(ui->rotW,   settings.cameraRotN, -180, 180, false))
+    BIND(FloatBinding::bindSliderAndTextbox(
+              ui->cameraFovSlider, ui->cameraFovTextbox, settings.cameraFov, 1, 179))
+    BIND(FloatBinding::bindSliderAndTextbox(
+              ui->cameraNearSlider, ui->cameraNearTextbox, settings.cameraNear, 0.1, 50))
+    BIND(FloatBinding::bindSliderAndTextbox(
+              ui->cameraFarSlider, ui->cameraFarTextbox, settings.cameraFar, 0.1, 50))
+
+
+    // Shapes dock
     QButtonGroup *shapesButtonGroup = new QButtonGroup;
     m_buttonGroups.push_back(shapesButtonGroup);
 
-    // Shapes dock
     BIND(BoolBinding::bindCheckbox(ui->showSceneviewInstead, settings.useSceneviewScene))
     BIND(ChoiceBinding::bindRadioButtons(
             shapesButtonGroup,
@@ -124,24 +166,10 @@ void MainWindow::dataBind() {
     BIND(BoolBinding::bindCheckbox(ui->useLightingCheckbox, settings.useLighting))
     BIND(BoolBinding::bindCheckbox(ui->drawWireframeCheckbox, settings.drawWireframe))
     BIND(BoolBinding::bindCheckbox(ui->drawNormalsCheckbox, settings.drawNormals))
-    BIND(BoolBinding::bindCheckbox(ui->deferredLightCheckbox, settings.deferredLight))
-    BIND(BoolBinding::bindCheckbox(ui->textureMappingCheckBox, settings.textureMapping))
-    BIND(BoolBinding::bindCheckbox(ui->bumpMappingCheckbox, settings.bumpMapping))
+    BIND(BoolBinding::bindCheckbox(ui->defferredLightingCheckbox, settings.deferredLight))
+    BIND(BoolBinding::bindCheckbox(ui->textureMapCheckbox, settings.textureMapping))
+    BIND(BoolBinding::bindCheckbox(ui->bumpMapCheckbox, settings.bumpMapping))
 
-    // Camtrans dock
-    BIND(BoolBinding::bindCheckbox(ui->cameraOrbitCheckbox, settings.useOrbitCamera))
-    BIND(FloatBinding::bindDial(ui->transX, settings.cameraPosX, -2, 2, true))
-    BIND(FloatBinding::bindDial(ui->transY, settings.cameraPosY, -2, 2, true))
-    BIND(FloatBinding::bindDial(ui->transZ, settings.cameraPosZ, -2, 2, true))
-    BIND(FloatBinding::bindDial(ui->rotU,   settings.cameraRotU, -20, 20, true))
-    BIND(FloatBinding::bindDial(ui->rotV,   settings.cameraRotV, -20, 20, true))
-    BIND(FloatBinding::bindDial(ui->rotW,   settings.cameraRotN, -180, 180, false))
-    BIND(FloatBinding::bindSliderAndTextbox(
-              ui->cameraFovSlider, ui->cameraFovTextbox, settings.cameraFov, 1, 179))
-    BIND(FloatBinding::bindSliderAndTextbox(
-              ui->cameraNearSlider, ui->cameraNearTextbox, settings.cameraNear, 0.1, 50))
-    BIND(FloatBinding::bindSliderAndTextbox(
-              ui->cameraFarSlider, ui->cameraFarTextbox, settings.cameraFar, 0.1, 50))
 
     BIND(ChoiceBinding::bindTabs(ui->tabWidget, settings.currentTab))
 
@@ -287,6 +315,7 @@ void MainWindow::setAllEnabled(bool enabled) {
     QList<QWidget *> widgets;
     widgets += ui->shapesDock;
     widgets += ui->camtransDock;
+    widgets += ui->featuresDock;
 
     QList<QAction *> actions;
     actions += ui->actionNew;

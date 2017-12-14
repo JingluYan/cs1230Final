@@ -35,15 +35,24 @@ void Settings::loadSettingsOrDefaults() {
     useLighting = s.value("useLighting", true).toBool();
     drawWireframe = s.value("drawWireframe", true).toBool();
     drawNormals = s.value("drawNormals", false).toBool();
-    deferredLight = s.value("deferredLight", false).toBool();
-    textureMapping = s.value("textureMapping", true).toBool();
-    bumpMapping = s.value("bumpMapping", false).toBool();
 
     // Camtrans
     useOrbitCamera = s.value("useOrbitCamera", true).toBool();
     cameraFov = s.value("cameraFov", 55).toDouble();
     cameraNear = s.value("cameraNear", 0.1).toDouble();
     cameraFar = s.value("cameraFar", 50).toDouble();
+
+    // Features
+    sceneType = s.value("sceneType", SCENE_1).toInt();
+    useFeatureLighting = s.value("useFeatureLighting", useFeatureLighting).toBool();
+    deferredLight = s.value("deferredLight", false).toBool();
+    textureMapping = s.value("textureMapping", true).toBool();
+    bumpMapping = s.value("bumpMapping", false).toBool();
+    ambient = s.value("ambient", ambient).toFloat();
+    SSAO = s.value("SSAO", SSAO).toFloat();
+    radius = s.value("radius", radius).toFloat();
+    bias = s.value("bias", bias).toFloat();
+    visualizeSSAO = s.value("visualizeSSAO", visualizeSSAO).toBool();
 
     // Ray
     useSuperSampling = s.value("useSuperSampling", false).toBool();
@@ -81,15 +90,24 @@ void Settings::saveSettings() {
     s.setValue("useLighting", useLighting);
     s.setValue("drawWireframe", drawWireframe);
     s.setValue("drawNormals", drawNormals);
-    s.setValue("deferredLight", deferredLight);
-    s.setValue("textureMapping", textureMapping);
-    s.setValue("bumpMapping", bumpMapping);
 
     // Camtrans
     s.setValue("useOrbitCamera", useOrbitCamera);
     s.setValue("cameraFov", cameraFov);
     s.setValue("cameraNear", cameraNear);
     s.setValue("cameraFar", cameraFar);
+
+    // Features
+    s.setValue("sceneType", sceneType);
+    s.setValue("useFeatureLighting", useFeatureLighting);
+    s.setValue("deferredLight", deferredLight);
+    s.setValue("textureMapping", textureMapping);
+    s.setValue("bumpMapping", bumpMapping);
+    s.setValue("ambient", ambient);
+    s.setValue("SSAO", SSAO);
+    s.setValue("radius", radius);
+    s.setValue("bias", bias);
+    s.setValue("visualizeSSAO", visualizeSSAO);
 
     // Ray
     s.setValue("useSuperSampling", useSuperSampling);

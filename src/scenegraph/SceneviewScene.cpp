@@ -132,7 +132,7 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         m_deferredLightingShader->bind();
         // setup uniforms in m_deferredLightingShader
         m_deferredLightingShader->setUniform("v", context->getCamera()->getViewMatrix());
-        m_deferredLightingShader->setUniform("useLighting", settings.useLighting);
+        m_deferredLightingShader->setUniform("useLighting", settings.useFeatureLighting);
         m_deferredLightingShader->setUniform("lightCount", (int)lights.size());
         setLights();
         // bind the m_gbuffer_FBO texture attachments

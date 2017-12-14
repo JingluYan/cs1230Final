@@ -23,6 +23,12 @@ enum ShapeType {
     NUM_SHAPE_TYPES
 };
 
+enum SceneType {
+    SCENE_1,
+    SCENE_2,
+    SCENE_3
+};
+
 // Enumeration values for the two tabs (2D, 3D) at the bottom of the Window.
 enum UITab {
     TAB_2D,
@@ -68,9 +74,6 @@ struct Settings {
     bool useLighting;           // Enable default lighting
     bool drawWireframe;         // Draw wireframe only
     bool drawNormals;           // Turn normals on and off
-    bool deferredLight;         // Turn on deferred lighting
-    bool textureMapping;        // Turn on texture mapping
-    bool bumpMapping;           // Turn on bump mapping
 
     // Camtrans
     bool useOrbitCamera;        // Use the built-in orbiting camera instead of the Camtrans camera
@@ -86,6 +89,18 @@ struct Settings {
 
     // Modeler
     int objTool;                // The currently selected modeler tool.
+
+    // Features
+    int sceneType;              // Selected scene type
+    bool useFeatureLighting;    // Enable default lighting
+    bool textureMapping;        // Turn on texture mapping
+    bool bumpMapping;           // Turn on bump mapping
+    bool deferredLight;         // Turn on deferred lighting
+    float ambient;              // Param for deferred light
+    bool SSAO;                  // Turn on SSAO
+    float radius;               // Param for SSAO
+    float bias;                 // Param for SSAO
+    bool visualizeSSAO;         // Visualize SSAO
 
     // Ray
     bool useSuperSampling;      // Enable or disable super-sampling.
