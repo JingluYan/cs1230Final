@@ -25,7 +25,7 @@ out vec3 color;
 
 void main()
 {
-    texc = texCoord * repeatUV;
+    texc = texCoord;
 
     vec4 pos_cam_vec4 = v * m * vec4( position, 1.0 );
     gl_Position = p * pos_cam_vec4;
