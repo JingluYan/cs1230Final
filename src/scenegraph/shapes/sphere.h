@@ -18,6 +18,7 @@ private:
     const float r; //radius
     int prev_p1;
     int prev_p2;
+    std::vector<float> tempV;
     void addNormal(float theta, float thai, std::vector<float>& vertices);
     void addUV(float theta, float y, std::vector<float>& vertices);
 };

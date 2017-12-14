@@ -14,7 +14,7 @@ Cylinder::Cylinder(int p1, int p2)
 }
 
 int Cylinder::calcVertices(int p1, int p2) {
-    v.clear();
+    tempV.clear();
     p2 = p2 < 3 ? 3 : p2;
     int count = 0;
     //calc side
@@ -24,33 +24,67 @@ int Cylinder::calcVertices(int p1, int p2) {
             deg -= 360 / static_cast<float>(p2);
             float rad = deg * M_PI / 180;
             //upper
-            v.push_back(r * cos(rad));
-            v.push_back(0.5f - i / p1);
-            v.push_back( r * sin(rad));
-            addNormal(rad, v);
-            addUV(rad, 0.5f - i / p1, v);
+            tempV.push_back(r * cos(rad));
+            tempV.push_back(0.5f - i / p1);
+            tempV.push_back( r * sin(rad));
+            addNormal(rad, tempV);
+            addUV(rad, 0.5f - i / p1, tempV);
 
             //lower point
-            v.push_back(r * cos(rad));
-            v.push_back(0.5f - (i + 1) / p1);
-            v.push_back( r * sin(rad));
-            addNormal(rad, v);
-            addUV(rad, 0.5f - (i + 1) / p1, v);
+            tempV.push_back(r * cos(rad));
+            tempV.push_back(0.5f - (i + 1) / p1);
+            tempV.push_back( r * sin(rad));
+            addNormal(rad, tempV);
+            addUV(rad, 0.5f - (i + 1) / p1, tempV);
             count += 2;
 
         }
     }
 
-    // add center point
+    v.clear();
+    // Add tangent and bitangent in v
+    for (unsigned int i = 0; i < tempV.size(); i++) {
+        //upper triangle
+        glm::vec3 v1pos = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec3 v1normal = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec2 v1uv = {tempV[i++], tempV[i++]};
+        glm::vec3 v2pos = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec3 v2normal = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec2 v2uv = {tempV[i++], tempV[i++]};
+        glm::vec3 v3pos ={tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec3 v3normal = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec2 v3uv = {tempV[i++], tempV[i++]};
+        i--;
+        add3VertexInV(v, v1pos, v1normal, v1uv, v2pos, v2normal, v2uv, v3pos, v3normal, v3uv);
+    }
+
+    // draw bottom
     std::vector<float> tmp = {0.0f, -.5f, 0.0f, //position
                               0.0f, -1.0f, 0.0f,  // normal
-                             0.5f, 0.5f // uv
+                              0.5f, 0.5f // uv
                              };
-    v.insert(v.end(), tmp.begin(), tmp.end());
+    tempV.insert(tempV.end(), tmp.begin(), tmp.end());
     count++;
 
-    count += calcBottom(p1, p2, -.5f, v, true);
-    count += calcBottom(p1, p2, 0.5f, v, false);
+    count += calcBottom(p1, p2, -.5f, tempV, true);
+    count += calcBottom(p1, p2, 0.5f, tempV, false);
+
+    v.clear();
+    // Add tangent and bitangent in v
+    for (unsigned int i = 0; i < tempV.size(); i++) {
+        //upper triangle
+        glm::vec3 v1pos = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec3 v1normal = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec2 v1uv = {tempV[i++], tempV[i++]};
+        glm::vec3 v2pos = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec3 v2normal = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec2 v2uv = {tempV[i++], tempV[i++]};
+        glm::vec3 v3pos ={tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec3 v3normal = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec2 v3uv = {tempV[i++], tempV[i++]};
+        i--;
+        add3VertexInV(v, v1pos, v1normal, v1uv, v2pos, v2normal, v2uv, v3pos, v3normal, v3uv);
+    }
     return count;
 }
 
@@ -66,6 +100,8 @@ void Cylinder::update(int p1, int p2) {
     setAttribute(CS123::GL::ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     setAttribute(CS123::GL::ShaderAttrib::NORMAL, 3, 3*sizeof(float), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     setAttribute(CS123::GL::ShaderAttrib::TEXCOORD0, 2, 6*sizeof(float), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    setAttribute(CS123::GL::ShaderAttrib::TANGENT, 3, 8*sizeof(float), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    setAttribute(CS123::GL::ShaderAttrib::BINORMAL, 3, 11*sizeof(float), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     buildVAO();
 }
 
@@ -83,3 +119,4 @@ void Cylinder::addUV(float theta, float y, std::vector<float> &vertices) {
     vertices.push_back(u);
     vertices.push_back(v);
 }
+

@@ -16,7 +16,7 @@ Sphere::Sphere(int p1, int p2) :
 }
 
 int Sphere::calcVertices(int p1, int p2) {
-    v.clear();
+    tempV.clear();
     int count = 0;
     p2 = p2 < 3 ? 3 : p2;
     p1 = p1 < 2 ? 2 : p1;
@@ -26,24 +26,43 @@ int Sphere::calcVertices(int p1, int p2) {
 
     for (int i = 0; i < p1; i++) { //tess
         for (int j = 0; j <= p2; j++) { //round
-            v.push_back(r * sinf(i * d_phai) * cosf(-j * d_theta));
-            v.push_back(r * cosf(i * d_phai));
-            v.push_back(r * sinf(i * d_phai) * sinf(-j * d_theta));
-            addNormal(-j * d_theta, i * d_phai, v);
-            addUV(-j * d_theta, r * cosf(i * d_phai), v);
+            tempV.push_back(r * sinf(i * d_phai) * cosf(-j * d_theta));
+            tempV.push_back(r * cosf(i * d_phai));
+            tempV.push_back(r * sinf(i * d_phai) * sinf(-j * d_theta));
+            addNormal(-j * d_theta, i * d_phai, tempV);
+            addUV(-j * d_theta, r * cosf(i * d_phai), tempV);
 
-            v.push_back(r * sinf((i + 1) * d_phai) * cosf(-j * d_theta));
-            v.push_back(r * cosf((i + 1) * d_phai));
-            v.push_back(r * sinf((i + 1) * d_phai) * sinf(-j * d_theta));
-            addNormal(-j * d_theta, (i + 1) * d_phai, v);
-            addUV(-j * d_theta, r * cosf((i + 1) * d_phai), v);
+            tempV.push_back(r * sinf((i + 1) * d_phai) * cosf(-j * d_theta));
+            tempV.push_back(r * cosf((i + 1) * d_phai));
+            tempV.push_back(r * sinf((i + 1) * d_phai) * sinf(-j * d_theta));
+            addNormal(-j * d_theta, (i + 1) * d_phai, tempV);
+            addUV(-j * d_theta, r * cosf((i + 1) * d_phai), tempV);
 
             count += 2;
         }
     }
 
+    v.clear();
+    // Add tangent and bitangent in v
+    for (unsigned int i = 0; i < tempV.size(); i++) {
+        //upper triangle
+        glm::vec3 v1pos = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec3 v1normal = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec2 v1uv = {tempV[i++], tempV[i++]};
+        glm::vec3 v2pos = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec3 v2normal = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec2 v2uv = {tempV[i++], tempV[i++]};
+        glm::vec3 v3pos ={tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec3 v3normal = {tempV[i++], tempV[i++], tempV[i++]};
+        glm::vec2 v3uv = {tempV[i++], tempV[i++]};
+        i--;
+        add3VertexInV(v, v1pos, v1normal, v1uv, v2pos, v2normal, v2uv, v3pos, v3normal, v3uv);
+    }
+
     return count;
 }
+
+
 
 void Sphere::update(int p1, int p2) {
     if (prev_p1 == p1 && prev_p2 == p2) {
@@ -57,6 +76,8 @@ void Sphere::update(int p1, int p2) {
     setAttribute(CS123::GL::ShaderAttrib::POSITION, 3, 0, VBOAttribMarker::DATA_TYPE::FLOAT, false);
     setAttribute(CS123::GL::ShaderAttrib::NORMAL, 3, 3*sizeof(float), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     setAttribute(CS123::GL::ShaderAttrib::TEXCOORD0, 2, 6*sizeof(float), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    setAttribute(CS123::GL::ShaderAttrib::TANGENT, 3, 8*sizeof(float), VBOAttribMarker::DATA_TYPE::FLOAT, false);
+    setAttribute(CS123::GL::ShaderAttrib::BINORMAL, 3, 11*sizeof(float), VBOAttribMarker::DATA_TYPE::FLOAT, false);
     buildVAO();
 }
 
@@ -74,3 +95,4 @@ void Sphere::addUV(float theta, float y, std::vector<float> &vertices) {
     vertices.push_back(u);
     vertices.push_back(v);
 }
+

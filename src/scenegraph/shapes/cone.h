@@ -19,8 +19,8 @@ private:
     const float slope; //slope
     int prev_p1;
     int prev_p2;
+    std::vector<float> tempV;
     void addUV(float theta, float y, std::vector<float>& vertices);
-
 };
 
 #endif // CONE_H

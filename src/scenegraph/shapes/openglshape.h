@@ -48,6 +48,17 @@ protected:
     int m_indices_size;                       /// size of the indices vector
     std::vector<float> v;
     const double EPSILON = std::numeric_limits<double>::epsilon();
+
+
+    void add3VertexInV(std::vector<float> &v,
+                       glm::vec3 v1pos, glm::vec3 v1normal, glm::vec2 v1uv,
+                       glm::vec3 v2pos, glm::vec3 v2normal, glm::vec2 v2uv,
+                       glm::vec3 v3pos, glm::vec3 v3normal, glm::vec2 v3uv);
+
+    // helper functions
+    void addVertex(std::vector<float> vertex, std::vector<float>& vertices);
+    void addglmVec3ToVector(glm::vec3 src, std::vector<float>& dest);
+    void addglmVec2ToVector(glm::vec2 src, std::vector<float>& dest);
 private:
     GLsizeiptr m_size;                          /// size of the data array, in bytes.
     VBO::GEOMETRY_LAYOUT m_drawMode;            /// drawing mode

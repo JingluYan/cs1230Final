@@ -14,7 +14,7 @@ FlatBottomCurveShape::FlatBottomCurveShape() :
 * @param vertices: the vbo vector
 * @param down: if the bottom is facing up or not
 **/
-int FlatBottomCurveShape::calcBottom(int p1, int p2, float y, std::vector<float>& vertices, bool down) {
+int FlatBottomCurveShape::calcBottom(int p1, int p2, float y, std::vector<float>& tempV, bool down) {
     int count = 0;
     float normal_y = down ? -1.0f : 1.0f;
     float draw_dir = down ? -1.0f : 1.0f;
@@ -25,41 +25,39 @@ int FlatBottomCurveShape::calcBottom(int p1, int p2, float y, std::vector<float>
             deg += draw_dir * 360 / static_cast<float>(p2);
             float rad = deg * M_PI / 180;
             //add position
-            vertices.push_back(i * segment_len * cos(rad));
-            vertices.push_back(y);
-            vertices.push_back(i * segment_len * sin(rad));
+            tempV.push_back(i * segment_len * cos(rad));
+            tempV.push_back(y);
+            tempV.push_back(i * segment_len * sin(rad));
             //add normal
-            vertices.push_back(0.0f);
-            vertices.push_back(normal_y);
-            vertices.push_back(0.0f);
+            tempV.push_back(0.0f);
+            tempV.push_back(normal_y);
+            tempV.push_back(0.0f);
             //add uv
-            addUV(i * segment_len * cos(rad), i * segment_len * sin(rad), vertices, down);
+            addUV(i * segment_len * cos(rad), i * segment_len * sin(rad), tempV, down);
 
             // add position
-            vertices.push_back((i + 1) * segment_len * cos(rad));
-            vertices.push_back(y);
-            vertices.push_back((i + 1) * segment_len * sin(rad));
+            tempV.push_back((i + 1) * segment_len * cos(rad));
+            tempV.push_back(y);
+            tempV.push_back((i + 1) * segment_len * sin(rad));
             //add normal
-            vertices.push_back(0.0f);
-            vertices.push_back(normal_y);
-            vertices.push_back(0.0f);
+            tempV.push_back(0.0f);
+            tempV.push_back(normal_y);
+            tempV.push_back(0.0f);
             //add uv
-            addUV((i + 1) * segment_len * cos(rad), (i + 1) * segment_len * sin(rad), vertices, down);
+            addUV((i + 1) * segment_len * cos(rad), (i + 1) * segment_len * sin(rad), tempV, down);
 
             count += 2;
         }
     }
-
     return count;
 }
 
-void FlatBottomCurveShape::addUV(float x, float z, std::vector<float> &vertices, bool bottom) {
+void FlatBottomCurveShape::addUV(float x, float z, std::vector<float> &tempV, bool bottom) {
     if (bottom){
-        vertices.push_back(x + 0.5f);
-        vertices.push_back(z + 0.5f);
+        tempV.push_back(x + 0.5f);
+        tempV.push_back(z + 0.5f);
     } else {
-        vertices.push_back(x + 0.5f);
-        vertices.push_back(-z + 0.5f);
+        tempV.push_back(x + 0.5f);
+        tempV.push_back(-z + 0.5f);
     }
 }
-
