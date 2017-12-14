@@ -20,6 +20,10 @@
         <file alias="third_pass.vert">shaders/defered_shading/third_pass/third_pass.vert</file>
         <file alias="skybox.frag">shaders/skybox/skybox.frag</file>
         <file alias="skybox.vert">shaders/skybox/skybox.vert</file>
+        <file alias="blur.frag">shaders/SSAO/Blur.frag</file>
+        <file alias="blur.vert">shaders/SSAO/Blur.vert</file>
+        <file alias="SSAO.frag">shaders/SSAO/SSAO.frag</file>
+        <file alias="SSAO.vert">shaders/SSAO/SSAO.vert</file>
     </qresource>
     <qresource prefix="/textures">
         <file>images/gold.jpg</file>
