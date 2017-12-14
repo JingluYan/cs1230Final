@@ -4,6 +4,7 @@ layout (location = 1) out vec4 gNormal;
 layout (location = 2) out vec4 gAlbedoSpec;
 layout (location = 3) out vec4 gTangent;
 layout (location = 4) out vec4 gBinormal;
+layout (location = 5) out vec4 bumpNormal;
 
 //vec3 gNormal;
 //vec3 gPosition;
@@ -24,8 +25,11 @@ uniform float shininess;
 
 //texture data
 uniform int useTexture = 0;
+uniform int useBumpTexture = 0;
 uniform sampler2D tex;
+uniform sampler2D texBump;
 uniform vec2 repeatUV;
+uniform vec2 repeatBumpUV;
 
 
 //out vec4 fragColor;
@@ -59,4 +63,10 @@ void main()
     // store specular shininess in gAlbedoSpec's alpha component
     gAlbedoSpec.a = shininess;
 
+    //sample bump map normal
+    if (useBumpTexture == 1) {
+        bumpNormal = texture(texBump, texc);
+    } else {
+        bumpNormal = vec4(0);
+    }
 }

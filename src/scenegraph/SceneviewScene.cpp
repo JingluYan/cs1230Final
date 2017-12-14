@@ -104,7 +104,7 @@ SceneviewScene::SceneviewScene(int w, int h, float ratio) :
     // ----------------------
     ssaoKernel = generateSampleKernel();
     noiseTexture = generateNoiseTexture();
-    m_gbuffer_FBO = std::make_unique<FBO>(5,
+    m_gbuffer_FBO = std::make_unique<FBO>(6,
                                           FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY,
                                           m_width,
                                           m_height,
@@ -285,6 +285,7 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         m_deferredLightingShader->setUniform("useSSAO", settings.SSAO);
         m_deferredLightingShader->setUniform("visualizeSSAO", settings.visualizeSSAO);
         m_deferredLightingShader->setUniform("ambient", settings.ambient);
+        m_deferredLightingShader->setUniform("useBumpTexture", settings.bumpMapping);
         setLights();
         // bind the m_gbuffer_FBO texture attachments
         glActiveTextureARB(GL_TEXTURE0);
@@ -297,7 +298,9 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         m_gbuffer_FBO->getColorAttachment(3).bind();
         glActiveTextureARB(GL_TEXTURE4);
         m_gbuffer_FBO->getColorAttachment(4).bind();
-        glActiveTextureARB(GL_TEXTURE5); // add extra SSAO texture to lighting pass
+        glActiveTextureARB(GL_TEXTURE5);
+        m_gbuffer_FBO->getColorAttachment(5).bind();
+        glActiveTextureARB(GL_TEXTURE6); // add extra SSAO texture to lighting pass
         glBindTexture(GL_TEXTURE_2D, ssaoColorBufferBlur);
 
         // pass the m_gbuffer_FBO texture attachments to uniforms
@@ -307,7 +310,8 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gAlbedoSpec"), 2);
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gTangent"), 3);
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gBinormal"), 4);
-        glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "ssaoColor"), 5);
+        glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gBumpNormal"), 5);
+        glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "ssaoColor"), 6);
         m_quad->draw();
 
         m_deferredLightingShader->unbind();

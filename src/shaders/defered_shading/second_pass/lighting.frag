@@ -6,16 +6,15 @@ in vec2 texc;
 uniform sampler2D gPosition;   // cam space
 uniform sampler2D gNormal;     // cam space
 uniform sampler2D gAlbedoSpec; // cam space
-uniform sampler2D gTangent;    // cam space
-uniform sampler2D gBinormal;   // cam space
+uniform sampler2D gTangent;    // obj space
+uniform sampler2D gBinormal;   // obj space
+uniform sampler2D gBumpNormal;   // obj space
 uniform sampler2D ssaoColor;
 
 uniform mat4 v;
 
 // Bump Map
-uniform sampler2D texBump;
-uniform int useBumpTexture = 0;
-uniform vec2 repeatBumpUV;
+uniform bool useBumpTexture;
 
 // Light data
 const int MAX_LIGHTS = 30;
@@ -62,10 +61,10 @@ void main()
             vec3 usingNormal = Normal;
 
             // With Bump texture (convert to tangent space)
-            if (useBumpTexture == 1){
+            if (useBumpTexture && length(texture(gBumpNormal, texc)) > 0.01){
                 usingLightDirection = TBN * usingLightDirection;
                 usingEyeDirection = TBN * usingEyeDirection;
-                usingNormal = normalize(texture( texBump, texc ).rgb*2.0 - 1.0);
+                usingNormal = normalize(texture( gBumpNormal, texc ).rgb*2.0 - 1.0);
             }
 
             vec3 vertexToLight = vec3(0);
@@ -98,6 +97,10 @@ void main()
         }
     }
     lighting = clamp(lighting, vec3(0), vec3(1));
+
+    if (AmbientOcclusion < 0.9) {
+        AmbientOcclusion *= AmbientOcclusion*AmbientOcclusion/2.0;
+    }
 
     if (visualizeSSAO) {
         FragColor = vec4(AmbientOcclusion);
