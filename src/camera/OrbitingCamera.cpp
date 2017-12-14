@@ -81,7 +81,7 @@ void OrbitingCamera::updateProjectionMatrix() {
 
     m_scaleMatrix = glm::scale(glm::vec3(1.f / w, 1.f / h, 1.f / farPlane));
     m_projectionMatrix = glm::perspective(
-            glm::radians(settings.cameraFov), m_aspectRatio, settings.cameraNear, farPlane) * 0.02f;
+            glm::radians(settings.cameraFov * 0.5f), m_aspectRatio, settings.cameraNear, farPlane) * 0.02f;
 }
 
 void OrbitingCamera::updateViewMatrix() {

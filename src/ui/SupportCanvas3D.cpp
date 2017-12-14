@@ -401,7 +401,7 @@ void SupportCanvas3D::setCameraAxonometric() {
 
 void SupportCanvas3D::updateCameraHeightAngle() {
     // The height angle is half the overall field of view of the camera
-    m_defaultPerspectiveCamera->setHeightAngle(settings.cameraFov);
+    m_defaultPerspectiveCamera->setHeightAngle(settings.cameraFov/2);
 }
 
 void SupportCanvas3D::updateCameraTranslation() {
