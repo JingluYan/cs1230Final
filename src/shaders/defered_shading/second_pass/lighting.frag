@@ -6,10 +6,16 @@ in vec2 texc;
 uniform sampler2D gPosition;   // cam space
 uniform sampler2D gNormal;     // cam space
 uniform sampler2D gAlbedoSpec; // cam space
-
+uniform sampler2D gTangent;    // cam space
+uniform sampler2D gBinormal;   // cam space
 uniform sampler2D ssaoColor;
 
 uniform mat4 v;
+
+// Bump Map
+uniform sampler2D texBump;
+uniform int useBumpTexture = 0;
+uniform vec2 repeatBumpUV;
 
 // Light data
 const int MAX_LIGHTS = 30;
@@ -21,8 +27,6 @@ uniform vec3 lightColors[MAX_LIGHTS];
 uniform int lightCount = 0;
 
 // Material data
-uniform vec2 repeatUV;
-
 uniform bool useLighting;     // Whether to calculate lighting using lighting equation
 uniform bool visualizeSSAO = false;
 uniform bool useSSAO = true;
@@ -35,6 +39,8 @@ void main()
     vec3 Normal = texture(gNormal, texc).rgb;
     vec3 Albedo = texture(gAlbedoSpec, texc).rgb;
     float AmbientOcclusion = texture(ssaoColor, texc).r;
+    vec3 Tangent = texture(gTangent, texc).rgb;
+    vec3 BiNormal = texture(gBinormal, texc).rgb;
 //    float AmbientOcclusion = 1.0f;
     // this is for no texture mode
 //    vec3 Albedo = vec3(1);
@@ -43,14 +49,31 @@ void main()
     // then calculate lighting as usual
     vec3 lighting = Albedo*ambient; // hard-coded ambient component
 
+    // matrix to convery camera space to tangent space
+    mat3 TBN = transpose(mat3(Tangent,
+                              BiNormal,
+                              Normal
+                             ));
     if (useLighting) {
         for (int i = 0; i < lightCount; i++) {
+            // Without bump texture (camera Space )
+            vec3 usingLightDirection = -lightDirections[i];
+            vec3 usingEyeDirection = normalize(vec3(0) - FragPos);
+            vec3 usingNormal = Normal;
+
+            // With Bump texture (convert to tangent space)
+            if (useBumpTexture == 1){
+                usingLightDirection = TBN * usingLightDirection;
+                usingEyeDirection = TBN * usingEyeDirection;
+                usingNormal = normalize(texture( texBump, texc ).rgb*2.0 - 1.0);
+            }
+
             vec3 vertexToLight = vec3(0);
             // Point Light
             if (lightTypes[i] == 0) {
                 vertexToLight = normalize( (v*vec4(lightPositions[i],1.0) - vec4(FragPos, 1.0)).xyz );
             } else if (lightTypes[i] == 1) { // Dir Light
-                vertexToLight = normalize( (-v*vec4(lightDirections[i], 0.0)).xyz);
+                vertexToLight = normalize( (v * vec4(usingLightDirection, 0)).xyz );
             }
 
             float distance = length((v*vec4(lightPositions[i], 1.0)).xyz - FragPos);
@@ -58,16 +81,16 @@ void main()
                                    + lightAttenuations[i].y * distance
                                    + lightAttenuations[i].y * pow(distance, 2)), 1);
             // Add diffuse component
-            float diffuseIntensity = max(0.0, dot(vertexToLight, Normal));
+            float diffuseIntensity = max(0.0, dot(vertexToLight, usingNormal));
             if (lightTypes[i] == 0) { // only attenuates point lights
                 diffuseIntensity = diffuseIntensity * atten;
             }
             lighting += max(vec3(0), lightColors[i] * Albedo * diffuseIntensity);
 
             // Add specular component
-            vec3 lightReflection = normalize(reflect(-vertexToLight, normalize(Normal)));
+            vec3 lightReflection = normalize(reflect(-vertexToLight, normalize(usingNormal)));
             vec3 eyeDirection = normalize((vec3(0) - FragPos).xyz);
-            float specIntensity = 0.3 * pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
+            float specIntensity = 0.3 * pow(max(0.0, dot(usingEyeDirection, lightReflection)), shininess);
             if (lightTypes[i] == 0) { // only attenuates point lights
                 specIntensity = specIntensity * atten;
             }

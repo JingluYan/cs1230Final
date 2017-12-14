@@ -104,7 +104,7 @@ SceneviewScene::SceneviewScene(int w, int h, float ratio) :
     // ----------------------
     ssaoKernel = generateSampleKernel();
     noiseTexture = generateNoiseTexture();
-    m_gbuffer_FBO = std::make_unique<FBO>(3,
+    m_gbuffer_FBO = std::make_unique<FBO>(5,
                                           FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY,
                                           m_width,
                                           m_height,
@@ -288,7 +288,11 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         m_gbuffer_FBO->getColorAttachment(1).bind();
         glActiveTextureARB(GL_TEXTURE2);
         m_gbuffer_FBO->getColorAttachment(2).bind();
-        glActiveTextureARB(GL_TEXTURE3); // add extra SSAO texture to lighting pass
+        glActiveTextureARB(GL_TEXTURE3);
+        m_gbuffer_FBO->getColorAttachment(3).bind();
+        glActiveTextureARB(GL_TEXTURE4);
+        m_gbuffer_FBO->getColorAttachment(4).bind();
+        glActiveTextureARB(GL_TEXTURE5); // add extra SSAO texture to lighting pass
         glBindTexture(GL_TEXTURE_2D, ssaoColorBufferBlur);
 
         // pass the m_gbuffer_FBO texture attachments to uniforms
@@ -296,7 +300,9 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gPosition"), 0);
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gNormal"), 1);
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gAlbedoSpec"), 2);
-        glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "ssaoColor"), 3);
+        glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gTangent"), 3);
+        glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gBinormal"), 4);
+        glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "ssaoColor"), 5);
         m_quad->draw();
         m_deferredLightingShader->unbind();
 
@@ -428,7 +434,6 @@ void SceneviewScene::tryApplyDiffuseTexture( const CS123SceneFileMap &map ) {
         m_gBufferShader->setUniform( "useTexture", 1 );
         m_gBufferShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
         m_gBufferShader->setTexture( "tex", m_textures.at( map.filename ) );
-//        ErrorChecker::printGLErrors("line 260");
     } else {
         if( !map.isUsed ) {
             m_phongShader->setUniform( "useTexture", 0 );
@@ -443,12 +448,12 @@ void SceneviewScene::tryApplyDiffuseTexture( const CS123SceneFileMap &map ) {
 void SceneviewScene::tryApplyBumpTexture( const CS123SceneFileMap &map ) {
     if (settings.deferredLight) {
         if (!map.isUsed) {
-            m_gBufferShader->setUniform( "useTexture", 0 );
+            m_gBufferShader->setUniform( "useBumpTexture", 0 );
             return;
         }
-        m_gBufferShader->setUniform( "useTexture", 1 );
-        m_gBufferShader->setUniform( "repeatUV", glm::vec2{map.repeatU, map.repeatV});
-//        ErrorChecker::printGLErrors("line 260");
+        m_gBufferShader->setUniform( "useBumpTexture", 1 );
+        m_gBufferShader->setUniform( "repeatBumpUV", glm::vec2{map.repeatU, map.repeatV});
+        m_gBufferShader->setTexture( "texBump", m_bumpmaps.at( map.filename ) );
     } else {
         if( !map.isUsed ) {
             m_phongShader->setUniform( "useBumpTexture", 0 );
