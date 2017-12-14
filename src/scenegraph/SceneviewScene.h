@@ -49,7 +49,7 @@ public:
     // pointer.  This will be used during the "modeler" lab, so don't worry about it for now.
     void setSelection(int x, int y);
 
-    void setWindowDim(int w, int h);
+    void setWindowDim(int w, int h, float ratio);
 
 private:
 
@@ -91,6 +91,7 @@ private:
 
     int m_width;  /// window width
     int m_height;
+    float m_ratio; // resolution
     std::unique_ptr<FBO> m_gbuffer_FBO;
     std::unique_ptr<FBO> m_tmp_FBO;
 

@@ -1,6 +1,6 @@
 #version 330 core
-layout (location = 0) out vec3 gPosition;
-layout (location = 1) out vec3 gNormal;
+layout (location = 0) out vec4 gPosition;
+layout (location = 1) out vec4 gNormal;
 layout (location = 2) out vec4 gAlbedoSpec;
 
 //vec3 gNormal;
@@ -9,8 +9,8 @@ layout (location = 2) out vec4 gAlbedoSpec;
 
 in vec3 pos_cam;
 in vec3 normal_cam;
-in vec3 pos_world;
-in vec3 normal_world;
+in vec4 pos_world;
+in vec4 normal_world;
 in vec2 texc;
 in vec3 color;
 
@@ -25,10 +25,10 @@ uniform vec2 repeatUV;
 
 //out vec4 fragColor;
 
-//vec3 pack( vec3 v )
-//{
-//    return 0.5 * v + vec3( 0.5 );
-//}
+vec3 pack( vec3 v )
+{
+    return 0.5 * v + vec3( 0.5 );
+}
 
 void main()
 {

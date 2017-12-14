@@ -18,8 +18,8 @@ uniform vec3 specular_color;
 
 out vec3 pos_cam;
 out vec3 normal_cam;
-out vec3 pos_world;
-out vec3 normal_world;
+out vec4 pos_world;
+out vec4 normal_world;
 out vec2 texc;
 out vec3 color;
 
@@ -35,9 +35,8 @@ void main()
     pos_cam = pos_cam_vec4.xyz;
 
     //world space pos and normal
-    vec4 pos_world_vec4 = m * vec4(position, 1.0);
-    pos_world = pos_world_vec4.xyz;
-    normal_world = normalize(mat3(transpose(inverse(m))) * normal);
+    pos_world = m * vec4(position, 1.0);
+    normal_world = normalize(vec4( mat3(transpose(inverse(m)))*normal, 0.0) );
 
     color = ambient_color + diffuse_color;
     color = clamp(color, 0.0, 1.0);

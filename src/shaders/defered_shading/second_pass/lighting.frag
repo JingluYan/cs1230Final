@@ -6,14 +6,6 @@ in vec2 texc;
 uniform sampler2D gPosition;   // world space
 uniform sampler2D gNormal;     // world space
 uniform sampler2D gAlbedoSpec; // world space
-
-//struct Light {
-//    vec3 Position;
-//    vec3 Color;
-//};
-//const int NR_LIGHTS = 32;
-//uniform Light lights[NR_LIGHTS];
-
 uniform mat4 v;
 
 // Light data
@@ -30,6 +22,9 @@ uniform vec2 repeatUV;
 
 uniform bool useLighting;     // Whether to calculate lighting using lighting equation
 
+vec3 unpack(vec3 v) {
+    return v*vec3(2.0) - vec3(1.0);
+}
 
 void main()
 {
@@ -67,13 +62,13 @@ void main()
             lighting += max(vec3(0), lightColors[i] * Albedo * diffuseIntensity);
 
             // Add specular component
-//            vec3 lightReflection = normalize(reflect(-vertexToLight, normalize(Normal)));
-//            vec3 eyeDirection = normalize((inverse(v) * vec4(0,0,0,1) - vec4(FragPos, 1.0)).xyz);
-//            float specIntensity = 0.3 * pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
-//            if (lightTypes[i] == 0) { // only attenuates point lights
-//                specIntensity = specIntensity * atten;
-//            }
-//            lighting += max (vec3(0), lightColors[i] * Albedo * specIntensity);
+            vec3 lightReflection = normalize(reflect(-vertexToLight, normalize(Normal)));
+            vec3 eyeDirection = normalize((inverse(v) * vec4(0,0,0,1) - vec4(FragPos, 1.0)).xyz);
+            float specIntensity = 0.3 * pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
+            if (lightTypes[i] == 0) { // only attenuates point lights
+                specIntensity = specIntensity * atten;
+            }
+            lighting += max (vec3(0), lightColors[i] * Albedo * specIntensity);
         }
     }
     lighting = clamp(lighting, vec3(0), vec3(1));

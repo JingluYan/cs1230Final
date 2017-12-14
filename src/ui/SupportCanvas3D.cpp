@@ -39,6 +39,7 @@ SupportCanvas3D::SupportCanvas3D(QGLFormat format, QWidget *parent) : QGLWidget(
 {
     //for skybox
     s_staticVars = new std::vector<UniformVariable*>();
+    m_ratio = static_cast<QGuiApplication*>(QCoreApplication::instance())->devicePixelRatio();
 
 }
 
@@ -76,6 +77,8 @@ CamtransCamera *SupportCanvas3D::getCamtransCamera() {
 }
 
 void SupportCanvas3D::initializeGL() {
+    m_ratio = static_cast<QGuiApplication*>(QCoreApplication::instance())->devicePixelRatio();
+
     // Track the camera settings so we can generate deltas
     m_oldPosX = settings.cameraPosX;
     m_oldPosY = settings.cameraPosY;
@@ -261,7 +264,7 @@ void SupportCanvas3D::initializeOpenGLSettings() {
 
 void SupportCanvas3D::initializeScenes() {
     m_sceneviewScene = std::make_unique<SceneviewScene>();
-    m_sceneviewScene->setWindowDim(this->width(), this->height());
+    m_sceneviewScene->setWindowDim(this->width(), this->height(), m_ratio);
     m_shapesScene = std::make_unique<ShapesScene>(width(), height());
 }
 
@@ -328,7 +331,7 @@ void SupportCanvas3D::setSceneFromSettings() {
 
 void SupportCanvas3D::loadSceneviewSceneFromParser(CS123XmlSceneParser &parser) {
     m_sceneviewScene = std::make_unique<SceneviewScene>();
-    m_sceneviewScene->setWindowDim(this->width(), this->height());
+    m_sceneviewScene->setWindowDim(this->width(), this->height(), m_ratio);
     Scene::parse(m_sceneviewScene.get(), &parser);
     m_settingsDirty = true;
 }
@@ -468,5 +471,5 @@ void SupportCanvas3D::wheelEvent(QWheelEvent *event) {
 void SupportCanvas3D::resizeEvent(QResizeEvent *event) {
     emit aspectRatioChanged();
     if (m_sceneviewScene.get())
-        m_sceneviewScene->setWindowDim(this->width(), this->height());
+        m_sceneviewScene->setWindowDim(this->width(), this->height(), m_ratio);
 }
