@@ -115,9 +115,9 @@ void MainWindow::dataBind() {
     BIND(FloatBinding::bindSliderAndTextbox(
         ui->ambientSlider, ui->ambientTextbox, settings.ambient, 0.f, 1.f))
     BIND(FloatBinding::bindSliderAndTextbox(
-        ui->radiusSlider, ui->radiusTextbox, settings.radius, 0.f, 1.f))
+        ui->radiusSlider, ui->radiusTextbox, settings.radius, 0.f, 2.5f))
     BIND(FloatBinding::bindSliderAndTextbox(
-        ui->biasSlider, ui->biasTextbox, settings.bias, 0.f, 1.f))
+        ui->biasSlider, ui->biasTextbox, settings.bias, 0.f, .2f))
     BIND(BoolBinding::bindCheckbox(ui->useFeaturesLightingCheckbox, settings.useFeatureLighting))
     BIND(BoolBinding::bindCheckbox(ui->bumpMapCheckbox, settings.bumpMapping))
     BIND(BoolBinding::bindCheckbox(ui->textureMapCheckbox, settings.textureMapping))
