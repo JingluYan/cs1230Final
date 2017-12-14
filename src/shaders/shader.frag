@@ -7,7 +7,6 @@ in vec4 normal_cameraSpace;
 in vec4 tangent_cameraSpace;
 in vec4 binormal_cameraSpace;
 in vec4 position_cameraSpace;
-in mat4 vMat;
 
 uniform mat4 v;
 uniform sampler2D tex;
@@ -22,7 +21,7 @@ const int MAX_LIGHTS = 10;
 uniform int lightTypes[MAX_LIGHTS];         // 0 for point, 1 for directional
 uniform vec3 lightPositions[MAX_LIGHTS];    // For point lights
 uniform vec3 lightDirections[MAX_LIGHTS];   // For directional lights
-//uniform vec3 lightAttenuations[MAX_LIGHTS]; // Constant, linear, and quadratic term
+uniform vec3 lightAttenuations[MAX_LIGHTS]; // Constant, linear, and quadratic term
 uniform vec3 lightColors[MAX_LIGHTS];
 
 // Material data
@@ -41,7 +40,7 @@ void main(){
                               ));
     vec3 color = vec3(0);
     if (useLighting) {
-        color = ambient_color.xyz; // Add ambient component
+        color = ambient_color.xyz * 2.0; // Add ambient component
 
         for (int i = 0; i < MAX_LIGHTS; i++) {
             // Without bump texture (camera Space )
@@ -64,15 +63,19 @@ void main(){
                 vertexToLight = normalize(v * usingLightDirection);
             }
 
+            float distance = length((v*vec4(lightPositions[i], 1.0)) - position_cameraSpace);
+            float atten = min(1 / (lightAttenuations[i].x
+                                   + lightAttenuations[i].y * distance
+                                   + lightAttenuations[i].y * pow(distance, 2)), 1);
             // Add diffuse component
-            float diffuseIntensity = max(0.0, dot(vertexToLight, usingNormal));
+            float diffuseIntensity = max(0.0, dot(vertexToLight, usingNormal)) * atten;
             color += max(vec3(0), lightColors[i] * diffuse_color * diffuseIntensity);
 
             // Add specular component
             vec4 lightReflection = normalize(-reflect(vertexToLight, usingNormal));
             vec4 eyeDirection = normalize(vec4(0,0,0,1) - position_cameraSpace);
 
-            float specIntensity = pow(max(0.0, dot(usingEyeDirection, lightReflection)), shininess);
+            float specIntensity = pow(max(0.0, dot(usingEyeDirection, lightReflection)), shininess) * atten;
             color += max (vec3(0), lightColors[i] * specular_color * specIntensity);
         }
     } else {
