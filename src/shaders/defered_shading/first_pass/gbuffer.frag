@@ -49,8 +49,7 @@ void main()
 
     // and the diffuse per-fragment color
     gAlbedoSpec.rgb = color * texColor;
-    // store specular intensity in gAlbedoSpec's alpha component
-//    gAlbedoSpec.a = texture(texture_specular1, TexCoords).r;
+    // store specular shininess in gAlbedoSpec's alpha component
     gAlbedoSpec.a = shininess;
 
 }
