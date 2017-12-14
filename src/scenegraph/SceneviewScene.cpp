@@ -32,12 +32,12 @@ float lerp(float a, float b, float f)
      std::uniform_real_distribution<GLfloat> randomFloats(0.0, 1.0); // generates random floats between 0.0 and 1.0
      std::vector<glm::vec3> ssaoKernel;
      std::default_random_engine generator;
-     for (unsigned int i = 0; i < 64; ++i)
+     for (unsigned int i = 0; i < 128; ++i)
      {
          glm::vec3 sample(randomFloats(generator) * 2.0 - 1.0, randomFloats(generator) * 2.0 - 1.0, randomFloats(generator));
          sample = glm::normalize(sample);
          sample *= randomFloats(generator);
-         float scale = float(i) / 64.0;
+         float scale = float(i) / 128.0;
 
          // scale samples s.t. they're more aligned to center of kernel
          scale = lerp(0.1f, 1.0f, scale * scale);
@@ -174,6 +174,7 @@ void SceneviewScene::loadNormalsShader() {
     m_normalsShader = std::make_unique<Shader>(vertexSource, geometrySource, fragmentSource);
 }
 
+
 void SceneviewScene::loadNormalsArrowShader() {
     std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/normalsArrow.vert");
     std::string geometrySource = ResourceLoader::loadResourceFileToString(":/shaders/normalsArrow.gsh");
@@ -192,7 +193,7 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         // first pass
         m_gbuffer_FBO->bind();
         glEnable(GL_DEPTH_TEST);
-        glClearColor(0.2f, 0.2f, 0.2f, 0.2f); // has to go before glClear
+        glClearColor(0.5f, 0.5f, 0.5f, 0.5f); // has to go before glClear
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         m_gBufferShader->bind();
@@ -234,6 +235,7 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         // 2. generate SSAO texture
         // ------------------------
         glBindFramebufferEXT(GL_FRAMEBUFFER, ssaoFBO);
+        glClearColor(0.5f, 0.5f, 0.5f, 0.5f); // has to go before glClear
         glClear(GL_COLOR_BUFFER_BIT);
         m_SSAOShader->bind();
         // Send kernel + rotation
