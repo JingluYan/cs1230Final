@@ -102,6 +102,8 @@ private:
 
     std::vector<glm::vec3> ssaoKernel;
     unsigned int noiseTexture;
+    unsigned int ssaoFBO, ssaoBlurFBO;
+    unsigned int ssaoColorBuffer, ssaoColorBufferBlur;
 
 };
 
