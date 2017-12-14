@@ -24,8 +24,9 @@ uniform int lightCount = 0;
 uniform vec2 repeatUV;
 
 uniform bool useLighting;     // Whether to calculate lighting using lighting equation
-uniform bool SSAOonly = false;
+uniform bool visualizeSSAO = false;
 uniform bool useSSAO = true;
+uniform float ambient = 0.3;
 
 void main()
 {
@@ -40,7 +41,7 @@ void main()
     float shininess = texture(gAlbedoSpec, texc).a;
 
     // then calculate lighting as usual
-    vec3 lighting = Albedo*0.3; // hard-coded ambient component
+    vec3 lighting = Albedo*ambient; // hard-coded ambient component
 
     if (useLighting) {
         for (int i = 0; i < lightCount; i++) {
@@ -75,7 +76,7 @@ void main()
     }
     lighting = clamp(lighting, vec3(0), vec3(1));
 
-    if (SSAOonly) {
+    if (visualizeSSAO) {
         FragColor = vec4(AmbientOcclusion);
     } else {
         if (useSSAO) {

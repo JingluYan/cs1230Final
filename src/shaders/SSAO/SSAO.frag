@@ -14,8 +14,8 @@ uniform int height;
 
 // parameters (you'd probably want to use them as uniforms to more easily tweak the effect)
 int kernelSize = 64;
-float radius = 1.0;
-float bias = 0.025;
+uniform float radius = 1.0;
+uniform float bias = 0.025;
 
 
 // tile noise texture over screen based on screen dimensions divided by noise size

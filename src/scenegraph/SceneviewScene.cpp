@@ -243,6 +243,8 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         m_SSAOShader->setUniform("v", context->getCamera()->getViewMatrix());
         m_SSAOShader->setUniform("width", m_width);
         m_SSAOShader->setUniform("height", m_height);
+        m_SSAOShader->setUniform("bias", settings.bias);
+        m_SSAOShader->setUniform("radius", settings.radius);
         glActiveTextureARB(GL_TEXTURE0);
         m_gbuffer_FBO->getColorAttachment(0).bind();
         glActiveTextureARB(GL_TEXTURE1);
@@ -275,7 +277,9 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         m_deferredLightingShader->setUniform("v", context->getCamera()->getViewMatrix());
         m_deferredLightingShader->setUniform("useLighting", settings.useFeatureLighting);
         m_deferredLightingShader->setUniform("lightCount", (int)lights.size()); 
-
+        m_deferredLightingShader->setUniform("useSSAO", settings.SSAO);
+        m_deferredLightingShader->setUniform("visualizeSSAO", settings.visualizeSSAO);
+        m_deferredLightingShader->setUniform("ambient", settings.ambient);
         setLights();
         // bind the m_gbuffer_FBO texture attachments
         glActiveTextureARB(GL_TEXTURE0);
