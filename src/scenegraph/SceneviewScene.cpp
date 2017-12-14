@@ -40,6 +40,9 @@ SceneviewScene::SceneviewScene()
 
     // build full screen quad
     m_quad = std::make_unique<Quad>();
+
+    //TODO: to be cleaned up
+    m_ratio = 1.0f;
 }
 
 SceneviewScene::SceneviewScene(int w, int h) :
@@ -104,7 +107,9 @@ void SceneviewScene::render(SupportCanvas3D *context) {
                                               FBO::DEPTH_STENCIL_ATTACHMENT::DEPTH_ONLY,
                                               m_width,
                                               m_height,
-                                              TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE);
+                                              TextureParameters::WRAP_METHOD::CLAMP_TO_EDGE,
+                                              TextureParameters::FILTER_METHOD::LINEAR,
+                                              GL_FLOAT);
         // first pass
         m_gbuffer_FBO->bind();
         glEnable(GL_DEPTH_TEST);
@@ -123,7 +128,7 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 //        glDisable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glViewport(0, 0, m_width, m_height);
+        glViewport(0, 0, m_width * m_ratio, m_height * m_ratio);
         m_deferredLightingShader->bind();
         // setup uniforms in m_deferredLightingShader
         m_deferredLightingShader->setUniform("v", context->getCamera()->getViewMatrix());
@@ -359,7 +364,8 @@ void SceneviewScene::buildTexture( const Texture2D &texture ) {
     parameters.applyTo( texture );
 }
 
-void SceneviewScene::setWindowDim(int w, int h) {
+void SceneviewScene::setWindowDim(int w, int h, float ratio) {
     m_width = w;
     m_height = h;
+    m_ratio = ratio;
 }

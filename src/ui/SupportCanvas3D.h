@@ -137,6 +137,8 @@ private:
     QGLShaderProgram *current_shader;
     QOpenGLFunctions gl;
 
+    float m_ratio;
+
 signals:
     void addUniform(UniformVariable::Type type, const QString &name, bool editable = true, int size = 1);
     //end skybox
