@@ -155,7 +155,11 @@ OTHER_FILES += shaders/shader.frag \
     shaders/defered_shading/third_pass/third_pass.frag \
     shaders/defered_shading/third_pass/third_pass.vert \
     shaders/fullscreenquad/fullscreenquad.frag \
-    shaders/fullscreenquad/fullscreenquad.vert
+    shaders/fullscreenquad/fullscreenquad.vert \
+    shaders/SSAO/Blur.frag \
+    shaders/SSAO/SSAO.frag \
+    shaders/SSAO/Blur.vert \
+    shaders/SSAO/SSAO.vert
 
 
 # Don't add the -pg flag unless you know what you are doing. It makes QThreadPool freeze on Mac OS X
