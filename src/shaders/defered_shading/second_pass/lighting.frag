@@ -24,10 +24,8 @@ uniform int lightCount = 0;
 uniform vec2 repeatUV;
 
 uniform bool useLighting;     // Whether to calculate lighting using lighting equation
-
-vec3 unpack(vec3 v) {
-    return v*vec3(2.0) - vec3(1.0);
-}
+uniform bool SSAOonly = false;
+uniform bool useSSAO = true;
 
 void main()
 {
@@ -35,26 +33,26 @@ void main()
     vec3 FragPos = texture(gPosition, texc).rgb;
     vec3 Normal = texture(gNormal, texc).rgb;
     vec3 Albedo = texture(gAlbedoSpec, texc).rgb;
-//    float AmbientOcclusion = texture(ssaoColor, texc).r;
-    float AmbientOcclusion = 1.0f;
+    float AmbientOcclusion = texture(ssaoColor, texc).r;
+//    float AmbientOcclusion = 1.0f;
     // this is for no texture mode
 //    vec3 Albedo = vec3(1);
     float shininess = texture(gAlbedoSpec, texc).a;
 
     // then calculate lighting as usual
-    vec3 lighting = Albedo*0.2*AmbientOcclusion; // hard-coded ambient component
+    vec3 lighting = Albedo*0.3; // hard-coded ambient component
 
     if (useLighting) {
         for (int i = 0; i < lightCount; i++) {
             vec3 vertexToLight = vec3(0);
             // Point Light
             if (lightTypes[i] == 0) {
-                vertexToLight = normalize(lightPositions[i] - FragPos);
+                vertexToLight = normalize( (v*vec4(lightPositions[i],1.0) - vec4(FragPos, 1.0)).xyz );
             } else if (lightTypes[i] == 1) { // Dir Light
-                vertexToLight = normalize(-lightDirections[i]);
+                vertexToLight = normalize( (-v*vec4(lightDirections[i], 0.0)).xyz);
             }
 
-            float distance = length(lightPositions[i] - FragPos);
+            float distance = length((v*vec4(lightPositions[i], 1.0)).xyz - FragPos);
             float atten = min(1 / (lightAttenuations[i].x
                                    + lightAttenuations[i].y * distance
                                    + lightAttenuations[i].y * pow(distance, 2)), 1);
@@ -68,7 +66,7 @@ void main()
 
             // Add specular component
             vec3 lightReflection = normalize(reflect(-vertexToLight, normalize(Normal)));
-            vec3 eyeDirection = normalize((inverse(v) * vec4(0,0,0,1) - vec4(FragPos, 1.0)).xyz);
+            vec3 eyeDirection = normalize((vec3(0) - FragPos).xyz);
             float specIntensity = 0.3 * pow(max(0.0, dot(eyeDirection, lightReflection)), shininess);
             if (lightTypes[i] == 0) { // only attenuates point lights
                 specIntensity = specIntensity * atten;
@@ -77,9 +75,16 @@ void main()
         }
     }
     lighting = clamp(lighting, vec3(0), vec3(1));
-    FragColor = vec4(lighting, 1.0);
-//    FragColor = vec4(AmbientOcclusion);
 
+    if (SSAOonly) {
+        FragColor = vec4(AmbientOcclusion);
+    } else {
+        if (useSSAO) {
+            FragColor = vec4(lighting * AmbientOcclusion, 1.0);
+        } else {
+            FragColor = vec4(lighting, 1.0);
+        }
+    }
 }
 
 

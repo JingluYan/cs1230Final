@@ -16,8 +16,8 @@ uniform vec3 ambient_color;
 uniform vec3 diffuse_color;
 uniform vec3 specular_color;
 
-out vec3 pos_cam;
-out vec3 normal_cam;
+out vec4 pos_cam;
+out vec4 normal_cam;
 out vec4 pos_world;
 out vec4 normal_world;
 out vec2 texc;
@@ -31,12 +31,12 @@ void main()
     gl_Position = p * pos_cam_vec4;
 
     //cam space pos and normal
-    normal_cam = normalize(mat3(transpose(inverse(v * m))) * normal);
-    pos_cam = pos_cam_vec4.xyz;
+    normal_cam = normalize( vec4(mat3(transpose(inverse(v * m))) * normal, 0.0) );
+    pos_cam = pos_cam_vec4;
 
     //world space pos and normal
     pos_world = m * vec4(position, 1.0);
-    normal_world = normalize(vec4( mat3(transpose(inverse(m)))*normal, 0.0) );
+    normal_world = normalize( vec4( mat3(transpose(inverse(m)))*normal, 0.0) );
 
     color = ambient_color + diffuse_color;
     color = clamp(color, 0.0, 1.0);

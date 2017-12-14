@@ -7,8 +7,8 @@ layout (location = 2) out vec4 gAlbedoSpec;
 //vec3 gPosition;
 //vec4 gAlbedoSpec;
 
-in vec3 pos_cam;
-in vec3 normal_cam;
+in vec4 pos_cam;
+in vec4 normal_cam;
 in vec4 pos_world;
 in vec4 normal_world;
 in vec2 texc;
@@ -39,13 +39,13 @@ void main()
 
     // USE CAM space
     // store the fragment position vector in the first gbuffer texture
-//    gPosition = pos_cam;
-//    // also store the per-fragment normals into the gbuffer
-//    gNormal = normalize(normal_cam);
+    gPosition = pos_cam;
+    // also store the per-fragment normals into the gbuffer
+    gNormal = normalize(normal_cam);
 
     // USE WORLD space
-    gPosition = pos_world;
-    gNormal = normalize(normal_world);
+//    gPosition = pos_world;
+//    gNormal = normalize(normal_world);
 
     // and the diffuse per-fragment color
     gAlbedoSpec.rgb = color * texColor;
