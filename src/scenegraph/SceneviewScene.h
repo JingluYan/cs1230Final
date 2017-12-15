@@ -11,6 +11,7 @@
 #include "scenegraph/shapes/cylinder.h"
 #include "scenegraph/shapes/sphere.h"
 #include "scenegraph/shapes/quad.h"
+#include "scenegraph/shapes/plane.h"
 
 namespace CS123 { namespace GL {
 
@@ -77,6 +78,7 @@ private:
     std::unique_ptr<Cylinder> m_cylinder;       ///cylinder
     std::unique_ptr<Cone> m_cone;               ///cone
     std::unique_ptr<Sphere> m_sphere;           ///sphere
+    std::unique_ptr<Plane> m_plane;             ///plane
 
     std::unique_ptr<OpenGLShape> m_quad;        /// full screen quad
 

@@ -93,6 +93,8 @@ SceneviewScene::SceneviewScene(int w, int h, float ratio) :
 
     m_sphere = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
 
+    m_plane = std::make_unique<Plane>(settings.shapeParameter1);
+
     // build full screen quad
     m_quad = std::make_unique<Quad>();
 
@@ -408,12 +410,12 @@ void SceneviewScene::renderGeometry() {
             case PrimitiveType::PRIMITIVE_SPHERE:
             m_sphere->draw();
             break;
+            case PrimitiveType::PRIMITIVE_PLANE:
+            m_plane->draw();
+            break;
             default:
-            //TODO: Should I do anything here? will I encounter odd shapes
             continue;
         }
-
-//        ErrorChecker::printGLErrors("line 239");
     }
 }
 
@@ -423,6 +425,7 @@ void SceneviewScene::settingsChanged() {
     m_cylinder->update(settings.shapeParameter1, settings.shapeParameter2);
     m_sphere->update(settings.shapeParameter1, settings.shapeParameter2);
     m_cone->update(settings.shapeParameter1, settings.shapeParameter2);
+    m_plane->update(settings.shapeParameter1);
 }
 
 void SceneviewScene::tryApplyDiffuseTexture( const CS123SceneFileMap &map ) {
