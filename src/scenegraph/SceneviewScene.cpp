@@ -230,48 +230,50 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         m_gBufferShader->unbind();
         m_gbuffer_FBO->unbind();
 
-        // 2. generate SSAO texture
-        // ------------------------
-        glBindFramebufferEXT(GL_FRAMEBUFFER, ssaoFBO);
-        glClearColor(0.5f, 0.5f, 0.5f, 0.5f); // has to go before glClear
-        glClear(GL_COLOR_BUFFER_BIT);
-        m_SSAOShader->bind();
+        if (settings.SSAO) {
+            // 2. generate SSAO texture
+            // ------------------------
+            glBindFramebufferEXT(GL_FRAMEBUFFER, ssaoFBO);
+            glClearColor(0.5f, 0.5f, 0.5f, 0.5f); // has to go before glClear
+            glClear(GL_COLOR_BUFFER_BIT);
+            m_SSAOShader->bind();
 
-        // Send kernel + rotation
-        for (unsigned int i = 0; i < 64; ++i)
-            m_SSAOShader->setUniformArrayByIndex("samples", ssaoKernel[i], i);
-        m_SSAOShader->setUniform("projection", context->getCamera()->getProjectionMatrix());
-        m_SSAOShader->setUniform("v", context->getCamera()->getViewMatrix());
-        m_SSAOShader->setUniform("width", m_width);
-        m_SSAOShader->setUniform("height", m_height);
-        m_SSAOShader->setUniform("bias", settings.bias);
-        m_SSAOShader->setUniform("radius", settings.radius);
+            // Send kernel + rotation
+            for (unsigned int i = 0; i < 64; ++i)
+                m_SSAOShader->setUniformArrayByIndex("samples", ssaoKernel[i], i);
+            m_SSAOShader->setUniform("projection", context->getCamera()->getProjectionMatrix());
+            m_SSAOShader->setUniform("v", context->getCamera()->getViewMatrix());
+            m_SSAOShader->setUniform("width", m_width);
+            m_SSAOShader->setUniform("height", m_height);
+            m_SSAOShader->setUniform("bias", settings.bias);
+            m_SSAOShader->setUniform("radius", settings.radius);
 
-        glActiveTextureARB(GL_TEXTURE0);
-        m_gbuffer_FBO->getColorAttachment(0).bind();
-        glActiveTextureARB(GL_TEXTURE1);
-        m_gbuffer_FBO->getColorAttachment(1).bind();
-        glActiveTextureARB(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, noiseTexture);
+            glActiveTextureARB(GL_TEXTURE0);
+            m_gbuffer_FBO->getColorAttachment(0).bind();
+            glActiveTextureARB(GL_TEXTURE1);
+            m_gbuffer_FBO->getColorAttachment(1).bind();
+            glActiveTextureARB(GL_TEXTURE2);
+            glBindTexture(GL_TEXTURE_2D, noiseTexture);
 
-        m_quad->draw();
+            m_quad->draw();
 
-        m_SSAOShader->unbind();
-        glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
+            m_SSAOShader->unbind();
+            glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
 
 
-        // 3. blur SSAO texture to remove noise
-        // ------------------------------------
-        glBindFramebufferEXT(GL_FRAMEBUFFER, ssaoBlurFBO);
-        glClear(GL_COLOR_BUFFER_BIT);
-        m_blurShader->bind();
+            // 3. blur SSAO texture to remove noise
+            // ------------------------------------
+            glBindFramebufferEXT(GL_FRAMEBUFFER, ssaoBlurFBO);
+            glClear(GL_COLOR_BUFFER_BIT);
+            m_blurShader->bind();
 
-        glActiveTextureARB(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, ssaoColorBuffer);
-        m_quad->draw();
+            glActiveTextureARB(GL_TEXTURE0);
+            glBindTexture(GL_TEXTURE_2D, ssaoColorBuffer);
+            m_quad->draw();
 
-        m_blurShader->unbind();
-        glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
+            m_blurShader->unbind();
+            glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
+        }
 
         // second pass: lighting pass
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
@@ -301,9 +303,11 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         m_gbuffer_FBO->getColorAttachment(4).bind();
         glActiveTextureARB(GL_TEXTURE5);
         m_gbuffer_FBO->getColorAttachment(5).bind();
-        glActiveTextureARB(GL_TEXTURE6); // add extra SSAO texture to lighting pass
-        glBindTexture(GL_TEXTURE_2D, ssaoColorBufferBlur);
-
+        if (settings.SSAO) {
+            glActiveTextureARB(GL_TEXTURE6); // add extra SSAO texture to lighting pass
+            glBindTexture(GL_TEXTURE_2D, ssaoColorBufferBlur);
+            glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "ssaoColor"), 6);
+        }
         // pass the m_gbuffer_FBO texture attachments to uniforms
         // notice the 0, 1, 2 matches the index of the m_gbuffer_FBO->getColorAttachment(index)
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gPosition"), 0);
@@ -312,7 +316,7 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gTangent"), 3);
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gBinormal"), 4);
         glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "gBumpNormal"), 5);
-        glUniform1iARB(glGetUniformLocationARB(m_deferredLightingShader->getID(), "ssaoColor"), 6);
+
         m_quad->draw();
 
         m_deferredLightingShader->unbind();

@@ -46,8 +46,10 @@ void main()
     float shininess = texture(gAlbedoSpec, texc).a;
 
     // then calculate lighting as usual
-    vec3 lighting = Albedo*ambient*AmbientOcclusion; // hard-coded ambient component
-
+    vec3 lighting = Albedo*ambient; // hard-coded ambient component
+    if (useSSAO) {
+        lighting *= AmbientOcclusion;
+    }
     // matrix to convery camera space to tangent space
     mat3 TBN = transpose(mat3(Tangent,
                               BiNormal,
@@ -98,13 +100,13 @@ void main()
     }
     lighting = clamp(lighting, vec3(0), vec3(1));
 
-    if (visualizeSSAO) {
-        FragColor = vec4(AmbientOcclusion);
-    } else {
-        if (useSSAO) {
-            FragColor = vec4(lighting * AmbientOcclusion, 1.0);
+    if (useSSAO) {
+        if (visualizeSSAO) {
+            FragColor = vec4(AmbientOcclusion);
         } else {
-            FragColor = vec4(lighting, 1.0);
+            FragColor = vec4(lighting * AmbientOcclusion, 1.0);
         }
+    } else {
+        FragColor = vec4(lighting, 1.0);
     }
 }
