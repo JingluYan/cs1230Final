@@ -101,6 +101,7 @@ struct Settings {
     float radius;               // Param for SSAO
     float bias;                 // Param for SSAO
     bool visualizeSSAO;         // Visualize SSAO
+    bool blin;
 
     // Ray
     bool useSuperSampling;      // Enable or disable super-sampling.
