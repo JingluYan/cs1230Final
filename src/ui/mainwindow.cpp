@@ -124,7 +124,7 @@ void MainWindow::dataBind() {
     BIND(BoolBinding::bindCheckbox(ui->defferredLightingCheckbox, settings.deferredLight))
     BIND(BoolBinding::bindCheckbox(ui->SSAOCheckbox, settings.SSAO))
     BIND(BoolBinding::bindCheckbox(ui->visualizeSSAO, settings.visualizeSSAO))
-    BIND(BoolBinding::bindCheckbox(ui->BlinCheckBox, settings.blin))
+    BIND(BoolBinding::bindCheckbox(ui->BlinnCheckBox, settings.blinn))
 
     // Camtrans dock
     BIND(BoolBinding::bindCheckbox(ui->cameraOrbitCheckbox, settings.useOrbitCamera))

@@ -53,7 +53,7 @@ void Settings::loadSettingsOrDefaults() {
     radius = s.value("radius", radius).toFloat();
     bias = s.value("bias", bias).toFloat();
     visualizeSSAO = s.value("visualizeSSAO", visualizeSSAO).toBool();
-    blin = s.value("blin",blin).toBool();
+    blinn = s.value("blinn",blinn).toBool();
 
     // Ray
     useSuperSampling = s.value("useSuperSampling", false).toBool();
@@ -109,7 +109,7 @@ void Settings::saveSettings() {
     s.setValue("radius", radius);
     s.setValue("bias", bias);
     s.setValue("visualizeSSAO", visualizeSSAO);
-    s.setValue("blin", blin);
+    s.setValue("blinn", blinn);
 
     // Ray
     s.setValue("useSuperSampling", useSuperSampling);
