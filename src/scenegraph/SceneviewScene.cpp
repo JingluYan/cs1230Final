@@ -289,6 +289,7 @@ void SceneviewScene::render(SupportCanvas3D *context) {
         m_deferredLightingShader->setUniform("visualizeSSAO", settings.visualizeSSAO);
         m_deferredLightingShader->setUniform("ambient", settings.ambient);
         m_deferredLightingShader->setUniform("useBumpTexture", settings.bumpMapping);
+        m_deferredLightingShader->setUniform("blinn", settings.blinn);
         setLights();
         // bind the m_gbuffer_FBO texture attachments
         glActiveTextureARB(GL_TEXTURE0);
@@ -324,6 +325,7 @@ void SceneviewScene::render(SupportCanvas3D *context) {
     } else { // use default phong shader
         m_phongShader->bind();
         setSceneUniforms(context);
+        m_phongShader->setUniform("blinn", settings.blinn);
         setLights();
 
         renderGeometry();

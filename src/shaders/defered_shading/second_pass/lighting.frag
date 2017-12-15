@@ -31,6 +31,8 @@ uniform bool visualizeSSAO = false;
 uniform bool useSSAO = true;
 uniform float ambient = 0.3;
 
+uniform bool blinn = true;
+
 void main()
 {
     // retrieve data from G-buffer
@@ -89,9 +91,16 @@ void main()
             lighting += max(vec3(0), lightColors[i] * Albedo * diffuseIntensity);
 
             // Add specular component
+
             vec3 lightReflection = normalize(reflect(-vertexToLight, normalize(usingNormal)));
             vec3 eyeDirection = normalize((vec3(0) - FragPos).xyz);
-            float specIntensity = 0.3 * pow(max(0.0, dot(usingEyeDirection, lightReflection)), shininess);
+            vec3 halfwayAngle = normalize(eyeDirection + vertexToLight);
+            float specIntensity = 0.0;
+            if (blinn) {
+                specIntensity = 0.4 *pow(max(0.0, dot(usingNormal, halfwayAngle)), shininess) * atten;
+            } else {
+                specIntensity = 0.4 *pow(max(0.0, dot(usingEyeDirection, lightReflection)), shininess) * atten;
+            }
             if (lightTypes[i] == 0) { // only attenuates point lights
                 specIntensity = specIntensity * atten;
             }

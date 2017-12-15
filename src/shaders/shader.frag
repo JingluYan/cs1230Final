@@ -11,6 +11,7 @@ in vec4 position_cameraSpace;
 uniform mat4 v;
 uniform sampler2D tex;
 uniform int useTexture = 0;
+uniform bool blinn = true;
 
 uniform sampler2D texBump;
 uniform int useBumpTexture = 0;
@@ -74,8 +75,13 @@ void main(){
             // Add specular component
             vec4 lightReflection = normalize(-reflect(vertexToLight, usingNormal));
             vec4 eyeDirection = normalize(vec4(0,0,0,1) - position_cameraSpace);
-
-            float specIntensity = pow(max(0.0, dot(usingEyeDirection, lightReflection)), shininess) * atten;
+            vec4 halfwayAngle = normalize(vertexToLight + eyeDirection);
+            float specIntensity = 0.0;
+            if (blinn) {
+                specIntensity = pow(max(0.0, dot(usingNormal, halfwayAngle)), shininess) * atten;
+            } else {
+                specIntensity = pow(max(0.0, dot(usingEyeDirection, lightReflection)), shininess) * atten;
+            }
             color += max (vec3(0), lightColors[i] * specular_color * specIntensity);
         }
     } else {
