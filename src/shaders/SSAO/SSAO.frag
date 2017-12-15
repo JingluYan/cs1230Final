@@ -57,9 +57,10 @@ void main()
     }
     occlusion = 1.0 - (occlusion / kernelSize);
 
+    // best parameters: radius 0.4, bias 0.05
     // raise occlussion to an arbitrary power
-//    if (occlusion < 0.95) {
-//        occlusion = pow(occlusion, 5);
-//    }
+    if (occlusion < 0.90) {
+        occlusion = pow(occlusion, 2);
+    }
     FragColor = occlusion;
 }
