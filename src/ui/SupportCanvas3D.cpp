@@ -17,7 +17,6 @@
 #include "CS123XmlSceneParser.h"
 #include "lib/cubeData.h"
 #include "ResourceLoader.h"
-//#include "lib/errorchecker.h"
 
 
 UniformVariable *SupportCanvas3D::s_skybox = NULL;
@@ -272,36 +271,35 @@ void SupportCanvas3D::paintGL() {
     if (m_settingsDirty) {
         setSceneFromSettings();
     }
-//    ErrorChecker::printGLErrors("line 95");
 
     float ratio = static_cast<QGuiApplication*>(QCoreApplication::instance())->devicePixelRatio();
     glViewport(0, 0, width() * ratio, height() * ratio);
     getCamera()->setAspectRatio(static_cast<float>(width()) / static_cast<float>(height()));
     m_currentScene->render(this);
 
-    // draw skybox
-    skybox_shader->bind();
-    s_skybox->setValue(skybox_shader);
-    s_projection->setValue(skybox_shader);
-    s_view->setValue(skybox_shader);
-    glCullFace(GL_FRONT);
-    skybox_cube->draw();
-    glCullFace(GL_BACK);
-    skybox_shader->release();
+//    // draw skybox
+//    skybox_shader->bind();
+//    s_skybox->setValue(skybox_shader);
+//    s_projection->setValue(skybox_shader);
+//    s_view->setValue(skybox_shader);
+//    glCullFace(GL_FRONT);
+//    skybox_cube->draw();
+//    glCullFace(GL_BACK);
+//    skybox_shader->release();
 
-    // draw test sphere
-    if (current_shader) {
-        current_shader->bind();
+//    // draw test sphere
+//    if (current_shader) {
+//        current_shader->bind();
 
-//        foreach (const UniformVariable *var, *activeUniforms) {
-//            var->setValue(current_shader);
-//        }
-    }
+////        foreach (const UniformVariable *var, *activeUniforms) {
+////            var->setValue(current_shader);
+////        }
+//    }
 
-    m_sphere->draw();
-    if (current_shader) {
-        current_shader->release();
-    }
+//    m_sphere->draw();
+//    if (current_shader) {
+//        current_shader->release();
+//    }
 
     // end skybox draw
 }

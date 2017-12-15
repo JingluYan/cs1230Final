@@ -275,7 +275,6 @@ void SceneviewScene::render(SupportCanvas3D *context) {
 
         // second pass: lighting pass
         glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-//        glDisable(GL_DEPTH_TEST);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         glViewport(0, 0, m_width * m_ratio, m_height * m_ratio);
         m_deferredLightingShader->bind();
@@ -332,10 +331,8 @@ void SceneviewScene::render(SupportCanvas3D *context) {
 void SceneviewScene::setSceneUniforms(SupportCanvas3D *context) {
     Camera *camera = context->getCamera();
     if (settings.deferredLight) {
-//        ErrorChecker::printGLErrors("line 154");
         m_gBufferShader->setUniform("p" , camera->getProjectionMatrix());
         m_gBufferShader->setUniform("v", camera->getViewMatrix());
-//        ErrorChecker::printGLErrors("line 157");
     } else {
         m_phongShader->setUniform("useLighting", settings.useFeatureLighting);
         m_phongShader->setUniform("useArrowOffsets", false);
@@ -351,8 +348,6 @@ void SceneviewScene::setMatrixUniforms(Shader *shader, SupportCanvas3D *context)
 
 void SceneviewScene::setLights()
 {
-    // TODO: [SCENEVIEW] Fill this in...
-    //
     // Set up the lighting for your scene using m_phongShader.
     // The lighting information will most likely be stored in CS123SceneLightData structures.
     //
@@ -367,13 +362,6 @@ void SceneviewScene::setLights()
 
 void SceneviewScene::renderGeometry() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-    // TODO: [SCENEVIEW] Fill this in...
-    // You shouldn't need to write *any* OpenGL in this class!
-    //
-    //
-    // This is where you should render the geometry of the scene. Use what you
-    // know about OpenGL and leverage your Shapes classes to get the job done.
-    //
 
     for (PrimTransPair pair : primTransPairs) {
         if (settings.deferredLight) {

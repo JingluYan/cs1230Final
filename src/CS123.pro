@@ -152,8 +152,6 @@ OTHER_FILES += shaders/shader.frag \
     shaders/defered_shading/second_pass/lighting.vert \
     shaders/skybox/skybox.frag \
     shaders/skybox/skybox.vert \
-    shaders/defered_shading/third_pass/third_pass.frag \
-    shaders/defered_shading/third_pass/third_pass.vert \
     shaders/fullscreenquad/fullscreenquad.frag \
     shaders/fullscreenquad/fullscreenquad.vert \
     shaders/SSAO/Blur.frag \
