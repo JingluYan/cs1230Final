@@ -25,7 +25,7 @@
         <type v="point" />
         <id v="1"/>
         <color r="1" g="0.945" b="0.878"/>
-        <position x="0" y="6.7" z="0" />
+        <position x="0" y="6" z="0" />
     </lightdata>
 
     <object type="tree" name="root">
@@ -201,9 +201,10 @@
         
         
         <transblock>
-            <translate x="-7.5" y="1.3" z="2"/>
-            <scale x="0.1" y="9" z="15" />
-            <object type="primitive" name="cube" >
+            <rotate x="0" y="1" z="0" angle="90" />
+            <translate x="-2" y="1.3" z="-15"/>
+            <scale x="15" y="9" z="15" />
+            <object type="primitive" name="plane" >
                 <diffuse r="0.867" g="0.843" b="0.843"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
                 <texture file=":/textures/images/wall.jpg" u="4" v="4"/>
@@ -230,9 +231,10 @@
         
         
         <transblock>
-            <translate x="7.5" y="1.3" z="2"/>
-            <scale x="0.1" y="9" z="15" />
-            <object type="primitive" name="cube" >
+            <rotate x="0" y="1" z="0" angle="-90" />
+            <translate x="2" y="1.3" z="-15"/>
+            <scale x="15" y="9" z="15" />
+            <object type="primitive" name="plane" >
                 <diffuse r="0.867" g="0.843" b="0.843"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
                 <texture file=":/textures/images/wall.jpg" u="4" v="4"/>
@@ -261,7 +263,7 @@
         <transblock>
             <translate x="0" y="1.3" z="-5.5"/>
             <scale x="15" y="9" z="0.1" />
-            <object type="primitive" name="cube" >
+            <object type="primitive" name="plane" >
                 <diffuse r="0.867" g="0.843" b="0.843"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
                 <texture file=":/textures/images/wall.jpg" u="4" v="4"/>
@@ -286,10 +288,90 @@
             </object>
         </transblock>
         
+        
         <transblock>
-            <translate x="0" y="6.8" z="2"/>
-            <scale x="15" y="0.1" z="15" />
+            <rotate x="0" y="1" z="0" angle="180" />
+            <translate x="0" y="1.3" z="-9.5"/>
+            <scale x="15" y="9" z="0.1" />
+            <object type="primitive" name="plane" >
+                <diffuse r="0.867" g="0.843" b="0.843"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+                <texture file=":/textures/images/wall.jpg" u="4" v="4"/>
+                <bumpmap file=":/textures/images/wall_bump.jpg" u="4" v="4"/>
+                <blend v="0.9" />
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="0" y="6.3" z="9.5"/>
+            <scale x="15" y="1" z="0.1" />
             <object type="primitive" name="cube" >
+                <diffuse r="0.867" g="0.843" b="0.843"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="0" y="5.8" z="9.4"/>
+            <scale x="15" y="0.2" z="0.1" />
+            <object type="primitive" name="cube" >
+                <diffuse r="0.3686" g="0.0274" b="0.0274"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        
+        <transblock>
+            <translate x="0" y="0" z="9.4"/>
+            <scale x="3" y="6" z="0.1" />
+            <object type="primitive" name="cube" >
+                <diffuse r="0.867" g="0.843" b="0.843"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="0" y="-3.1" z="9.4"/>
+            <scale x="3" y="0.2" z="0.1" />
+            <object type="primitive" name="cube" >
+                <diffuse r="0.3686" g="0.0274" b="0.0274"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="0" y="3.1" z="9.4"/>
+            <scale x="3" y="0.2" z="0.1" />
+            <object type="primitive" name="cube" >
+                <diffuse r="0.3686" g="0.0274" b="0.0274"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="-1.6" y="0" z="9.4"/>
+            <scale x="0.2" y="6.4" z="0.1" />
+            <object type="primitive" name="cube" >
+                <diffuse r="0.3686" g="0.0274" b="0.0274"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="1.6" y="0" z="9.4"/>
+            <scale x="0.2" y="6.4" z="0.1" />
+            <object type="primitive" name="cube" >
+                <diffuse r="0.3686" g="0.0274" b="0.0274"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="1.3" y="0" z="9.4"/>
+            <scale x="0.3" y="0.3" z="0.3" />
+            <object type="primitive" name="sphere" >
+                <diffuse r="0.3686" g="0.0274" b="0.0274"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        
+        <transblock>
+            <rotate x="1" y="0" z="0" angle="90" />
+            <translate x="0" y="2" z="-14"/>
+            <scale x="15" y="15" z="15" />
+            <object type="primitive" name="plane" >
                 <diffuse r="0.867" g="0.843" b="0.843"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
             </object>
@@ -305,6 +387,22 @@
         </transblock>
         <transblock>
             <translate x="7.4" y="1.4" z="-5.2"/>
+            <scale x="0.2" y="9" z="0.2" />
+            <object type="primitive" name="cube" >
+                <diffuse r="0.3686" g="0.0274" b="0.0274"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="7.4" y="1.4" z="9.4"/>
+            <scale x="0.2" y="9" z="0.2" />
+            <object type="primitive" name="cube" >
+                <diffuse r="0.3686" g="0.0274" b="0.0274"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="-7.4" y="1.4" z="9.4"/>
             <scale x="0.2" y="9" z="0.2" />
             <object type="primitive" name="cube" >
                 <diffuse r="0.3686" g="0.0274" b="0.0274"/>
