@@ -139,7 +139,7 @@ void MainWindow::dataBind() {
     BIND(FloatBinding::bindSliderAndTextbox(
               ui->cameraNearSlider, ui->cameraNearTextbox, settings.cameraNear, 0.1, 50))
     BIND(FloatBinding::bindSliderAndTextbox(
-              ui->cameraFarSlider, ui->cameraFarTextbox, settings.cameraFar, 0.1, 50))
+              ui->cameraFarSlider, ui->cameraFarTextbox, settings.cameraFar, 0.1, 100))
 
 
     // Shapes dock
