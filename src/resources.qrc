@@ -16,8 +16,6 @@
         <file alias="gbuffer.vert">shaders/defered_shading/first_pass/gbuffer.vert</file>
         <file alias="lighting.frag">shaders/defered_shading/second_pass/lighting.frag</file>
         <file alias="lighting.vert">shaders/defered_shading/second_pass/lighting.vert</file>
-        <file alias="third_pass.frag">shaders/defered_shading/third_pass/third_pass.frag</file>
-        <file alias="third_pass.vert">shaders/defered_shading/third_pass/third_pass.vert</file>
         <file alias="skybox.frag">shaders/skybox/skybox.frag</file>
         <file alias="skybox.vert">shaders/skybox/skybox.vert</file>
         <file alias="blur.frag">shaders/SSAO/Blur.frag</file>

@@ -62,6 +62,7 @@ SOURCES += \
     scenegraph/shapes/openglshape.cpp \
     scenegraph/shapes/sphere.cpp \
     scenegraph/shapes/quad.cpp \
+    scenegraph/shapes/plane.cpp \
     scenegraph/shapes/flatbottomcurveshape.cpp \
     ray/rayshape.cpp \
     ray/rayutils.cpp \
@@ -117,6 +118,7 @@ HEADERS += \
     scenegraph/shapes/openglshape.h \
     scenegraph/shapes/sphere.h \
     scenegraph/shapes/quad.h \
+    scenegraph/shapes/plane.h \
     scenegraph/shapes/flatbottomcurveshape.h \
     ../../../../../../../home/yliu82/course/cs1230/src/filter/CamtransCamera.h \
     ray/rayshape.h \
