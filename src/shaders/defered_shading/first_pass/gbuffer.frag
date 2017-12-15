@@ -65,7 +65,7 @@ void main()
 
     //sample bump map normal
     if (useBumpTexture == 1) {
-        bumpNormal = texture(texBump, texc);
+        bumpNormal = texture(texBump, texc*repeatBumpUV);
     } else {
         bumpNormal = vec4(0);
     }
