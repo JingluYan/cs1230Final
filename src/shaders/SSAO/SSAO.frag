@@ -8,12 +8,12 @@ uniform sampler2D gPosition;
 uniform sampler2D gNormal;
 uniform sampler2D texNoise;
 
-uniform vec3 samples[128];
+uniform vec3 samples[25];
 uniform int width;
 uniform int height;
 
 // parameters (you'd probably want to use them as uniforms to more easily tweak the effect)
-int kernelSize = 128;
+int kernelSize = 25;
 uniform float radius = 1.0;
 uniform float bias = 0.025;
 
@@ -39,11 +39,11 @@ void main()
     for(int i = 0; i < kernelSize; ++i)
     {
         // get sample position
-        vec3 sample = TBN * samples[i]; // from tangent to view-space
-        sample = fragPos + sample * radius;
+        vec3 sample_pos_view = TBN * samples[i]; // from tangent to view-space
+        sample_pos_view = fragPos + sample_pos_view * radius;
 
         // project sample position (to sample texture) (to get position on screen/texture)
-        vec4 offset = vec4(sample, 1.0);
+        vec4 offset = vec4(sample_pos_view, 1.0);
         offset = projection * offset; // from view to clip-space
         offset.xyz /= offset.w; // perspective divide
         offset.xyz = offset.xyz * 0.5 + 0.5; // transform to range 0.0 - 1.0
@@ -53,9 +53,13 @@ void main()
 
         // range check & accumulate
         float rangeCheck = smoothstep(0.0, 1.0, radius / abs(fragPos.z - sampleDepth));
-        occlusion += (sampleDepth >= sample.z + bias ? 1.0 : 0.0) * rangeCheck;
+        occlusion += (sampleDepth >= sample_pos_view.z + bias ? 1.0 : 0.0) * rangeCheck;
     }
     occlusion = 1.0 - (occlusion / kernelSize);
 
+    // raise occlussion to an arbitrary power
+//    if (occlusion < 0.95) {
+//        occlusion = pow(occlusion, 5);
+//    }
     FragColor = occlusion;
 }

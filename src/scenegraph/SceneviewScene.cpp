@@ -32,12 +32,12 @@ float lerp(float a, float b, float f)
      std::uniform_real_distribution<GLfloat> randomFloats(0.0, 1.0); // generates random floats between 0.0 and 1.0
      std::vector<glm::vec3> ssaoKernel;
      std::default_random_engine generator;
-     for (unsigned int i = 0; i < 128; ++i)
+     for (unsigned int i = 0; i < 25; ++i)
      {
          glm::vec3 sample(randomFloats(generator) * 2.0 - 1.0, randomFloats(generator) * 2.0 - 1.0, randomFloats(generator));
          sample = glm::normalize(sample);
          sample *= randomFloats(generator);
-         float scale = float(i) / 128.0;
+         float scale = float(i) / 25.0;
 
          // scale samples s.t. they're more aligned to center of kernel
          scale = lerp(0.1f, 1.0f, scale * scale);
