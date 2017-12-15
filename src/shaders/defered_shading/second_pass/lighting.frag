@@ -97,9 +97,9 @@ void main()
             vec3 halfwayAngle = normalize(eyeDirection + vertexToLight);
             float specIntensity = 0.0;
             if (blinn) {
-                specIntensity = 0.4 *pow(max(0.0, dot(usingNormal, halfwayAngle)), shininess) * atten;
+                specIntensity = 0.3 *pow(max(0.0, dot(usingNormal, halfwayAngle)), shininess) * atten;
             } else {
-                specIntensity = 0.4 *pow(max(0.0, dot(usingEyeDirection, lightReflection)), shininess) * atten;
+                specIntensity = 0.3 *pow(max(0.0, dot(usingEyeDirection, lightReflection)), shininess) * atten;
             }
             if (lightTypes[i] == 0) { // only attenuates point lights
                 specIntensity = specIntensity * atten;
