@@ -30,6 +30,12 @@
         <file>images/winter.jpg</file>
         <file>images/wood_table.jpg</file>
         <file>images/bump_table.jpg</file>
+        <file>images/ice_bump.jpg</file>
+        <file>images/ice.jpg</file>
+        <file>images/wood_plank_bump.jpg</file>
+        <file>images/wood_plank.jpg</file>
+        <file>images/wall_bump.jpg</file>
+        <file>images/wall.jpg</file>
     </qresource>
     <qresource prefix="/skybox">
         <file alias="negx.jpg">images/skybox/negx.jpg</file>
