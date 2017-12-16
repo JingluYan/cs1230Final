@@ -419,27 +419,27 @@ QString UniformVariable::toString() const
 }
 
 UniformVariable *checkStatics(const QString &str, UniformVariable::Type type) {
-    switch (type) {
-    case UniformVariable::TYPE_MAT4:
-//        if (qstrcmp(str, "<model>")) return SupportCanvas3D::s_model;
-        if (qstrcmp(str, "<view>")) return SupportCanvas3D::s_view;
-        if (qstrcmp(str, "<projection>")) return SupportCanvas3D::s_projection;
-//        if (qstrcmp(str, "<mvp>")) return SupportCanvas3D::s_mvp;
-        break;
-    case UniformVariable::TYPE_TEXCUBE:
-        if (qstrcmp(str, "<skybox>")) return SupportCanvas3D::s_skybox;
-        break;
-//    case UniformVariable::TYPE_FLOAT:
-//        if (qstrcmp(str, "<time>")) return SupportCanvas3D::s_time;
+//    switch (type) {
+//    case UniformVariable::TYPE_MAT4:
+////        if (qstrcmp(str, "<model>")) return SupportCanvas3D::s_model;
+//        if (qstrcmp(str, "<view>")) return SupportCanvas3D::s_view;
+//        if (qstrcmp(str, "<projection>")) return SupportCanvas3D::s_projection;
+////        if (qstrcmp(str, "<mvp>")) return SupportCanvas3D::s_mvp;
 //        break;
-//    case UniformVariable::TYPE_FLOAT2:
-//        if (qstrcmp(str, "<size>")) return SupportCanvas3D::s_size;
-//    case UniformVariable::TYPE_FLOAT3:
-//        if (qstrcmp(str, "<mouse>")) return SupportCanvas3D::s_mouse;
-    default:
-        return NULL;
-    }
-    return NULL;
+//    case UniformVariable::TYPE_TEXCUBE:
+//        if (qstrcmp(str, "<skybox>")) return SupportCanvas3D::s_skybox;
+//        break;
+////    case UniformVariable::TYPE_FLOAT:
+////        if (qstrcmp(str, "<time>")) return SupportCanvas3D::s_time;
+////        break;
+////    case UniformVariable::TYPE_FLOAT2:
+////        if (qstrcmp(str, "<size>")) return SupportCanvas3D::s_size;
+////    case UniformVariable::TYPE_FLOAT3:
+////        if (qstrcmp(str, "<mouse>")) return SupportCanvas3D::s_mouse;
+//    default:
+//        return NULL;
+//    }
+//    return NULL;
 }
 
 bool UniformVariable::parse(const QString &value, bool verifyOnly)

@@ -59,24 +59,6 @@ public:
     // This function will be called by the UI when the settings have changed.
     virtual void settingsChanged();
 
-    // skybox related
-    QGLShaderProgram *skybox_shader;
-    std::unique_ptr<OpenGLShape> skybox_cube;
-    std::unique_ptr<OpenGLShape> m_sphere;
-    static UniformVariable* s_skybox;
-    static UniformVariable* s_projection;
-    static UniformVariable* s_view;
-    // these seem to have no effect on the skybox
-    static UniformVariable* s_model;
-    static UniformVariable* s_mvp;
-    static UniformVariable* s_time;
-    static UniformVariable* s_size;
-    static UniformVariable* s_mouse;
-    static std::vector<UniformVariable*> *s_staticVars;
-
-    bool loadShader(QString vert, QString frag, QString *errors);
-    // end skybox
-
 
 public slots:
     // These will be called by the corresponding UI buttons on the Camtrans dock
@@ -133,15 +115,8 @@ private:
     std::unique_ptr<ShapesScene> m_shapesScene;
     std::unique_ptr<SceneviewScene> m_sceneviewScene;
 
-    //skybox related
-    QGLShaderProgram *current_shader;
-    QOpenGLFunctions gl;
-
     float m_ratio;
 
-signals:
-    void addUniform(UniformVariable::Type type, const QString &name, bool editable = true, int size = 1);
-    //end skybox
 
 };
 
