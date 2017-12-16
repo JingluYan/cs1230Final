@@ -7,8 +7,7 @@
 class Cube : public OpenGLShape
 {
 public:
-    Cube();
-    Cube(int tess);
+    Cube(int tess = 1);
 
     void calcVertex(int tess);
     void update(int tess);

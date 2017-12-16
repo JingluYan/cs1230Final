@@ -2,10 +2,6 @@
 #include <iostream>
 #include <cmath>
 
-Plane::Plane()
-{
-    Plane(0);
-}
 
 Plane::Plane(int tess) :
     prevTess(0)

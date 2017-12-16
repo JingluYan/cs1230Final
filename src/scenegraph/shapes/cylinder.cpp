@@ -4,10 +4,6 @@
 
 using namespace std;
 
-Cylinder::Cylinder()
-{
-}
-
 Cylinder::Cylinder(int p1, int p2)
 {
     update(p1, p2);

@@ -7,8 +7,7 @@
 class Plane : public OpenGLShape
 {
 public:
-    Plane();
-    Plane(int tess);
+    Plane(int tess = 1);
 
     void calcVertex(int tess);
     void update(int tess);

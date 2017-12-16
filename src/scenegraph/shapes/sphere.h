@@ -8,8 +8,7 @@
 class Sphere : public OpenGLShape
 {
 public:
-    Sphere();
-    Sphere(int p1, int p2);
+    Sphere(int p1 = 20, int p2 = 20);
 
     int calcVertices(int p1, int p2);
     void update(int p1, int p2);

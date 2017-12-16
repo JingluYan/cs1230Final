@@ -2,11 +2,6 @@
 #include <iostream>
 #include <cmath>
 
-Cube::Cube()
-{
-    Cube(0);
-}
-
 Cube::Cube(int tess) :
     prevTess(0)
 {

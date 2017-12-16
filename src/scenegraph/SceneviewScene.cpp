@@ -82,15 +82,15 @@ SceneviewScene::SceneviewScene(int w, int h, float ratio) :
     loadDeferredShader();
     loadSSAOShader();
 
-    m_cube = std::make_unique<Cube>(settings.shapeParameter1);
+    m_cube = std::make_unique<Cube>();
 
-    m_cone = std::make_unique<Cone>(settings.shapeParameter1, settings.shapeParameter2);
+    m_cone = std::make_unique<Cone>();
 
-    m_cylinder = std::make_unique<Cylinder>(settings.shapeParameter1,settings.shapeParameter2);
+    m_cylinder = std::make_unique<Cylinder>();
 
-    m_sphere = std::make_unique<Sphere>(settings.shapeParameter1, settings.shapeParameter2);
+    m_sphere = std::make_unique<Sphere>();
 
-    m_plane = std::make_unique<Plane>(settings.shapeParameter1);
+    m_plane = std::make_unique<Plane>();
 
     // build full screen quad
     m_quad = std::make_unique<Quad>();
@@ -391,11 +391,11 @@ void SceneviewScene::renderGeometry() {
 
 void SceneviewScene::settingsChanged() {
     // TODO: [SCENEVIEW] Fill this in if applicable.
-    m_cube->update(settings.shapeParameter1);
-    m_cylinder->update(settings.shapeParameter1, settings.shapeParameter2);
-    m_sphere->update(settings.shapeParameter1, settings.shapeParameter2);
-    m_cone->update(settings.shapeParameter1, settings.shapeParameter2);
-    m_plane->update(settings.shapeParameter1);
+    m_cube->update(1);
+    m_cylinder->update(1,20);
+    m_sphere->update(20,20);
+    m_cone->update(1, 20);
+    m_plane->update(1);
 }
 
 void SceneviewScene::tryApplyDiffuseTexture( const CS123SceneFileMap &map ) {

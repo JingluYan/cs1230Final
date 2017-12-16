@@ -8,8 +8,7 @@
 class Cylinder : public FlatBottomCurveShape
 {
 public:
-    Cylinder();
-    Cylinder(int p1, int p2);
+    Cylinder(int p1 = 1, int p2 = 20);
 
     int calcVertices(int p1, int p2);
     void update(int p1, int p2);

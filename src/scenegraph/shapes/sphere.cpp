@@ -4,11 +4,6 @@
 #include <iomanip>
 using namespace std;
 
-Sphere::Sphere() :
-    r(0.5f)
-{
-}
-
 Sphere::Sphere(int p1, int p2) :
     r(0.5f)
 {

@@ -8,8 +8,7 @@
 class Cone : public FlatBottomCurveShape
 {
 public:
-    Cone();
-    Cone(int p1, int p2);
+    Cone(int p1 = 1, int p2 = 20);
 
     int calcVertices(int p1, int p2);
     void update(int p1, int p2);

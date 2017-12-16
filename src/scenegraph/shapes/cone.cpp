@@ -3,13 +3,6 @@
 #include <iostream>
 using namespace std;
 
-Cone::Cone() :
-    r(.5f),
-    slope(2.0f)
-{
-}
-
-
 Cone::Cone(int p1, int p2) :
     r(.5f),
     slope(2.0f)
