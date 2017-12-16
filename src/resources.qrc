@@ -26,6 +26,9 @@
         <file>images/wood_plank.jpg</file>
         <file>images/wall_bump.jpg</file>
         <file>images/wall.jpg</file>
+        <file>images/painting.jpg</file>
+        <file>images/carpet_bump.jpg</file>
+        <file>images/carpet.jpg</file>
     </qresource>
     <qresource prefix="/skybox">
         <file alias="negx.jpg">images/skybox/negx.jpg</file>

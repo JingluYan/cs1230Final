@@ -31,9 +31,9 @@
     <object type="tree" name="root">
         <transblock>
             <scale x="1.4" y="1.4" z="1.4" />
-            <translate x="0" y="0.1" z="0.0"/>
-            <object type="primitive" name="sphere" >
-                <shininess v="15.0"/>
+            <translate x="0" y="0.2" z="0.0"/>
+            <object type="primitive" name="sphere" thing="crystalball" >
+                <shininess v="100.0"/>
                 <specular r="1.0" g="1.0" b="1.0"/>
                 <reflective r="0.6" g="0.6" b="0.6"/>
                 <diffuse r="1" g="1" b="1"/>
@@ -43,19 +43,9 @@
             </object>
         </transblock>
         <transblock>
-            <scale x="0.5" y="0.5" z="0.5" />
-            <translate x="0" y="0" z="0.0"/>
-            <object type="primitive" name="cube" >
-                <shininess v="15.0"/>
-                <specular r="1.0" g="1.0" b="1.0"/>
-                <reflective r="0.6" g="0.6" b="0.6"/>
-                <diffuse r="1" g="0.2" b="0.2"/>
-            </object>
-        </transblock>
-        <transblock>
             <translate x="0" y="-0.5" z="0.0"/>
             <scale x="0.9" y="0.15" z="0.9" />
-            <object type="primitive" name="cylinder" >
+            <object type="primitive" name="cylinder" thing="crystall ball base" >
                 <shininess v="15.0"/>
                 <specular r="1.0" g="1.0" b="1.0"/>
                 <reflective r="0.6" g="0.6" b="0.6"/>
@@ -67,7 +57,7 @@
         <transblock>
             <translate x="0" y="-0.6" z="0"/>
             <scale x="6" y="0.1" z="3"/>
-            <object type="primitive" name="cube" >
+            <object type="primitive" name="cube" thing="table" >
                 <diffuse r="1" g="1" b="1"/>
                 <texture file=":/textures/images/wood_plank.jpg" u="5" v="1"/>
                 <bumpmap file=":/textures/images/wood_plank_bump.jpg" u="5" v="1"/>
@@ -76,9 +66,9 @@
             </object>
         </transblock>
         <transblock>
-            <translate x="-2.7" y="0" z="-1"/>
+            <translate x="-2.7" y="0" z="-1" />
             <scale x="0.1" y="1.2" z="0.5" />
-            <object type="primitive" name="cube" >
+            <object type="primitive" name="cube" thing="left most book on desk">
                 <diffuse r="0.298" g="0.239" b="0.239"/>
                 <reflective r="0.247" g="0.498" b="0.498"/>
             </object>
@@ -86,7 +76,7 @@
         <transblock>
             <translate x="-2.58" y="-0.1" z="-1"/>
             <scale x="0.15" y="1.1" z="0.5" />
-            <object type="primitive" name="cube" >
+            <object type="primitive" name="cube" thing="middle book on desk">
                 <diffuse r="0.667" g="0.867" b="0.867"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
             </object>
@@ -95,7 +85,7 @@
             <rotate x="0" y="0" z="1" angle="20"/>
             <translate x="-2.15" y="0.72" z="-1"/>
             <scale x="0.13" y="1" z="0.5" />
-            <object type="primitive" name="cube" >
+            <object type="primitive" name="cube" thing="slanted book on desk">
                 <diffuse r="1" g="0.8" b="0.8"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
             </object>
@@ -104,7 +94,7 @@
             <rotate x="0" y="0" z="1" angle="70"/>
             <translate x="-1.5" y="-1.12" z="-1"/>
             <scale x="0.1" y="7" z="0.1" />
-            <object type="primitive" name="cylinder" >
+            <object type="primitive" name="cylinder" thing="desk leg">
                 <diffuse r="0.2" g="0.2" b="0.2"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
             </object>
@@ -113,7 +103,7 @@
             <rotate x="0" y="0" z="1" angle="70"/>
             <translate x="-1.5" y="-1.12" z="1"/>
             <scale x="0.1" y="7" z="0.1" />
-            <object type="primitive" name="cylinder" >
+            <object type="primitive" name="cylinder" thing="desk leg">
                 <diffuse r="0.2" g="0.2" b="0.2"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
             </object>
@@ -122,7 +112,7 @@
             <rotate x="0" y="0" z="1" angle="110"/>
             <translate x="-1.5" y="1.12" z="-1"/>
             <scale x="0.1" y="7" z="0.1" />
-            <object type="primitive" name="cylinder" >
+            <object type="primitive" name="cylinder" thing="desk leg">
                 <diffuse r="0.2" g="0.2" b="0.2"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
             </object>
@@ -131,7 +121,7 @@
             <rotate x="0" y="0" z="1" angle="110"/>
             <translate x="-1.5" y="1.12" z="1"/>
             <scale x="0.1" y="7" z="0.1" />
-            <object type="primitive" name="cylinder" >
+            <object type="primitive" name="cylinder" thing="desk leg">
                 <diffuse r="0.2" g="0.2" b="0.2"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
             </object>
@@ -139,7 +129,7 @@
         <transblock>
             <translate x="2.5" y="-0.55" z="-1"/>
             <scale x="0.8" y="0.25" z="0.8" />
-            <object type="primitive" name="sphere" >
+            <object type="primitive" name="sphere" thing="lamp">
                 <diffuse r="0.867" g="0.843" b="0.843"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
             </object>
@@ -174,7 +164,8 @@
             <rotate x="0" y="0" z="1" angle="-70" />
             <translate x="-0.5" y="2.5" z="-1"/>
             <scale x="1" y="1" z="1" />
-            <object type="primitive" name="cone" >
+            <object type="primitive" name="cone" thing="lamp">
+                <shininess v="100" />
                 <diffuse r="0.867" g="0.843" b="0.843"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
             </object>
@@ -185,9 +176,9 @@
             <object type="primitive" name="cube" >
                 <diffuse r="0.867" g="0.843" b="0.843"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
-                <texture file=":/textures/images/wood_plank.jpg" u="5" v="1"/>
-                <bumpmap file=":/textures/images/wood_plank_bump.jpg" u="5" v="1"/>
-                <blend v="0.9" />
+                <texture file=":/textures/images/carpet.jpg" u="5" v="5"/>
+                <bumpmap file=":/textures/images/carpet_bump.jpg" u="5" v="5"/>
+                <blend v="0.5" />
             </object>
         </transblock>
         <transblock>
@@ -207,6 +198,7 @@
             <object type="primitive" name="plane" >
                 <diffuse r="0.867" g="0.843" b="0.843"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
+                <shininess v="15"/>
                 <texture file=":/textures/images/wall.jpg" u="4" v="4"/>
                 <bumpmap file=":/textures/images/wall_bump.jpg" u="4" v="4"/>
                 <blend v="0.9" />
@@ -237,6 +229,7 @@
             <object type="primitive" name="plane" >
                 <diffuse r="0.867" g="0.843" b="0.843"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
+                <shininess v="15"/>
                 <texture file=":/textures/images/wall.jpg" u="4" v="4"/>
                 <bumpmap file=":/textures/images/wall_bump.jpg" u="4" v="4"/>
                 <blend v="0.9" />
@@ -266,6 +259,7 @@
             <object type="primitive" name="plane" >
                 <diffuse r="0.867" g="0.843" b="0.843"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
+                <shininess v="15"/>
                 <texture file=":/textures/images/wall.jpg" u="4" v="4"/>
                 <bumpmap file=":/textures/images/wall_bump.jpg" u="4" v="4"/>
                 <blend v="0.9" />
@@ -294,6 +288,7 @@
             <translate x="0" y="1.3" z="-9.5"/>
             <scale x="15" y="9" z="0.1" />
             <object type="primitive" name="plane" >
+                <shininess v="15"/>
                 <diffuse r="0.867" g="0.843" b="0.843"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
                 <texture file=":/textures/images/wall.jpg" u="4" v="4"/>
@@ -425,6 +420,121 @@
             <object type="primitive" name="cube" >
                 <diffuse r="0.3686" g="0.0274" b="0.0274"/>
                 <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="-5.5" y="4.5" z="-5" />
+            <scale x="0.1" y="1.2" z="0.5" />
+            <object type="primitive" name="cube" thing="left most book on left shelf">
+                <diffuse r="0.309" g="0.427" b="0.478"/>
+                <reflective r="0.247" g="0.498" b="0.498"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="-5.4" y="4.5" z="-5"/>
+            <scale x="0.15" y="1.1" z="0.5" />
+            <object type="primitive" name="cube" thing="second book on left shelf">
+                <diffuse r="0.031" g="0.298" b="0.38"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="-5.1" y="4.3" z="-5"/>
+            <scale x="0.5" y="0.5" z="0.5" />
+            <object type="primitive" name="cone" thing="cone decor on left shelf">
+                <diffuse r="0.95" g="0.737" b="0.05"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="-4.8" y="4.5" z="-5"/>
+            <scale x="0.15" y="1" z="0.5" />
+            <object type="primitive" name="cube" thing="third book on left shelf">
+                <diffuse r="0.858" g="0.3137" b="0.29"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        
+        <transblock>
+            <translate x="1.5" y="0" z="-1" />
+            <scale x="0.1" y="1.2" z="0.6" />
+            <object type="primitive" name="cube" thing="right most book on desk">
+                <diffuse r="0.298" g="0.239" b="0.239"/>
+                <reflective r="0.247" g="0.498" b="0.498"/>
+            </object>
+        </transblock>
+        <transblock>
+            <translate x="1.3" y="-0.1" z="-1"/>
+            <scale x="0.3" y="1.1" z="0.5" />
+            <object type="primitive" name="cube" thing="right second book on desk">
+                <diffuse r="0.667" g="0.867" b="0.867"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <rotate x="0" y="0" z="1" angle="-20"/>
+            <translate x="0.85" y="0.44" z="-1"/>
+            <scale x="0.13" y="1.4" z="0.5" />
+            <object type="primitive" name="cube" thing="slanted book on desk">
+                <diffuse r="1" g="0.8" b="0.8"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        
+        <transblock>
+            <translate x="0" y="-1.4" z="3"/>
+            <scale x="1.3" y="0.1" z="1.3" />
+            <object type="primitive" name="cylinder" thing="stool">
+                <diffuse r="1" g="1" b="1"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        
+        <transblock>
+            <rotate x="1" y="1" z="1" angle="8" />
+            <translate x="0" y="-2.2" z="2.8"/>
+            <scale x="0.1" y="2" z="0.1" />
+            <object type="primitive" name="cylinder" thing="stool leg">
+                <diffuse r="1" g="1" b="1"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <rotate x="-1" y="1" z="1" angle="-8" />
+            <translate x="0" y="-2.2" z="2.8"/>
+            <scale x="0.1" y="2" z="0.1" />
+            <object type="primitive" name="cylinder" thing="stool leg">
+                <diffuse r="1" g="1" b="1"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <rotate x="-1" y="1" z="1" angle="8" />
+            <translate x="0" y="-2.7" z="3.2"/>
+            <scale x="0.1" y="2" z="0.1" />
+            <object type="primitive" name="cylinder" thing="stool leg">
+                <diffuse r="1" g="1" b="1"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <rotate x="1" y="1" z="1" angle="-8" />
+            <translate x="0" y="-2.7" z="3.2"/>
+            <scale x="0.1" y="2" z="0.1" />
+            <object type="primitive" name="cylinder" thing="stool leg">
+                <diffuse r="1" g="1" b="1"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+            </object>
+        </transblock>
+        <transblock>
+            <rotate x="0" y="1" z="0" angle="90" />
+            <translate x="0" y="2.4" z="-8.9"/>
+            <scale x="3" y="2" z="3" />
+            <object type="primitive" name="plane" >
+                <diffuse r="0.867" g="0.843" b="0.843"/>
+                <reflective r="0.3" g="0.3" b="0.3"/>
+                <texture file=":/textures/images/painting.jpg" u="1" v="1"/>
+                <blend v="0.9" />
             </object>
         </transblock>
         
