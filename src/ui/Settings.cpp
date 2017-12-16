@@ -43,7 +43,6 @@ void Settings::loadSettingsOrDefaults() {
     cameraFar = s.value("cameraFar", 100).toDouble();
 
     // Features
-    sceneType = s.value("sceneType", SCENE_1).toInt();
     useFeatureLighting = s.value("useFeatureLighting", useFeatureLighting).toBool();
     deferredLight = s.value("deferredLight", false).toBool();
     textureMapping = s.value("textureMapping", true).toBool();
@@ -99,7 +98,6 @@ void Settings::saveSettings() {
     s.setValue("cameraFar", cameraFar);
 
     // Features
-    s.setValue("sceneType", sceneType);
     s.setValue("useFeatureLighting", useFeatureLighting);
     s.setValue("deferredLight", deferredLight);
     s.setValue("textureMapping", textureMapping);

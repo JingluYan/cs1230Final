@@ -23,12 +23,6 @@ enum ShapeType {
     NUM_SHAPE_TYPES
 };
 
-enum SceneType {
-    SCENE_1,
-    SCENE_2,
-    SCENE_3
-};
-
 // Enumeration values for the two tabs (2D, 3D) at the bottom of the Window.
 enum UITab {
     TAB_2D,
@@ -91,7 +85,6 @@ struct Settings {
     int objTool;                // The currently selected modeler tool.
 
     // Features
-    int sceneType;              // Selected scene type
     bool useFeatureLighting;    // Enable default lighting
     bool textureMapping;        // Turn on texture mapping
     bool bumpMapping;           // Turn on bump mapping
