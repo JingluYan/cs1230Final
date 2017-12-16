@@ -75,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent) :
     a += ui->shapeTypeTorus;
     a += ui->shapeTypeSpecial1;
     a += ui->shapeTypeSpecial2;
+
     foreach (QRadioButton *rb, a)
         connect(rb, SIGNAL(clicked()), this, SLOT(activateCanvas3D()));
 
@@ -102,16 +103,6 @@ void MainWindow::dataBind() {
     assert(connect(_b, SIGNAL(dataChanged()), this, SLOT(settingsChanged()))); \
 }
     // Features dock
-    QButtonGroup *featuresButtonGroup = new QButtonGroup;
-    m_buttonGroups.push_back(featuresButtonGroup);
-
-//    BIND(ChoiceBinding::bindRadioButtons(
-//            featuresButtonGroup,
-//            SCENE_1,
-//            settings.sceneType,
-//            ui->Scene1,
-//            ui->Sceen2,
-//            ui->Scene3))
     BIND(FloatBinding::bindSliderAndTextbox(
         ui->ambientSlider, ui->ambientTextbox, settings.ambient, 0.f, 1.f))
     BIND(FloatBinding::bindSliderAndTextbox(

@@ -83,8 +83,8 @@
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>100</width>
-             <height>30</height>
+             <width>371</width>
+             <height>3067</height>
             </rect>
            </property>
           </widget>
@@ -980,65 +980,13 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="featuresDockContents">
-    <widget class="QGroupBox" name="sceneType">
+    <widget class="QGroupBox" name="groupBox">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>10</y>
        <width>201</width>
-       <height>121</height>
-      </rect>
-     </property>
-     <property name="title">
-      <string>Scene Type</string>
-     </property>
-     <widget class="QRadioButton" name="Scene1">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>30</y>
-        <width>85</width>
-        <height>19</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Scene 1</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="Sceen2">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>60</y>
-        <width>85</width>
-        <height>19</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Scene 2</string>
-      </property>
-     </widget>
-     <widget class="QRadioButton" name="Scene3">
-      <property name="geometry">
-       <rect>
-        <x>10</x>
-        <y>90</y>
-        <width>85</width>
-        <height>19</height>
-       </rect>
-      </property>
-      <property name="text">
-       <string>Scene 3</string>
-      </property>
-     </widget>
-    </widget>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>150</y>
-       <width>201</width>
-       <height>331</height>
+       <height>411</height>
       </rect>
      </property>
      <property name="title">
