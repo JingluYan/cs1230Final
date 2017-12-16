@@ -84,8 +84,6 @@ private:
     void clearLights();
     void loadPhongShader();
     void loadWireframeShader();
-    void loadNormalsShader();
-    void loadNormalsArrowShader();
     void renderPhongPass(SupportCanvas3D *context);
     void renderGeometryAsFilledPolygons();
     void renderWireframePass(SupportCanvas3D *context);

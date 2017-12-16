@@ -142,18 +142,10 @@ OTHER_FILES += shaders/shader.frag \
     shaders/shader.vert \
     shaders/wireframe/wireframe.vert \
     shaders/wireframe/wireframe.frag \
-    shaders/normals/normals.vert \
-    shaders/normals/normals.gsh \
-    shaders/normals/normals.frag \
-    shaders/normals/normalsArrow.vert \
-    shaders/normals/normalsArrow.gsh \
-    shaders/normals/normalsArrow.frag \
     shaders/defered_shading/first_pass/gbuffer.frag \
     shaders/defered_shading/first_pass/gbuffer.vert \
     shaders/defered_shading/second_pass/lighting.frag \
     shaders/defered_shading/second_pass/lighting.vert \
-    shaders/skybox/skybox.frag \
-    shaders/skybox/skybox.vert \
     shaders/fullscreenquad/fullscreenquad.frag \
     shaders/fullscreenquad/fullscreenquad.vert \
     shaders/SSAO/Blur.frag \

@@ -81,9 +81,6 @@ SceneviewScene::SceneviewScene(int w, int h, float ratio) :
     loadPhongShader();
     loadDeferredShader();
     loadSSAOShader();
-//    loadWireframeShader();
-//    loadNormalsShader();
-//    loadNormalsArrowShader();
 
     m_cube = std::make_unique<Cube>(settings.shapeParameter1);
 
@@ -188,27 +185,6 @@ void SceneviewScene::loadSSAOShader() {
     std::string vertexSource2 = ResourceLoader::loadResourceFileToString(":/shaders/blur.vert");
     std::string fragmentSource2 = ResourceLoader::loadResourceFileToString(":/shaders/blur.frag");
     m_blurShader = std::make_unique<CS123Shader>(vertexSource2, fragmentSource2);
-}
-
-void SceneviewScene::loadWireframeShader() {
-    std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/wireframe.vert");
-    std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/wireframe.frag");
-    m_wireframeShader = std::make_unique<Shader>(vertexSource, fragmentSource);
-}
-
-void SceneviewScene::loadNormalsShader() {
-    std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/normals.vert");
-    std::string geometrySource = ResourceLoader::loadResourceFileToString(":/shaders/normals.gsh");
-    std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/normals.frag");
-    m_normalsShader = std::make_unique<Shader>(vertexSource, geometrySource, fragmentSource);
-}
-
-
-void SceneviewScene::loadNormalsArrowShader() {
-    std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/normalsArrow.vert");
-    std::string geometrySource = ResourceLoader::loadResourceFileToString(":/shaders/normalsArrow.gsh");
-    std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/normalsArrow.frag");
-    m_normalsArrowShader = std::make_unique<Shader>(vertexSource, geometrySource, fragmentSource);
 }
 
 void SceneviewScene::render(SupportCanvas3D *context) {

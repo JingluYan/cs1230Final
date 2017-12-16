@@ -21,8 +21,6 @@ ShapesScene::ShapesScene(int width, int height) :
     initializeSceneLight();
     loadPhongShader();
     loadWireframeShader();
-    loadNormalsShader();
-    loadNormalsArrowShader();
 
     //TODO: [SHAPES] Allocate any additional memory you need...
     m_cube = std::make_unique<Cube>(settings.shapeParameter1);
@@ -69,19 +67,6 @@ void ShapesScene::loadWireframeShader() {
     m_wireframeShader = std::make_unique<Shader>(vertexSource, fragmentSource);
 }
 
-void ShapesScene::loadNormalsShader() {
-    std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/normals.vert");
-    std::string geometrySource = ResourceLoader::loadResourceFileToString(":/shaders/normals.gsh");
-    std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/normals.frag");
-    m_normalsShader = std::make_unique<Shader>(vertexSource, geometrySource, fragmentSource);
-}
-
-void ShapesScene::loadNormalsArrowShader() {
-    std::string vertexSource = ResourceLoader::loadResourceFileToString(":/shaders/normalsArrow.vert");
-    std::string geometrySource = ResourceLoader::loadResourceFileToString(":/shaders/normalsArrow.gsh");
-    std::string fragmentSource = ResourceLoader::loadResourceFileToString(":/shaders/normalsArrow.frag");
-    m_normalsArrowShader = std::make_unique<Shader>(vertexSource, geometrySource, fragmentSource);
-}
 
 void ShapesScene::render(SupportCanvas3D *context) {
     // Clear the screen in preparation for the next frame. (Use a gray background instead of a
@@ -94,9 +79,6 @@ void ShapesScene::render(SupportCanvas3D *context) {
         renderWireframePass(context);
     }
 
-    if (settings.drawNormals) {
-        renderNormalsPass(context);
-    }
 }
 
 void ShapesScene::renderPhongPass(SupportCanvas3D *context) {

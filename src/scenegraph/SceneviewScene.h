@@ -57,9 +57,6 @@ private:
     void loadPhongShader();
     void loadDeferredShader();
     void loadSSAOShader();
-    void loadWireframeShader();
-    void loadNormalsShader();
-    void loadNormalsArrowShader();
 
     void setSceneUniforms(SupportCanvas3D *context);\
     void setMatrixUniforms(CS123::GL::Shader *shader, SupportCanvas3D *context);
