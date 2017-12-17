@@ -29,6 +29,9 @@
         <file>images/painting.jpg</file>
         <file>images/carpet_bump.jpg</file>
         <file>images/carpet.jpg</file>
+        <file>images/wood_table_bump.jpg</file>
+        <file>images/bed.jpg</file>
+        <file>images/magician_portrait.png</file>
     </qresource>
     <qresource prefix="/skybox">
         <file alias="negx.jpg">images/skybox/negx.jpg</file>
